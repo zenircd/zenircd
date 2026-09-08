@@ -1,0 +1,14 @@
+---
+description: Always commit and push edits to GitHub
+alwaysApply: true
+---
+
+# Always commit to GitHub
+
+Whenever you edit files in this ZenIRCd repository:
+
+1. After finishing the requested changes, create a git commit that includes those edits.
+2. Push the commit to `origin` (GitHub: `zenircd/zenircd`) on the current branch.
+3. Do this even if the user did not explicitly ask to commit or push.
+
+Follow the normal commit workflow (status/diff/log, staged relevant files only, clear commit message). Do not skip hooks. Do not force-push unless the user explicitly asks.

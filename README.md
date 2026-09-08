@@ -3,6 +3,8 @@
 ZenIRCd is an open source IRC server, based on [UnrealIRCd](https://www.unrealircd.org/).
 It runs on Linux, macOS, and Windows, with a strong focus on modularity and security.
 
+Current development version: **0.1.0-git**
+
 [![Linux CI](https://github.com/zenircd/zenircd/actions/workflows/linux-ci.yml/badge.svg)](https://github.com/zenircd/zenircd/actions/workflows/linux-ci.yml)
 
 ## Features

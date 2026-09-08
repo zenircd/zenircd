@@ -272,7 +272,7 @@
 #define MEMBERMODESLEN 8
 
 /* If EXPERIMENTAL is #define'd then all users will receive a notice about
- * this when they connect, along with a pointer to bugs.unrealircd.org where
+ * this when they connect, along with a pointer to the ZenIRCd issue tracker where
  * they can report any problems. This is mainly to help ZenIRCd development.
  */
 #undef EXPERIMENTAL

@@ -1,7 +1,7 @@
 # Security Policy
 
 ## Supported Versions
-* The latest *stable* release of ZenIRCd 6
+* The latest *stable* release of ZenIRCd
 
 See GitHub Releases for supported versions and End Of Life information.
 

@@ -5,15 +5,15 @@
 #define USE_CURL
 
 [Setup]
-AppName=ZenIRCd 6
-AppVerName=ZenIRCd 6.2.7-git
+AppName=ZenIRCd
+AppVerName=ZenIRCd 0.1.0-git
 AppPublisher=ZenIRCd Team
-AppPublisherURL=https://www.unrealircd.org
-AppSupportURL=https://www.unrealircd.org
-AppUpdatesURL=https://www.unrealircd.org
+AppPublisherURL=https://github.com/zenircd/zenircd
+AppSupportURL=https://github.com/zenircd/zenircd/issues
+AppUpdatesURL=https://github.com/zenircd/zenircd
 AppMutex=ZenMutex,Global\ZenMutex
-DefaultDirName={pf}\ZenIRCd 6
-DefaultGroupName=ZenIRCd 6
+DefaultDirName={pf}\ZenIRCd
+DefaultGroupName=ZenIRCd
 AllowNoIcons=yes
 LicenseFile=src\windows\gplplusssl.rtf
 Compression=lzma

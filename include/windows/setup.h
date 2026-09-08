@@ -66,13 +66,13 @@
 #define GEOIP_ENGINE "geoip_mmdb"
 
 /* Generation version number (e.g.: 3 for ZenIRCd 3*) */
-#define ZEN_VERSION_GENERATION 6
+#define ZEN_VERSION_GENERATION 0
 
 /* Major version number (e.g.: 2 for ZenIRCd 3.2*) */
-#define ZEN_VERSION_MAJOR 2
+#define ZEN_VERSION_MAJOR 1
 
 /* Minor version number (e.g.: 1 for ZenIRCd 3.2.1) */
-#define ZEN_VERSION_MINOR 7
+#define ZEN_VERSION_MINOR 0
 
 /* Version suffix such as a beta marker or release candidate marker. (e.g.:
    -rcX for zenircd-3.2.9-rcX) */

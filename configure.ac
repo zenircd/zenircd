@@ -7,7 +7,7 @@ dnl src/windows/zeninst.iss
 dnl doc/Config.header
 dnl src/version.c.SH
 
-AC_INIT([zenircd], [6.2.7-git], [https://bugs.unrealircd.org/], [], [https://unrealircd.org/])
+AC_INIT([zenircd], [0.1.0-git], [https://github.com/zenircd/zenircd/issues], [], [https://github.com/zenircd/zenircd])
 AC_CONFIG_SRCDIR([src/ircd.c])
 AC_CONFIG_HEADER([include/setup.h])
 AC_CONFIG_AUX_DIR([autoconf])
@@ -24,15 +24,15 @@ BUILDDIR_NOW="`pwd`"
 
 dnl Calculate the versions. Perhaps the use of expr is a little too extravagant
 # Generation version number (e.g.: X in X.Y.Z)
-ZEN_VERSION_GENERATION=["6"]
+ZEN_VERSION_GENERATION=["0"]
 AC_DEFINE_UNQUOTED([ZEN_VERSION_GENERATION], [$ZEN_VERSION_GENERATION], [Generation version number (e.g.: X for X.Y.Z)])
 
 # Major version number (e.g.: Y in X.Y.Z)
-ZEN_VERSION_MAJOR=["2"]
+ZEN_VERSION_MAJOR=["1"]
 AC_DEFINE_UNQUOTED([ZEN_VERSION_MAJOR], [$ZEN_VERSION_MAJOR], [Major version number (e.g.: Y for X.Y.Z)])
 
 # Minor version number (e.g.: Z in X.Y.Z)
-ZEN_VERSION_MINOR=["7"]
+ZEN_VERSION_MINOR=["0"]
 AC_DEFINE_UNQUOTED([ZEN_VERSION_MINOR], [$ZEN_VERSION_MINOR], [Minor version number (e.g.: Z for X.Y.Z)])
 
 # The version suffix such as a beta marker or release candidate

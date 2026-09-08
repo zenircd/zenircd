@@ -1,7 +1,7 @@
-ZenIRCd 6.2.7-git
+ZenIRCd 0.1.0-git
 =================
 
-This is the git version (development version) for future ZenIRCd 6.2.7.
+This is the first ZenIRCd development line, based on UnrealIRCd 6.2.7-git.
 This is work in progress and may not always be a stable version.
 
 ### Enhancements:

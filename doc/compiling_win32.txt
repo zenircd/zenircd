@@ -1,0 +1,2 @@
+For information on how to compile ZenIRCd (modules) on Windows, see:
+https://www.unrealircd.org/docs/Compiling_ZenIRCd_on_Windows

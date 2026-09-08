@@ -1,0 +1,37 @@
+# Systemd service for ZenIRCd (user service)
+#
+# This is the USER service. You can use this if you don't have root
+# on the machine (otherwise, people usually use the other
+# zenircd.service system unit instead).
+#
+# To install:
+# 1) Adjust the ExecStart= line below, if your zenircd isn't
+#    installed in ~/zenircd/
+# 2) Then run the following commands (as a regular user):
+#    loginctl enable-linger
+#    mkdir -p ~/.config/systemd/user
+#    cp zenircd_user.service ~/.config/systemd/user/zenircd.service
+#    systemctl --user daemon-reload
+#    systemctl --user enable zenircd.service
+#    systemctl --user start zenircd.service
+
+[Unit]
+Description=ZenIRCd
+Documentation=https://www.unrealircd.org/
+Description=ZenIRCd IRC Server (user service)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+# Adjust this if zenircd is installed somewhere else:
+ExecStart=%h/zenircd/bin/zenircd -F
+
+Type=simple
+Restart=on-failure
+RestartSec=5s
+LimitNOFILE=65536
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -TERM $MAINPID
+
+[Install]
+WantedBy=default.target

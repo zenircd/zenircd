@@ -530,6 +530,9 @@ char *generate_crash_report(char *coredump, int *thirdpartymods)
 #define REPORT_ASK   0
 #define REPORT_AUTO  1
 
+/* Auto-upload targets upstream UnrealIRCd infrastructure (crash.unrealircd.org).
+ * Disabled by default in ZenIRCd (report_pref = REPORT_NEVER); kept for REPORT_AUTO / future use.
+ */
 #define CRASH_REPORT_HOST "crash.unrealircd.org"
 
 int crashreport_send(char *fname)
@@ -692,15 +695,15 @@ void mark_coredump_as_read(char *coredump)
 	(void)rename(coredump, buf);
 }
 
-static int report_pref = REPORT_ASK;
+static int report_pref = REPORT_NEVER;
 
 void report_crash_not_sent(char *fname)
 {
-	printf("Crash report will not be sent to ZenIRCd Team.\n"
+	printf("A local crash report was generated at %s.\n"
 	       "\n"
-	       "Feel free to read the report at %s and delete it.\n"
-	       "Or, if you change your mind, you can submit it anyway at https://bugs.unrealircd.org/\n"
-	       " (if you do, please set the option 'View Status' at the end of the bug report page to 'private'!!)\n",
+	       "To report bugs, open an issue at https://github.com/zenircd/zenircd/issues\n"
+	       "For private or security-sensitive reports, see SECURITY.md or email info@zenet.org.\n"
+	       "You may delete the local report when finished.\n",
 	       fname);
 }
 

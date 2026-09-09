@@ -183,7 +183,7 @@ void zenircdctl_gencloak(int argc, char *argv[])
 void zenircdctl_spkifp(int argc, char *argv[])
 {
 	char *file = argv[2];
-	SSL_CTX *ctx = SSL_CTX_new(SSLv23_server_method());
+	SSL_CTX *ctx = SSL_CTX_new(TLS_server_method());
 	SSL *ssl;
 	X509 *cert;
 	const char *spkifp;

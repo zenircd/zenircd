@@ -321,9 +321,9 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 	char *errstr = NULL;
 
 	if (server)
-		ctx = SSL_CTX_new(SSLv23_server_method());
+		ctx = SSL_CTX_new(TLS_server_method());
 	else
-		ctx = SSL_CTX_new(SSLv23_client_method());
+		ctx = SSL_CTX_new(TLS_client_method());
 
 	if (!ctx)
 	{
@@ -739,8 +739,12 @@ int has_any_trusted_cert_with_correct_hostname(void)
 /** Early initalization of TLS subsystem - called on startup */
 int early_init_tls(void)
 {
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	OPENSSL_init_ssl(0, NULL);
+#else
 	SSL_load_error_strings();
 	SSLeay_add_ssl_algorithms();
+#endif
 
 	/* This is used to track (SSL *) <--> (Client *) relationships: */
 	tls_client_index = SSL_get_ex_new_index(0, "tls_client", NULL, NULL, NULL);
@@ -1883,10 +1887,14 @@ SSL_CTX *https_new_ctx(void)
 	char buf1[512], buf2[512];
 	char *curl_ca_bundle = buf1;
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	OPENSSL_init_ssl(0, NULL);
+#else
 	SSL_load_error_strings();
 	SSLeay_add_ssl_algorithms();
+#endif
 
-	ctx_client = SSL_CTX_new(SSLv23_client_method());
+	ctx_client = SSL_CTX_new(TLS_client_method());
 	if (!ctx_client)
 		return NULL;
 #ifdef HAS_SSL_CTX_SET_MIN_PROTO_VERSION

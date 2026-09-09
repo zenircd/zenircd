@@ -41,6 +41,12 @@ find . -type f \( -name 'run' -o -name '*.py' -o -name '*.md' -o -name 'wrapper'
 		-e 's/UnrealIRCd/ZenIRCd/g' \
 		-e 's/unrealircd-tests/zenircd-tests/g' \
 		{} +
+# Ensure third-module rebuild failures abort before pretending the IRCd started,
+# and that process cleanup matches our binary name.
+sed -i \
+	-e 's/\$MAKE install/$MAKE install || fail "Failed to build\/install third-party test modules"/' \
+	-e 's/ircd|unrealircd|/ircd|unrealircd|zenircd|/' \
+	run
 
 # FreeBSD has various issues with the tests from us and others,
 # better set a flag to keep it simple:

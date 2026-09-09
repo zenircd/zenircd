@@ -150,7 +150,8 @@ Module *Module_Find(const char *name)
 
 int parse_modsys_version(const char *version)
 {
-	if (!strcmp(version, "zenircd-6"))
+	/* Accept UnrealIRCd ABI tags so upstream third-party modules still load. */
+	if (!strcmp(version, "zenircd-6") || !strcmp(version, "unrealircd-6"))
 		return 0x600000;
 	return 0;
 }

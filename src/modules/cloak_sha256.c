@@ -119,6 +119,26 @@ static int check_badrandomness(char *key)
 	return 1;
 }
 
+/** Reject known public / placeholder cloak keys (not secret).
+ * - "changeme" as a case-insensitive substring (also covers keys that
+ *   contain only the CHANGEME pattern, e.g. CHANGEME / CHANGEME123)
+ * - the old shipped public example key (prefix Oozahho1raezoh0i)
+ */
+static int cloak_key_is_placeholder(const char *key)
+{
+	if (!key || !*key)
+		return 0;
+
+	/* Old public key from example configs (and copies of it) */
+	if (!strncmp(key, "Oozahho1raezoh0i", 16))
+		return 1;
+
+	/* "changeme" / "CHANGEME" / keys made only of that pattern */
+	if (our_strcasestr(key, "changeme"))
+		return 1;
+
+	return 0;
+}
 
 int cloak_config_test(ConfigFile *cf, ConfigEntry *ce, int type, int *errs)
 {
@@ -155,6 +175,14 @@ int cloak_config_test(ConfigFile *cf, ConfigEntry *ce, int type, int *errs)
 	for (cep = ce->items; cep; cep = cep->next)
 	{
 		keycnt++;
+		if (cloak_key_is_placeholder(cep->name))
+		{
+			config_error("%s:%i: set::cloak-keys: (key %d) This looks like a default/example cloak key. "
+			             "Cloak keys must be secret. Run './zenircd gencloak' "
+			             "(or zenircdctl gencloak on Windows) and put the generated keys here.",
+			             cep->file->filename, cep->line_number, keycnt);
+			errors++;
+		}
 		if (check_badrandomness(cep->name))
 		{
 			config_error("%s:%i: set::cloak-keys: (key %d) Keys should be mixed a-zA-Z0-9, "

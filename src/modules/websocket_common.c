@@ -218,6 +218,15 @@ int websocket_handle_packet(Client *client, const char *readbuf, int length, int
 		total_packet_size = len + 4 + maskkeylen; /* 4 for header, 4 for mask key, rest for payload */
 	}
 
+	/* Reject oversized payloads before copying into the fixed buffer.
+	 * Extended length (16-bit) can claim up to 65535 bytes; payloadbuf is only MAXLINELENGTH.
+	 */
+	if ((size_t)len > sizeof(payloadbuf))
+	{
+		dead_socket(client, "WebSocket protocol violation (payload too large)");
+		return -1;
+	}
+
 	if (masked)
 	{
 		memcpy(maskkey, p, maskkeylen);

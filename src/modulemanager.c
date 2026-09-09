@@ -43,6 +43,7 @@ static int no_make_install = 0;
 
 /* Forward declarations */
 int mm_valid_module_name(char *name);
+int mm_compile_flags_safe(const char *flags);
  #define safe_free_managed_module(x) \
 	 do \
 	 { \
@@ -138,6 +139,13 @@ int mm_module_file_config(ManagedModule *m, ConfigEntry *ce)
 		} else if (!strcmp(cep->name, "compile-flags"))
 		{
 			CheckNull(cep);
+			if (!mm_compile_flags_safe(cep->value))
+			{
+				config_error("%s:%d: module::compile-flags contains unsafe shell characters "
+				             "(rejected to prevent command injection)",
+				             m->name, cep->line_number);
+				return 0;
+			}
 			safe_strdup(m->compile_flags, cep->value);
 		} else if (!strcmp(cep->name, "post-install-text"))
 		{
@@ -483,6 +491,13 @@ ManagedModule *mm_repo_module_config(char *repo_url, ConfigEntry *ce)
 		} else if (!strcmp(cep->name, "compile-flags"))
 		{
 			CheckNull(cep);
+			if (!mm_compile_flags_safe(cep->value))
+			{
+				config_error("%s:%d: module::compile-flags contains unsafe shell characters "
+				             "(rejected to prevent command injection)",
+				             repo_url, cep->line_number);
+				return 0;
+			}
 			safe_strdup(m->compile_flags, cep->value);
 		} else if (!strcmp(cep->name, "description"))
 		{
@@ -940,6 +955,58 @@ void mm_list(char *searchname)
 }
 
 
+/* Helper: reject compile-flags that contain shell metacharacters.
+ * These are embedded into a popen() command line via EXLIBS="...", so
+ * characters that remain special inside double quotes (or that break out)
+ * must not be allowed from remote module metadata.
+ * @returns 1 if safe, 0 if unsafe
+ */
+int mm_compile_flags_safe(const char *flags)
+{
+	const char *p;
+
+	if (!flags || !*flags)
+		return 1;
+
+	for (p = flags; *p; p++)
+	{
+		switch (*p)
+		{
+			case '$':
+			case ';':
+			case '|':
+			case '&':
+			case '`':
+			case '\n':
+			case '\r':
+			case '(':
+			case ')':
+			case '<':
+			case '>':
+			case '\\':
+			case '"':
+			case '\'':
+			case '!':
+			case '{':
+			case '}':
+			case '[':
+			case ']':
+			case '*':
+			case '?':
+			case '~':
+			case '#':
+			case '\t':
+				return 0;
+			default:
+				break;
+		}
+		/* Reject other control characters */
+		if ((unsigned char)*p < 32)
+			return 0;
+	}
+	return 1;
+}
+
 /* Helper to get compile flags. Do not return NULL but "" here if none */
 const char *mm_get_compile_flags(ManagedModule *m)
 {
@@ -949,7 +1016,9 @@ const char *mm_get_compile_flags(ManagedModule *m)
 	if (!m->compile_flags)
 		return "";
 
-	/* Simple as-is for now */
+	if (!mm_compile_flags_safe(m->compile_flags))
+		return NULL; /* caller must treat as error */
+
 	flags = m->compile_flags;
 
 	zen_add_quotes_r(flags, retbuf, sizeof(retbuf) - 1);
@@ -989,11 +1058,24 @@ int mm_compile(ManagedModule *m, const char *tmpfile, int test, int upgrade)
 	if (tmpfile && !zen_copyfileex(tmpfile, newpath, 0))
 		return 0;
 
-	snprintf(cmd, sizeof(cmd),
-	         "cd \"%s\"; $MAKE custommodule MODULEFILE=\"%s\" EXLIBS=\"%s\"",
-	         BUILDDIR,
-	         filename_strip_suffix(basename, ".c"),
-	         mm_get_compile_flags(m));
+	{
+		const char *exlibs = mm_get_compile_flags(m);
+
+		if (!exlibs)
+		{
+			fprintf(stderr, "ERROR: Module %s has compile-flags containing unsafe shell "
+			                "characters. Refusing to compile (possible command injection).\n",
+			        m->name);
+			unlink(newpath);
+			return 0;
+		}
+
+		snprintf(cmd, sizeof(cmd),
+		         "cd \"%s\"; $MAKE custommodule MODULEFILE=\"%s\" EXLIBS=\"%s\"",
+		         BUILDDIR,
+		         filename_strip_suffix(basename, ".c"),
+		         exlibs);
+	}
 	fd = popen(cmd, "r");
 	if (!fd)
 	{

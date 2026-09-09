@@ -4880,6 +4880,15 @@ int _test_proxy(ConfigFile *conf, ConfigEntry *ce)
 		errors++;
 	}
 
+	if (proxy_type == PROXY_WEBIRC_PASS)
+	{
+		config_warn("%s:%i: SECURITY WARNING: proxy/webirc type 'old' skips password "
+		            "authentication. Any host matching the mask can spoof client IPs via "
+		            "WEBIRC_/PASS. Prefer type 'webirc' with a strong password. Only use "
+		            "'old' for legacy CGI:IRC gateways you fully control.",
+		            ce->file->filename, ce->line_number);
+	}
+
 	if (!has_type && !proxy_type)
 	{
 		config_error_missing(ce->file->filename, ce->line_number, "proxy::type");
@@ -7394,6 +7403,14 @@ void test_tlsblock(ConfigFile *conf, ConfigEntry *cep, int *totalerrors)
 				config_error("%s:%i: %s: no protocols enabled. Hint: set at least TLSv1.2",
 				             cepp->file->filename, cepp->line_number, config_var(cepp));
 				errors++;
+			}
+			else if (v & (TLS_PROTOCOL_TLSV1 | TLS_PROTOCOL_TLSV1_1))
+			{
+				config_warn("%s:%i: SECURITY WARNING: %s enables TLSv1.0 and/or TLSv1.1. "
+				            "This forces OpenSSL security level 0 (weaker crypto policy) "
+				            "and is insecure. Prefer TLSv1.2,TLSv1.3 only unless you have "
+				            "a hard requirement for outdated TLS clients.",
+				            cepp->file->filename, cepp->line_number, config_var(cepp));
 			}
 		} else if (!strcmp(cepp->name, "certificate") ||
 		           !strcmp(cepp->name, "key") ||

@@ -138,7 +138,10 @@ ConfigItem_proxy *find_webirc(Client *client, const char *password, ProxyType ty
 					return e; /* Found matching block, return straight away */
 			} else if (type == PROXY_WEBIRC_PASS)
 			{
-				return e; /* The PROXY_WEBIRC_PASS type has no password checking */
+				/* type 'old': insecure legacy CGI:IRC — no password check.
+				 * config_warn is emitted on load/test in conf.c (_test_proxy).
+				 */
+				return e;
 			}
 		}
 	}

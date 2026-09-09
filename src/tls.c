@@ -218,13 +218,27 @@ void disable_ssl_protocols(SSL_CTX *ctx, TLSOptions *tlsoptions)
 	 * seemingly compile with -DOPENSSL_TLS_SECURITY_LEVEL=2.
 	 * This means the application (ZenIRCd) is unable to allow
 	 * TLSv1.0/1.1 even if the application is configured to do so.
-	 * So here we set the level to 1, but -again- ONLY if we are
-	 * configured to allow TLSv1.0 or v1.1, of course.
+	 * We only lower the OpenSSL security level when outdated TLS
+	 * versions are explicitly enabled in tls-options::protocols.
+	 * Setting level 0 weakens cryptographic policy (allows weaker
+	 * keys/algorithms); never do this silently.
 	 */
 	if ((tlsoptions->protocols & TLS_PROTOCOL_TLSV1) ||
 	    (tlsoptions->protocols & TLS_PROTOCOL_TLSV1_1))
 	{
+		static char security_level_warning_logged = 0;
+
 		SSL_CTX_set_security_level(ctx, 0);
+		if (!security_level_warning_logged)
+		{
+			security_level_warning_logged = 1;
+			zen_log(ULOG_WARNING, "tls", "TLS_SECURITY_LEVEL_LOWERED", NULL,
+			           "WARNING: OpenSSL security level set to 0 because TLSv1.0 and/or "
+			           "TLSv1.1 are explicitly enabled in tls-options::protocols. "
+			           "This weakens cryptographic policy (weaker keys/algorithms may be "
+			           "accepted). Prefer TLSv1.2+ only unless you have a hard requirement "
+			           "for outdated TLS.");
+		}
 	}
 #endif
 

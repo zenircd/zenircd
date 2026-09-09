@@ -3578,6 +3578,188 @@ const char *pretty_time_val(long timeval)
 	return pretty_time_val_r(buf, sizeof(buf), timeval);
 }
 
+/** Lexically collapse '.' and '..' path components (no symlink resolution).
+ * Used when realpath/_fullpath cannot resolve a path (missing file, globs).
+ * @returns 1 on success, 0 on overflow / invalid input.
+ */
+static int path_collapse(const char *in, char *out, size_t outlen)
+{
+	char buf[PATH_MAX + 1];
+	const char *stack[PATH_MAX / 2];
+	int depth = 0;
+	char *p;
+	int i;
+	int is_abs = 0;
+	size_t pos;
+#ifdef _WIN32
+	char drive[3] = { '\0', '\0', '\0' };
+#endif
+
+	if (!in || !*in || outlen < 2)
+		return 0;
+
+	strlcpy(buf, in, sizeof(buf));
+#ifdef _WIN32
+	for (p = buf; *p; p++)
+	{
+		if (*p == '\\')
+			*p = '/';
+	}
+	if (((buf[0] >= 'A' && buf[0] <= 'Z') || (buf[0] >= 'a' && buf[0] <= 'z')) &&
+	    (buf[1] == ':') && (buf[2] == '/'))
+	{
+		drive[0] = buf[0];
+		drive[1] = ':';
+		is_abs = 1;
+		p = buf + 3;
+	} else
+#endif
+	if (buf[0] == '/')
+	{
+		is_abs = 1;
+		p = buf + 1;
+	} else
+	{
+		p = buf;
+	}
+
+	while (*p)
+	{
+		char *start = p;
+
+		while (*p && *p != '/')
+			p++;
+		if (*p)
+			*p++ = '\0';
+
+		if (!*start || !strcmp(start, "."))
+			continue;
+		if (!strcmp(start, ".."))
+		{
+			if (depth > 0)
+				depth--;
+			/* Absolute paths: ignore '..' above the root */
+			continue;
+		}
+		if (depth >= (int)(sizeof(stack) / sizeof(stack[0])))
+			return 0;
+		stack[depth++] = start;
+	}
+
+	pos = 0;
+	out[0] = '\0';
+#ifdef _WIN32
+	if (drive[0])
+	{
+		if (strlcpy(out, drive, outlen) >= outlen)
+			return 0;
+		if (strlcat(out, "/", outlen) >= outlen)
+			return 0;
+		pos = strlen(out);
+	} else
+#endif
+	if (is_abs)
+	{
+		out[pos++] = '/';
+		out[pos] = '\0';
+	}
+
+	for (i = 0; i < depth; i++)
+	{
+		if (pos > 0 && out[pos - 1] != '/')
+		{
+			if (pos + 1 >= outlen)
+				return 0;
+			out[pos++] = '/';
+			out[pos] = '\0';
+		}
+		if (strlcat(out, stack[i], outlen) >= outlen)
+			return 0;
+		pos = strlen(out);
+	}
+
+	if (pos == 0)
+	{
+		out[0] = is_abs ? '/' : '.';
+		out[1] = '\0';
+	}
+	return 1;
+}
+
+/** Return 1 if 'path' resolves under 'basedir', else 0.
+ * Prefers realpath (Unix) or _fullpath (Windows); falls back to lexical collapse.
+ */
+static int path_is_under_basedir(const char *path, const char *basedir)
+{
+	char path_res[PATH_MAX + 1];
+	char base_res[PATH_MAX + 1];
+	size_t baselen;
+#ifndef _WIN32
+	char *r;
+#endif
+
+	if (!path || !*path || !basedir || !*basedir)
+		return 0;
+
+#ifdef _WIN32
+	if (!_fullpath(base_res, basedir, sizeof(base_res)))
+	{
+		if (!path_collapse(basedir, base_res, sizeof(base_res)))
+			return 0;
+	}
+	if (!_fullpath(path_res, path, sizeof(path_res)))
+	{
+		if (!path_collapse(path, path_res, sizeof(path_res)))
+			return 0;
+	}
+#else
+	r = realpath(basedir, NULL);
+	if (r)
+	{
+		strlcpy(base_res, r, sizeof(base_res));
+		free(r);
+	} else if (!path_collapse(basedir, base_res, sizeof(base_res)))
+	{
+		return 0;
+	}
+
+	r = realpath(path, NULL);
+	if (r)
+	{
+		strlcpy(path_res, r, sizeof(path_res));
+		free(r);
+	} else if (!path_collapse(path, path_res, sizeof(path_res)))
+	{
+		return 0;
+	}
+#endif
+
+	baselen = strlen(base_res);
+	while ((baselen > 1) &&
+	       ((base_res[baselen - 1] == '/') || (base_res[baselen - 1] == '\\')))
+	{
+		base_res[--baselen] = '\0';
+	}
+
+#ifdef _WIN32
+	if (_strnicmp(path_res, base_res, baselen))
+		return 0;
+#else
+	if (strncmp(path_res, base_res, baselen))
+		return 0;
+#endif
+	/* Exact match or next character must be a directory separator
+	 * (avoids /conf matching /conf2/...).
+	 */
+	if ((path_res[baselen] != '\0') &&
+	    (path_res[baselen] != '/') &&
+	    (path_res[baselen] != '\\'))
+	{
+		return 0;
+	}
+	return 1;
+}
+
 /* This converts a relative path to an absolute path, but only if necessary. */
 void convert_to_absolute_path(char **path, const char *reldir)
 {
@@ -3672,6 +3854,15 @@ int _conf_include(ConfigFile *conf, ConfigEntry *ce)
 		add_config_resource(ce->value, RESOURCE_INCLUDE, ce);
 		return 0;
 	}
+
+	/* Jail local file includes under CONFDIR (blocks ../ path traversal). */
+	if (!path_is_under_basedir(ce->value, CONFDIR))
+	{
+		config_error("%s:%i: include %s: path must be under the configuration directory (%s)",
+		             ce->file->filename, ce->line_number,
+		             ce->value, CONFDIR);
+		return -1;
+	}
 #if !defined(_WIN32) && !defined(_AMIGA) && !defined(OSXTIGER) && DEFAULT_PERMISSIONS != 0
 	(void)chmod(ce->value, DEFAULT_PERMISSIONS);
 #endif
@@ -3691,6 +3882,15 @@ int _conf_include(ConfigFile *conf, ConfigEntry *ce)
 	}
 	for (i = 0; i < files.gl_pathc; i++)
 	{
+		/* Re-check each match (catches symlinks that escape CONFDIR). */
+		if (!path_is_under_basedir(files.gl_pathv[i], CONFDIR))
+		{
+			config_error("%s:%i: include %s: path must be under the configuration directory (%s)",
+			             ce->file->filename, ce->line_number,
+			             files.gl_pathv[i], CONFDIR);
+			globfree(&files);
+			return -1;
+		}
 		if (add_config_resource(files.gl_pathv[i], RESOURCE_INCLUDE, ce))
 		{
 			ret = config_read_file(files.gl_pathv[i], files.gl_pathv[i]);
@@ -3725,6 +3925,15 @@ int _conf_include(ConfigFile *conf, ConfigEntry *ce)
 		strcpy(path, cPath);
 		strcat(path, FindData.cFileName);
 
+		if (!path_is_under_basedir(path, CONFDIR))
+		{
+			config_error("%s:%i: include %s: path must be under the configuration directory (%s)",
+			             ce->file->filename, ce->line_number,
+			             path, CONFDIR);
+			safe_free(path);
+			FindClose(hFind);
+			return -1;
+		}
 		if (add_config_resource(path, RESOURCE_INCLUDE, ce))
 		{
 			ret = config_read_file(path, path);
@@ -3732,6 +3941,14 @@ int _conf_include(ConfigFile *conf, ConfigEntry *ce)
 		}
 	} else
 	{
+		if (!path_is_under_basedir(FindData.cFileName, CONFDIR))
+		{
+			config_error("%s:%i: include %s: path must be under the configuration directory (%s)",
+			             ce->file->filename, ce->line_number,
+			             FindData.cFileName, CONFDIR);
+			FindClose(hFind);
+			return -1;
+		}
 		if (add_config_resource(FindData.cFileName, RESOURCE_INCLUDE, ce))
 			ret = config_read_file(FindData.cFileName, FindData.cFileName);
 	}
@@ -3750,6 +3967,15 @@ int _conf_include(ConfigFile *conf, ConfigEntry *ce)
 			strcpy(path, cPath);
 			strcat(path, FindData.cFileName);
 
+			if (!path_is_under_basedir(path, CONFDIR))
+			{
+				config_error("%s:%i: include %s: path must be under the configuration directory (%s)",
+				             ce->file->filename, ce->line_number,
+				             path, CONFDIR);
+				safe_free(path);
+				ret = -1;
+				break;
+			}
 			if (add_config_resource(path, RESOURCE_INCLUDE, ce))
 			{
 				ret = config_read_file(path, path);
@@ -3759,6 +3985,14 @@ int _conf_include(ConfigFile *conf, ConfigEntry *ce)
 			}
 		} else
 		{
+			if (!path_is_under_basedir(FindData.cFileName, CONFDIR))
+			{
+				config_error("%s:%i: include %s: path must be under the configuration directory (%s)",
+				             ce->file->filename, ce->line_number,
+				             FindData.cFileName, CONFDIR);
+				ret = -1;
+				break;
+			}
 			if (add_config_resource(FindData.cFileName, RESOURCE_INCLUDE, ce))
 				ret = config_read_file(FindData.cFileName, FindData.cFileName);
 		}

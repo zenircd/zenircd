@@ -478,9 +478,14 @@ int Auth_Check(Client *client, AuthConfig *as, const char *para)
 					           "Please change the password in the configuration file.");
 					return 0;
 				}
-				/* plain text compare */
-				if (!strcmp(para, as->data))
-					return 1;
+				/* Constant-time plaintext compare (CRYPTO_memcmp does not short-circuit) */
+				{
+					size_t plen = strlen(para);
+					size_t dlen = strlen(as->data);
+
+					if ((plen == dlen) && !CRYPTO_memcmp(para, as->data, dlen))
+						return 1;
+				}
 				break;
 
 			case AUTHTYPE_ARGON2:

@@ -329,9 +329,9 @@ void zen_https_initiate_connect(Download *handle)
 	}
 	set_sock_opts(handle->fd, NULL, handle->socket_type);
 	if (!zen_connect(handle->fd,
-	                    (handle->socket_type == SOCKET_TYPE_IPV4) ? handle->ip4 : handle->ip6,
-	                    handle->port,
-	                    handle->socket_type))
+	                 (handle->socket_type == SOCKET_TYPE_IPV4) ? handle->ip4 : handle->ip6,
+	                 handle->port,
+	                 handle->socket_type))
 	{
 		/* IPv4 gave an early error (eg no IPv4 connectivity). Can we retry over IPv6? */
 		if ((handle->socket_type == SOCKET_TYPE_IPV4) && handle->ip6 && !DISABLE_IPV6)
@@ -1292,7 +1292,7 @@ void url_init(void)
 	if (!https_ctx)
 	{
 		zen_log(ULOG_ERROR, "url", "HTTPS_NEW_CTX_FAILED", NULL,
-		           "Unable to initialize SSL context");
+		        "Unable to initialize SSL context");
 		exit(-1);
 	}
 	EventAdd(NULL, "url_socket_timeout", url_socket_timeout, NULL, 500, 0);

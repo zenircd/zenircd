@@ -140,9 +140,9 @@ void extcmodes_check_for_changed_channel_modes(void)
 	if (*previous_chanmodes && strcmp(chanmodes, previous_chanmodes))
 	{
 		zen_log(ULOG_INFO, "mode", "CHANNEL_MODES_CHANGED", NULL,
-		           "Channel modes changed at runtime: $old_channel_modes -> $new_channel_modes",
-		           log_data_string("old_channel_modes", previous_chanmodes),
-		           log_data_string("new_channel_modes", chanmodes));
+		        "Channel modes changed at runtime: $old_channel_modes -> $new_channel_modes",
+		        log_data_string("old_channel_modes", previous_chanmodes),
+		        log_data_string("new_channel_modes", chanmodes));
 		/* Broadcast change to all (locally connected) servers */
 		sendto_server(NULL, 0, 0, NULL, "PROTOCTL CHANMODES=%s", chanmodes);
 	}
@@ -216,9 +216,9 @@ void extcmodes_check_for_changed_prefixes(void)
 	if (*previous_prefix && strcmp(prefix, previous_prefix))
 	{
 		zen_log(ULOG_INFO, "mode", "PREFIX_CHANGED", NULL,
-		           "Prefix changed at runtime: $old_prefix -> $new_prefix",
-		           log_data_string("old_prefix", previous_prefix),
-		           log_data_string("new_prefix", prefix));
+		        "Prefix changed at runtime: $old_prefix -> $new_prefix",
+		        log_data_string("old_prefix", previous_prefix),
+		        log_data_string("new_prefix", prefix));
 		/* Broadcast change to all (locally connected) servers */
 		sendto_server(NULL, 0, 0, NULL, "PROTOCTL PREFIX=%s", prefix);
 	}
@@ -357,7 +357,7 @@ Cmode *CmodeAdd(Module *module, CmodeInfo req, Cmode_t *mode)
 			if (found)
 			{
 				zen_log(ULOG_ERROR, "module", "CHANNEL_MODE_OUT_OF_SPACE", NULL,
-				           "CmodeAdd: out of space!!!");
+				        "CmodeAdd: out of space!!!");
 				if (module)
 					module->errorcode = MODERR_NOSPACE;
 				return NULL;
@@ -372,9 +372,9 @@ Cmode *CmodeAdd(Module *module, CmodeInfo req, Cmode_t *mode)
 			    !req.unset_with_param || !req.rank)
 			{
 				zen_log(ULOG_ERROR, "module", "CMODEADD_API_ERROR", NULL,
-				           "CmodeAdd(): module is missing required information. "
-				           "Module: $module_name",
-				           log_data_string("module_name", module->header->name));
+				        "CmodeAdd(): module is missing required information. "
+				        "Module: $module_name",
+				        log_data_string("module_name", module->header->name));
 				module->errorcode = MODERR_INVALID;
 				return NULL;
 			}
@@ -401,7 +401,7 @@ Cmode *CmodeAdd(Module *module, CmodeInfo req, Cmode_t *mode)
 				if (paraslot == MAXPARAMMODES - 1)
 				{
 					zen_log(ULOG_ERROR, "module", "CHANNEL_MODE_OUT_OF_SPACE", NULL,
-					           "CmodeAdd: out of space!!! Place 2.");
+					        "CmodeAdd: out of space!!! Place 2.");
 					if (module)
 						module->errorcode = MODERR_NOSPACE;
 					return NULL;

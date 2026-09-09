@@ -38,9 +38,9 @@ int fd_open(int fd, const char *desc, FDCloseMethod close_method)
 	if ((fd < 0) || (fd >= MAXCONNECTIONS))
 	{
 		zen_log(ULOG_ERROR, "io", "BUG_FD_OPEN_OUT_OF_RANGE", NULL,
-		           "[BUG] trying to add fd $fd to fd table, but MAXCONNECTIONS is $maxconnections",
-		           log_data_integer("fd", fd),
-		           log_data_integer("maxconnections", MAXCONNECTIONS));
+		        "[BUG] trying to add fd $fd to fd table, but MAXCONNECTIONS is $maxconnections",
+		        log_data_integer("fd", fd),
+		        log_data_integer("maxconnections", MAXCONNECTIONS));
 #ifdef DEBUGMODE
 		abort();
 #endif
@@ -98,9 +98,9 @@ int fd_close(int fd)
 	if ((fd < 0) || (fd >= MAXCONNECTIONS))
 	{
 		zen_log(ULOG_ERROR, "io", "BUG_FD_CLOSE_OUT_OF_RANGE", NULL,
-		           "[BUG] trying to close fd $fd to fd table, but MAXCONNECTIONS is $maxconnections",
-		           log_data_integer("fd", fd),
-		           log_data_integer("maxconnections", MAXCONNECTIONS));
+		        "[BUG] trying to close fd $fd to fd table, but MAXCONNECTIONS is $maxconnections",
+		        log_data_integer("fd", fd),
+		        log_data_integer("maxconnections", MAXCONNECTIONS));
 #ifdef DEBUGMODE
 		abort();
 #endif
@@ -111,8 +111,8 @@ int fd_close(int fd)
 	if (!fde->is_open)
 	{
 		zen_log(ULOG_ERROR, "io", "BUG_FD_CLOSE_NOT_OPEN", NULL,
-		           "[BUG] trying to close fd $fd to fd table, but FD is (already) closed",
-		           log_data_integer("fd", fd));
+		        "[BUG] trying to close fd $fd to fd table, but FD is (already) closed",
+		        log_data_integer("fd", fd));
 #ifdef DEBUGMODE
 		abort();
 #endif
@@ -192,9 +192,9 @@ void fd_desc(int fd, const char *desc)
 	if ((fd < 0) || (fd >= MAXCONNECTIONS))
 	{
 		zen_log(ULOG_ERROR, "io", "BUG_FD_DESC_OUT_OF_RANGE", NULL,
-		           "[BUG] trying to fd_desc fd $fd in fd table, but MAXCONNECTIONS is $maxconnections",
-		           log_data_integer("fd", fd),
-		           log_data_integer("maxconnections", MAXCONNECTIONS));
+		        "[BUG] trying to fd_desc fd $fd in fd table, but MAXCONNECTIONS is $maxconnections",
+		        log_data_integer("fd", fd),
+		        log_data_integer("maxconnections", MAXCONNECTIONS));
 #ifdef DEBUGMODE
 		abort();
 #endif
@@ -205,8 +205,8 @@ void fd_desc(int fd, const char *desc)
 	if (!fde->is_open)
 	{
 		zen_log(ULOG_ERROR, "io", "BUG_FD_DESC_NOT_OPEN", NULL,
-		           "[BUG] trying to fd_desc fd $fd in fd table, but FD is (already) closed",
-		           log_data_integer("fd", fd));
+		        "[BUG] trying to fd_desc fd $fd in fd table, but FD is (already) closed",
+		        log_data_integer("fd", fd));
 #ifdef DEBUGMODE
 		abort();
 #endif

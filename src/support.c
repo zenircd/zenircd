@@ -811,8 +811,8 @@ void outofmemory(size_t bytes)
 	{
 		/* This will probably fail, but we can try... */
 		zen_log(ULOG_ERROR, "main", "OUT_OF_MEMORY", NULL,
-		           "Out of memory while trying to allocate $bytes bytes!",
-		           log_data_integer("bytes", bytes));
+		        "Out of memory while trying to allocate $bytes bytes!",
+		        log_data_integer("bytes", bytes));
 		log_attempt = 0;
 	}
 	exit(7);

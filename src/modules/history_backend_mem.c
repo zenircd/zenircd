@@ -556,8 +556,8 @@ void hbm_duplicate_mtags(HistoryLogLine *l, MessageTag *m)
 		 * because it means the message will not have an unique id across servers.
 		 */
 		zen_log(ULOG_DEBUG, "history", "MESSAGE_MISSING_MSGID", NULL,
-		           "In hbm_duplicate_mtags a message with no msgid was encountered: $line",
-		           log_data_string("line", l->line));
+		        "In hbm_duplicate_mtags a message with no msgid was encountered: $line",
+		        log_data_string("line", l->line));
 #endif
 		n = safe_alloc(sizeof(MessageTag));
 		safe_strdup(n->name, "msgid");
@@ -729,8 +729,8 @@ int hbm_history_add(const char *object, MessageTag *mtags, const char *line)
 	if (!h->max_lines)
 	{
 		zen_log(ULOG_WARNING, "history", "BUG_HISTORY_ADD_NO_LIMIT", NULL,
-		           "[BUG] hbm_history_add() called for $object, which has no limit set",
-		           log_data_string("object", h->name));
+		        "[BUG] hbm_history_add() called for $object, which has no limit set",
+		        log_data_string("object", h->name));
 #ifdef DEBUGMODE
 		abort();
 #else
@@ -762,8 +762,8 @@ int hbm_history_add_multiline(const char *object, MessageTag *mtags, const char 
 	if (!h->max_lines)
 	{
 		zen_log(ULOG_WARNING, "history", "BUG_HISTORY_ADD_NO_LIMIT", NULL,
-		           "[BUG] hbm_history_add_multiline() called for $object, which has no limit set",
-		           log_data_string("object", h->name));
+		        "[BUG] hbm_history_add_multiline() called for $object, which has no limit set",
+		        log_data_string("object", h->name));
 #ifdef DEBUGMODE
 		abort();
 #else
@@ -1976,9 +1976,9 @@ const char *hbm_history_filename(HistoryLogObject *h)
 	do \
 	{ \
 		zen_log(ULOG_ERROR, "history", "HISTORYDB_FILE_WRITE_ERROR", NULL, \
-		           "[historydb] Error writing to temporary database file $filename: $system_error", \
-		           log_data_string("filename", fname), \
-		           log_data_string("system_error", zendb_get_error_string())); \
+		        "[historydb] Error writing to temporary database file $filename: $system_error", \
+		        log_data_string("filename", fname), \
+		        log_data_string("system_error", zendb_get_error_string())); \
 	} while (0)
 
 #define W_SAFE(x) \

@@ -1,0 +1,27 @@
+# Normalize text to LF in the repo so Linux CI scripts keep working.
+* text=auto eol=lf
+
+# Windows-native files keep CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.rc text eol=crlf
+*.sln text eol=crlf
+*.vcxproj text eol=crlf
+*.vcxproj.filters text eol=crlf
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.gz binary
+*.tgz binary
+*.zip binary
+*.exe binary
+*.dll binary
+*.lib binary
+*.a binary
+*.o binary
+*.so binary
+*.dylib binary

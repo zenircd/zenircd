@@ -396,11 +396,11 @@ int _websocket_create_packet_ex(int opcode, char **buf, int *len, char *sendbuf,
 		{
 			/* Overflow. This should never happen. */
 			zen_log(ULOG_WARNING, "websocket", "BUG_WEBSOCKET_OVERFLOW", NULL,
-			           "[BUG] [websocket] Overflow prevented in _websocket_create_packet(): "
-			           "$bytes_in_sendbuf + $bytes_single_frame > $sendbuf_size",
-			           log_data_integer("bytes_in_sendbuf", bytes_in_sendbuf),
-			           log_data_integer("bytes_single_frame", bytes_single_frame),
-			           log_data_integer("sendbuf_size", sendbufsize));
+			        "[BUG] [websocket] Overflow prevented in _websocket_create_packet(): "
+			        "$bytes_in_sendbuf + $bytes_single_frame > $sendbuf_size",
+			        log_data_integer("bytes_in_sendbuf", bytes_in_sendbuf),
+			        log_data_integer("bytes_single_frame", bytes_single_frame),
+			        log_data_integer("sendbuf_size", sendbufsize));
 			return -1;
 		}
 

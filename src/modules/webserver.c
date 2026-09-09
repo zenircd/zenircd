@@ -536,8 +536,8 @@ int webserver_handle_body_append_buffer(Client *client, const char *buf, int len
 		{
 			/* We would overflow */
 			zen_log(ULOG_WARNING, "webserver", "HTTP_BODY_TOO_LARGE", client,
-			           "[webserver] Client $client: request body too large ($length)",
-			           log_data_integer("length", newsize));
+			        "[webserver] Client $client: request body too large ($length)",
+			        log_data_integer("length", newsize));
 			dead_socket(client, "");
 			return 0;
 		}
@@ -548,8 +548,8 @@ int webserver_handle_body_append_buffer(Client *client, const char *buf, int len
 		{
 			/* We would overflow */
 			zen_log(ULOG_WARNING, "webserver", "HTTP_BODY_TOO_LARGE", client,
-			           "[webserver] Client $client: request body too large ($length)",
-			           log_data_integer("length", len + 1));
+			        "[webserver] Client $client: request body too large ($length)",
+			        log_data_integer("length", len + 1));
 			dead_socket(client, "");
 			return 0;
 		}
@@ -673,7 +673,7 @@ int _webserver_handle_body(Client *client, WebRequest *web, const char *readbuf,
 			if (WEB(client)->chunk_remaining < 0)
 			{
 				zen_log(ULOG_WARNING, "webserver", "WEB_NEGATIVE_CHUNK", client,
-				           "Webrequest from $client: Negative chunk encountered");
+				        "Webrequest from $client: Negative chunk encountered");
 				safe_free(free_this_buffer);
 				dead_socket(client, "");
 				return 0;
@@ -828,18 +828,18 @@ void webserver_handle_proxy(Client *client, ConfigItem_proxy *proxy)
 
 #ifdef DEBUGMODE
 	zen_log(ULOG_DEBUG, "webserver", "FORWARDING_INFO", client,
-	           "For client $client.details forwarding IP is $ip and is $secure",
-	           log_data_string("ip", forwarded->ip),
-	           log_data_string("secure", forwarded->secure ? "secure" : "insecure"));
+	        "For client $client.details forwarding IP is $ip and is $secure",
+	        log_data_string("ip", forwarded->ip),
+	        log_data_string("secure", forwarded->secure ? "secure" : "insecure"));
 #endif
 
 	/* check header values */
 	if (!is_valid_ip(forwarded->ip))
 	{
 		zen_log(ULOG_WARNING, "webserver", "MISSING_PROXY_HEADER", client,
-		           "Client on proxy $client.ip has matching proxy { } block "
-		           "but the proxy did not send a valid forwarded header. "
-		           "The IP of the user is now the proxy IP $client.ip (bad!).");
+		        "Client on proxy $client.ip has matching proxy { } block "
+		        "but the proxy did not send a valid forwarded header. "
+		        "The IP of the user is now the proxy IP $client.ip (bad!).");
 		// TODO: or should we reject the user entirely?
 		return;
 	}

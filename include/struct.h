@@ -703,19 +703,19 @@ union ModData {
 	 if (offsetof(typeof(*list), prev) != offsetof(ListStruct, prev)) \
 	 { \
 		 zen_log(ULOG_FATAL, "main", "BUG_LIST_OPERATION", NULL, \
-			    "[BUG] $file:$line: List operation on struct with incorrect order ($error_details)", \
-			    log_data_string("error_details", "->prev must be 1st struct member"), \
-			    log_data_string("file", __FILE__), \
-			    log_data_integer("line", __LINE__)); \
+			 "[BUG] $file:$line: List operation on struct with incorrect order ($error_details)", \
+			 log_data_string("error_details", "->prev must be 1st struct member"), \
+			 log_data_string("file", __FILE__), \
+			 log_data_integer("line", __LINE__)); \
 		 abort(); \
 	 } \
 	 if (offsetof(typeof(*list), next) != offsetof(ListStruct, next)) \
 	 { \
 		 zen_log(ULOG_FATAL, "main", "BUG_LIST_OPERATION", NULL, \
-			    "[BUG] $file:$line: List operation on struct with incorrect order ($error_details)", \
-			    log_data_string("error_details", "->next must be 2nd struct member"), \
-			    log_data_string("file", __FILE__), \
-			    log_data_integer("line", __LINE__)); \
+			 "[BUG] $file:$line: List operation on struct with incorrect order ($error_details)", \
+			 log_data_string("error_details", "->next must be 2nd struct member"), \
+			 log_data_string("file", __FILE__), \
+			 log_data_integer("line", __LINE__)); \
 		 abort(); \
 	 }
 #else
@@ -727,28 +727,28 @@ union ModData {
 	 if (offsetof(typeof(*list), prev) != offsetof(ListStructPrio, prev)) \
 	 { \
 		 zen_log(ULOG_FATAL, "main", "BUG_LIST_OPERATION", NULL, \
-			    "[BUG] $file:$line: List operation on struct with incorrect order ($error_details)", \
-			    log_data_string("error_details", "->prev must be 1st struct member"), \
-			    log_data_string("file", __FILE__), \
-			    log_data_integer("line", __LINE__)); \
+			 "[BUG] $file:$line: List operation on struct with incorrect order ($error_details)", \
+			 log_data_string("error_details", "->prev must be 1st struct member"), \
+			 log_data_string("file", __FILE__), \
+			 log_data_integer("line", __LINE__)); \
 		 abort(); \
 	 } \
 	 if (offsetof(typeof(*list), next) != offsetof(ListStructPrio, next)) \
 	 { \
 		 zen_log(ULOG_FATAL, "main", "BUG_LIST_OPERATION", NULL, \
-			    "[BUG] $file:$line: List operation on struct with incorrect order ($error_details)", \
-			    log_data_string("error_details", "->next must be 2nd struct member"), \
-			    log_data_string("file", __FILE__), \
-			    log_data_integer("line", __LINE__)); \
+			 "[BUG] $file:$line: List operation on struct with incorrect order ($error_details)", \
+			 log_data_string("error_details", "->next must be 2nd struct member"), \
+			 log_data_string("file", __FILE__), \
+			 log_data_integer("line", __LINE__)); \
 		 abort(); \
 	 } \
 	 if (offsetof(typeof(*list), priority) != offsetof(ListStructPrio, priority)) \
 	 { \
 		 zen_log(ULOG_FATAL, "main", "BUG_LIST_OPERATION", NULL, \
-			    "[BUG] $file:$line: List operation on struct with incorrect order ($error_details)", \
-			    log_data_string("error_details", "->priority must be 3rd struct member"), \
-			    log_data_string("file", __FILE__), \
-			    log_data_integer("line", __LINE__)); \
+			 "[BUG] $file:$line: List operation on struct with incorrect order ($error_details)", \
+			 log_data_string("error_details", "->priority must be 3rd struct member"), \
+			 log_data_string("file", __FILE__), \
+			 log_data_integer("line", __LINE__)); \
 		 abort(); \
 	 }
 #else
@@ -759,9 +759,9 @@ union ModData {
 	if ((item)->prev || (item)->next) \
 	{ \
 		zen_log(ULOG_FATAL, "main", "BUG_LIST_OPERATION_DOUBLE_ADD", NULL, \
-		           "[BUG] $file:$line: List operation on item with non-NULL 'prev' or 'next' -- are you adding to a list twice?", \
-		           log_data_string("file", __FILE__), \
-		           log_data_integer("line", __LINE__)); \
+		        "[BUG] $file:$line: List operation on item with non-NULL 'prev' or 'next' -- are you adding to a list twice?", \
+		        log_data_string("file", __FILE__), \
+		        log_data_integer("line", __LINE__)); \
 		abort(); \
 	}
 
@@ -1138,15 +1138,15 @@ typedef enum ZenDBError {
  */
 typedef struct ZenDB {
 	FILE *fd;                                       /**< File descriptor */
-	ZenDBMode mode;                              /**< ZENDB_MODE_READ / ZENDB_MODE_WRITE */
+	ZenDBMode mode;                                 /**< ZENDB_MODE_READ / ZENDB_MODE_WRITE */
 	int crypted;                                    /**< Are we doing any encryption or just plaintext? */
 	uint64_t creationtime;                          /**< When this file was created/updates */
 	crypto_secretstream_xchacha20poly1305_state st; /**< Internal state for crypto engine */
-	char buf[ZENDB_CRYPT_FILE_CHUNK_SIZE];       /**< Buffer used for reading/writing */
+	char buf[ZENDB_CRYPT_FILE_CHUNK_SIZE];          /**< Buffer used for reading/writing */
 	int buflen;                                     /**< Length of current data in buffer */
-	ZenDBError error_code;                       /**< Last error code. Whenever this happens we will set this, never overwrite, and block further I/O */
+	ZenDBError error_code;                          /**< Last error code. Whenever this happens we will set this, never overwrite, and block further I/O */
 	char *error_string;                             /**< Error string upon failure */
-	ZenDBConfig *config;                         /**< Config */
+	ZenDBConfig *config;                            /**< Config */
 } ZenDB;
 
 /** Used for speeding up reading/writing of DBs (so we don't have to run argon2 repeatedly) */

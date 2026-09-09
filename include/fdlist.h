@@ -44,10 +44,10 @@ extern int fd_fileopen(const char *path, unsigned int flags);
 		if (fd < 0) \
 		{ \
 			zen_log(ULOG_ERROR, "io", "BUG_FD_SETSELECT_NEGATIVE_FD", NULL, \
-			           "[BUG] $file:$line: fd_setselect() call with negative fd $fd", \
-			           log_data_string("file", __FILE__), \
-			           log_data_integer("line", __LINE__), \
-			           log_data_integer("fd", fd)); \
+			        "[BUG] $file:$line: fd_setselect() call with negative fd $fd", \
+			        log_data_string("file", __FILE__), \
+			        log_data_integer("line", __LINE__), \
+			        log_data_integer("fd", fd)); \
 		} else \
 		{ \
 			fd_setselect_real(fd, flags, iocb, data); \

@@ -286,8 +286,8 @@ RPC_CALL_FUNC(rpc_server_connect)
 	}
 
 	zen_log(ULOG_INFO, "link", "LINK_REQUEST", client,
-	           "CONNECT: Link to $link_block requested by $client",
-	           log_data_link_block(link));
+	        "CONNECT: Link to $link_block requested by $client",
+	        log_data_link_block(link));
 
 	connect_server(link, client, NULL);
 	result = json_boolean(1);
@@ -340,9 +340,9 @@ RPC_CALL_FUNC(rpc_server_disconnect)
 	}
 
 	zen_log(ULOG_INFO, "link", "SQUIT", client,
-	           "SQUIT: Forced server disconnect of $target by $client ($reason)",
-	           log_data_client("target", target),
-	           log_data_string("reason", reason));
+	        "SQUIT: Forced server disconnect of $target by $client ($reason)",
+	        log_data_client("target", target),
+	        log_data_string("reason", reason));
 
 	/* The actual SQUIT: */
 	new_message(client, NULL, &mtags);

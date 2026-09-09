@@ -232,9 +232,9 @@ MOD_TEST()
 	if (!CallbackAddPVoid(modinfo->handle, CALLBACKTYPE_GEOIP_LOOKUP, TO_PVOIDFUNC(geoip_lookup_classic)))
 	{
 		zen_log(ULOG_ERROR, "geoip_classic", "GEOIP_ADD_CALLBACK_FAILED", NULL,
-		           "geoip_classic: Could not install GEOIP_LOOKUP callback. "
-		           "Most likely another geoip module is already loaded. "
-		           "You can only load one!");
+		        "geoip_classic: Could not install GEOIP_LOOKUP callback. "
+		        "Most likely another geoip module is already loaded. "
+		        "You can only load one!");
 		return MOD_FAILED;
 	}
 
@@ -269,9 +269,9 @@ MOD_LOAD()
 		{
 			int save_err = errno;
 			zen_log(ULOG_WARNING, "geoip_classic", "GEOIP_CANNOT_OPEN_DB", NULL,
-			           "[IPv4] Could not open '$filename': $system_error",
-			           log_data_string("filename", geoip_classic_config.v4_db_file),
-			           log_data_string("system_error", strerror(save_err)));
+			        "[IPv4] Could not open '$filename': $system_error",
+			        log_data_string("filename", geoip_classic_config.v4_db_file),
+			        log_data_string("system_error", strerror(save_err)));
 		}
 	}
 	if (geoip_classic_config.v6_db_file)
@@ -285,9 +285,9 @@ MOD_LOAD()
 		{
 			int save_err = errno;
 			zen_log(ULOG_WARNING, "geoip_classic", "GEOIP_CANNOT_OPEN_DB", NULL,
-			           "[IPv6] Could not open '$filename': $system_error",
-			           log_data_string("filename", geoip_classic_config.v6_db_file),
-			           log_data_string("system_error", strerror(save_err)));
+			        "[IPv6] Could not open '$filename': $system_error",
+			        log_data_string("filename", geoip_classic_config.v6_db_file),
+			        log_data_string("system_error", strerror(save_err)));
 		}
 		convert_to_absolute_path(&geoip_classic_config.v6_db_file, PERMDATADIR);
 	}
@@ -295,7 +295,7 @@ MOD_LOAD()
 	if (!found_good_file)
 	{
 		zen_log(ULOG_ERROR, "geoip_classic", "GEOIP_CANNOT_OPEN_DB", NULL,
-		           "could not open any database!");
+		        "could not open any database!");
 		return MOD_FAILED;
 	}
 
@@ -308,9 +308,9 @@ MOD_LOAD()
 		{
 			int save_err = errno;
 			zen_log(ULOG_WARNING, "geoip_classic", "GEOIP_CANNOT_OPEN_DB", NULL,
-			           "[ASN IPv4] Could not open '$filename': $system_error",
-			           log_data_string("filename", geoip_classic_config.asn_v4_db_file),
-			           log_data_string("system_error", strerror(save_err)));
+			        "[ASN IPv4] Could not open '$filename': $system_error",
+			        log_data_string("filename", geoip_classic_config.asn_v4_db_file),
+			        log_data_string("system_error", strerror(save_err)));
 		}
 	}
 
@@ -322,9 +322,9 @@ MOD_LOAD()
 		{
 			int save_err = errno;
 			zen_log(ULOG_WARNING, "geoip_classic", "GEOIP_CANNOT_OPEN_DB", NULL,
-			           "[ASN IPv6] Could not open '$filename': $system_error",
-			           log_data_string("filename", geoip_classic_config.asn_v6_db_file),
-			           log_data_string("system_error", strerror(save_err)));
+			        "[ASN IPv6] Could not open '$filename': $system_error",
+			        log_data_string("filename", geoip_classic_config.asn_v6_db_file),
+			        log_data_string("system_error", strerror(save_err)));
 		}
 	}
 

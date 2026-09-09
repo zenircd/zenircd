@@ -120,8 +120,8 @@ int rpc_config_listener(ConfigItem_listen *listener);
 
 /* Macros */
 /** Bitflags for ConfigItem_listen->rpc_options */
-#define RPC_OPT_ENABLED      0x1 /**< listen::options::rpc */
-#define RPC_OPT_TRUST_LOCAL  0x2 /**< listen::options::rpc-trust-local (UNIX raw JSON, no auth) */
+#define RPC_OPT_ENABLED     0x1 /**< listen::options::rpc */
+#define RPC_OPT_TRUST_LOCAL 0x2 /**< listen::options::rpc-trust-local (UNIX raw JSON, no auth) */
 
 #define RPC_PORT(client) ((client->local && client->local->listener) ? client->local->listener->rpc_options : 0)
 #define WSU(client)      ((WebSocketUser *)moddata_client(client, websocket_md).ptr)
@@ -892,8 +892,8 @@ void rpc_call_text(Client *client, const char *readbuf, int len)
 	if (!request)
 	{
 		zen_log(ULOG_INFO, "rpc", "RPC_INVALID_JSON", client,
-		           "Received unparsable JSON request from $client",
-		           log_data_string("json_incoming", buf));
+		        "Received unparsable JSON request from $client",
+		        log_data_string("json_incoming", buf));
 		rpc_error(client, NULL, JSON_RPC_ERROR_PARSE_ERROR, "Unparsable JSON data");
 		/* This is a fatal error */
 		rpc_close(client);
@@ -958,18 +958,18 @@ void _rpc_error(Client *client, json_t *request, JsonRpcError error_code, const 
 	json_object_set_new(error, "message", json_string_zen(error_message));
 
 	zen_log(ULOG_INFO, "rpc", "RPC_CALL_ERROR", client,
-	           "[rpc] Client $client: RPC call $method: $error_message",
-	           log_data_string("method", method ? method : "<invalid>"),
-	           log_data_string("error_message", error_message));
+	        "[rpc] Client $client: RPC call $method: $error_message",
+	        log_data_string("method", method ? method : "<invalid>"),
+	        log_data_string("error_message", error_message));
 
 
 	json_serialized = json_dumps(j, 0);
 	if (!json_serialized)
 	{
 		zen_log(ULOG_WARNING, "rpc", "BUG_RPC_ERROR_SERIALIZE_FAILED", NULL,
-		           "[BUG] rpc_error() failed to serialize response "
-		           "for request from $client ($method)",
-		           log_data_string("method", method));
+		        "[BUG] rpc_error() failed to serialize response "
+		        "for request from $client ($method)",
+		        log_data_string("method", method));
 		json_decref(j);
 		return;
 	}
@@ -981,8 +981,8 @@ void _rpc_error(Client *client, json_t *request, JsonRpcError error_code, const 
 
 #ifdef DEBUGMODE
 	zen_log(ULOG_DEBUG, "rpc", "RPC_CALL_DEBUG", client,
-	           "[rpc] Client $client: RPC result error: $response",
-	           log_data_string("response", json_serialized));
+	        "[rpc] Client $client: RPC result error: $response",
+	        log_data_string("response", json_serialized));
 #endif
 	json_decref(j);
 	safe_free(json_serialized);
@@ -1016,9 +1016,9 @@ void _rpc_response(Client *client, json_t *request, json_t *result)
 	if (!json_serialized)
 	{
 		zen_log(ULOG_WARNING, "rpc", "BUG_RPC_RESPONSE_SERIALIZE_FAILED", NULL,
-		           "[BUG] rpc_response() failed to serialize response "
-		           "for request from $client ($method)",
-		           log_data_string("method", method));
+		        "[BUG] rpc_response() failed to serialize response "
+		        "for request from $client ($method)",
+		        log_data_string("method", method));
 		json_decref(j);
 		return;
 	}
@@ -1030,8 +1030,8 @@ void _rpc_response(Client *client, json_t *request, json_t *result)
 
 #ifdef DEBUGMODE
 	zen_log(ULOG_DEBUG, "rpc", "RPC_CALL_DEBUG", client,
-	           "[rpc] Client $client: RPC response result: $response",
-	           log_data_string("response", json_serialized));
+	        "[rpc] Client $client: RPC response result: $response",
+	        log_data_string("response", json_serialized));
 #endif
 	json_decref(j);
 	safe_free(json_serialized);
@@ -1118,30 +1118,30 @@ void rpc_call_log(Client *client, RPCHandler *handler, json_t *request, const ch
 		if (*params_string)
 		{
 			zen_log(handler->loglevel, "rpc", "RPC_CALL", client,
-			           "[rpc] RPC call $method by $client ($issuer): $params_string",
-			           log_data_string("issuer", client->rpc->issuer),
-			           log_data_string("method", method),
-			           log_data_string("params_string", params_string));
+			        "[rpc] RPC call $method by $client ($issuer): $params_string",
+			        log_data_string("issuer", client->rpc->issuer),
+			        log_data_string("method", method),
+			        log_data_string("params_string", params_string));
 		} else
 		{
 			zen_log(handler->loglevel, "rpc", "RPC_CALL", client,
-			           "[rpc] RPC call $method by $client ($issuer)",
-			           log_data_string("issuer", client->rpc->issuer),
-			           log_data_string("method", method));
+			        "[rpc] RPC call $method by $client ($issuer)",
+			        log_data_string("issuer", client->rpc->issuer),
+			        log_data_string("method", method));
 		}
 	} else
 	{
 		if (*params_string)
 		{
 			zen_log(handler->loglevel, "rpc", "RPC_CALL", client,
-			           "[rpc] RPC call $method by $client: $params_string",
-			           log_data_string("method", method),
-			           log_data_string("params_string", params_string));
+			        "[rpc] RPC call $method by $client: $params_string",
+			        log_data_string("method", method),
+			        log_data_string("params_string", params_string));
 		} else
 		{
 			zen_log(handler->loglevel, "rpc", "RPC_CALL", client,
-			           "[rpc] RPC call $method by $client",
-			           log_data_string("method", method));
+			        "[rpc] RPC call $method by $client",
+			        log_data_string("method", method));
 		}
 	}
 }
@@ -1261,8 +1261,8 @@ void rpc_call_json(Client *client, json_t *request)
 		if (call)
 		{
 			zen_log(ULOG_DEBUG, "rpc", "RPC_CALL_DEBUG", client,
-			           "[rpc] Client $client: RPC call: $call",
-			           log_data_string("call", call));
+			        "[rpc] Client $client: RPC call: $call",
+			        log_data_string("call", call));
 			safe_free(call);
 		}
 	}
@@ -1401,8 +1401,8 @@ int rpc_handle_auth(Client *client, WebRequest *web)
 		if (rpc_parse_auth_uri(client, web, &username, &password))
 		{
 			zen_log(ULOG_INFO, "rpc", "RPC_URI_AUTH_REJECTED", client,
-			           "RPC authentication via URI query string is disabled; use the Authorization header",
-			           log_data_string("uri", web->uri ? web->uri : ""));
+			        "RPC authentication via URI query string is disabled; use the Authorization header",
+			        log_data_string("uri", web->uri ? web->uri : ""));
 		}
 		webserver_send_response(client, 401, "Authentication required");
 		return 0;

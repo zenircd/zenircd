@@ -548,13 +548,13 @@ EVENT(connthrottle_evt)
 	if (ucounter->rejected_clients)
 	{
 		zen_log(ULOG_INFO, "connthrottle", "CONNTHROTTLE_REPORT", NULL,
-		           "ConnThrottle] Stats for this server past 60 secs: "
-		           "Connections rejected: $num_rejected. "
-		           "Accepted: $num_accepted_except except user(s) and "
-		           "$num_accepted_unknown_users new user(s).",
-		           log_data_integer("num_rejected", ucounter->rejected_clients),
-		           log_data_integer("num_accepted_except", ucounter->allowed_except),
-		           log_data_integer("num_accepted_unknown_users", ucounter->allowed_unknown_users));
+		        "ConnThrottle] Stats for this server past 60 secs: "
+		        "Connections rejected: $num_rejected. "
+		        "Accepted: $num_accepted_except except user(s) and "
+		        "$num_accepted_unknown_users new user(s).",
+		        log_data_integer("num_rejected", ucounter->rejected_clients),
+		        log_data_integer("num_accepted_except", ucounter->allowed_except),
+		        log_data_integer("num_accepted_unknown_users", ucounter->allowed_unknown_users));
 	}
 
 	/* Reset stats for next message */
@@ -605,9 +605,9 @@ int ct_pre_lconnect(Client *client)
 		if (!ucounter->throttling_previous_minute && !ucounter->throttling_banner_displayed)
 		{
 			zen_log(ULOG_WARNING, "connthrottle", "CONNTHROTTLE_ACTIVATED", NULL,
-			           "[ConnThrottle] Connection throttling has been ACTIVATED due to a HIGH CONNECTION RATE.\n"
-			           "Users with IP addresses that have not been seen before will be rejected above the set connection rate. Known users can still get in.\n"
-			           "or more information see https://www.unrealircd.org/docs/ConnThrottle");
+			        "[ConnThrottle] Connection throttling has been ACTIVATED due to a HIGH CONNECTION RATE.\n"
+			        "Users with IP addresses that have not been seen before will be rejected above the set connection rate. Known users can still get in.\n"
+			        "or more information see https://www.unrealircd.org/docs/ConnThrottle");
 			ucounter->throttling_banner_displayed = 1;
 		}
 		exit_client(client, NULL, cfg.reason);
@@ -739,7 +739,7 @@ void ct_off(Client *client)
 
 	ucounter->disabled = 1;
 	zen_log(ULOG_WARNING, "connthrottle", "CONNTHROTTLE_MODULE_DISABLED", client,
-	           "[ConnThrottle] $client.details DISABLED the connthrottle module.");
+	        "[ConnThrottle] $client.details DISABLED the connthrottle module.");
 }
 
 void ct_on(Client *client)
@@ -748,7 +748,7 @@ void ct_on(Client *client)
 		return; /* Already on */
 
 	zen_log(ULOG_WARNING, "connthrottle", "CONNTHROTTLE_MODULE_ENABLED", client,
-	           "[ConnThrottle] $client.details ENABLED the connthrottle module.");
+	        "[ConnThrottle] $client.details ENABLED the connthrottle module.");
 	ucounter->disabled = 0;
 }
 
@@ -756,7 +756,7 @@ void ct_reset(Client *client)
 {
 	memset(ucounter, 0, sizeof(UCounter));
 	zen_log(ULOG_WARNING, "connthrottle", "CONNTHROTTLE_RESET", client,
-	           "[ConnThrottle] $client.details did a RESET on the statistics/counters.");
+	        "[ConnThrottle] $client.details did a RESET on the statistics/counters.");
 }
 
 CMD_FUNC(ct_throttle)
@@ -867,7 +867,7 @@ static void ct_check_walk_one(Client *client)
 	if (!IsIPV6(client) || !client->ip)
 	{
 		zen_log(ULOG_ERROR, "connthrottle", "BUG_CT_CHECK_NO_IP", client,
-		           "[BUG] connthrottle counter check: client has category but no IPv6 IP");
+		        "[BUG] connthrottle counter check: client has category but no IPv6 IP");
  #ifdef DEBUGMODE
 		abort();
  #endif
@@ -880,8 +880,8 @@ static void ct_check_walk_one(Client *client)
 		if (!b)
 		{
 			zen_log(ULOG_ERROR, "connthrottle", "BUG_CT_CHECK_NO_BUCKET", client,
-			           "[BUG] connthrottle counter check: client has category but no bucket at /$prefix",
-			           log_data_integer("prefix", ct_tier_prefix[tier]));
+			        "[BUG] connthrottle counter check: client has category but no bucket at /$prefix",
+			        log_data_integer("prefix", ct_tier_prefix[tier]));
  #ifdef DEBUGMODE
 			abort();
  #endif
@@ -931,16 +931,16 @@ EVENT(ct_check)
 				    b->check_unknown != b->unknown_users)
 				{
 					zen_log(ULOG_ERROR, "connthrottle", "BUG_CT_CHECK_DRIFT", NULL,
-					           "[BUG] connthrottle bucket counter drift at /$prefix: "
-					           "live=(known=$live_k excepted=$live_e unknown=$live_u) "
-					           "computed=(known=$exp_k excepted=$exp_e unknown=$exp_u)",
-					           log_data_integer("prefix", ct_tier_prefix[tier]),
-					           log_data_integer("live_k", b->known_users),
-					           log_data_integer("live_e", b->excepted_unknowns),
-					           log_data_integer("live_u", b->unknown_users),
-					           log_data_integer("exp_k", b->check_known),
-					           log_data_integer("exp_e", b->check_excepted),
-					           log_data_integer("exp_u", b->check_unknown));
+					        "[BUG] connthrottle bucket counter drift at /$prefix: "
+					        "live=(known=$live_k excepted=$live_e unknown=$live_u) "
+					        "computed=(known=$exp_k excepted=$exp_e unknown=$exp_u)",
+					        log_data_integer("prefix", ct_tier_prefix[tier]),
+					        log_data_integer("live_k", b->known_users),
+					        log_data_integer("live_e", b->excepted_unknowns),
+					        log_data_integer("live_u", b->unknown_users),
+					        log_data_integer("exp_k", b->check_known),
+					        log_data_integer("exp_e", b->check_excepted),
+					        log_data_integer("exp_u", b->check_unknown));
  #ifdef DEBUGMODE
 					abort();
  #endif
@@ -1126,10 +1126,10 @@ static void ct_bucket_decrement(ConnThrottleBucket *b, ConnThrottleCategory cate
 	if ((b->known_users < 0) || (b->excepted_unknowns < 0) || (b->unknown_users < 0))
 	{
 		zen_log(ULOG_ERROR, "connthrottle", "BUG_CT_NEGATIVE_COUNTER", NULL,
-		           "[BUG] connthrottle bucket counter went negative: known=$known excepted=$excepted unknown=$unknown",
-		           log_data_integer("known", b->known_users),
-		           log_data_integer("excepted", b->excepted_unknowns),
-		           log_data_integer("unknown", b->unknown_users));
+		        "[BUG] connthrottle bucket counter went negative: known=$known excepted=$excepted unknown=$unknown",
+		        log_data_integer("known", b->known_users),
+		        log_data_integer("excepted", b->excepted_unknowns),
+		        log_data_integer("unknown", b->unknown_users));
 #ifdef DEBUGMODE
 		abort();
 #endif
@@ -1189,7 +1189,7 @@ static void ct_bucket_unbump_client(Client *client, ConnThrottleCategory categor
 		if (!b)
 		{
 			zen_log(ULOG_ERROR, "connthrottle", "BUG_CT_BUCKET_MISSING", client,
-			           "[BUG] connthrottle bucket missing on disconnect for client $client.details");
+			        "[BUG] connthrottle bucket missing on disconnect for client $client.details");
 #ifdef DEBUGMODE
 			abort();
 #endif
@@ -1258,13 +1258,13 @@ const char *ct_allow_client(Client *client, ConfigItem_allow *aconf)
 		if (b && (b->unknown_users > effective_limit))
 		{
 			zen_log(ULOG_INFO, "connthrottle", "CONNTHROTTLE_IPV6_LIMIT", client,
-			           "Client $client.name with IP $client.ip rejected: connthrottle ipv6-unknown-users-limit (cidr-$prefix_len, max $max) exceeded for $prefix_addr/$prefix_len ($unknown_users unknown / $excepted_users excepted / $known_users known)",
-			           log_data_string("prefix_addr", format_ipv6_addr(masked)),
-			           log_data_integer("prefix_len", ct_tier_prefix[tier]),
-			           log_data_integer("max", effective_limit),
-			           log_data_integer("unknown_users", b->unknown_users),
-			           log_data_integer("excepted_users", b->excepted_unknowns),
-			           log_data_integer("known_users", b->known_users));
+			        "Client $client.name with IP $client.ip rejected: connthrottle ipv6-unknown-users-limit (cidr-$prefix_len, max $max) exceeded for $prefix_addr/$prefix_len ($unknown_users unknown / $excepted_users excepted / $known_users known)",
+			        log_data_string("prefix_addr", format_ipv6_addr(masked)),
+			        log_data_integer("prefix_len", ct_tier_prefix[tier]),
+			        log_data_integer("max", effective_limit),
+			        log_data_integer("unknown_users", b->unknown_users),
+			        log_data_integer("excepted_users", b->excepted_unknowns),
+			        log_data_integer("known_users", b->known_users));
 			return format_ipv6_prefix_reject_message(
 			    iConf.reject_message_too_many_new_connections_ipv6_range,
 			    masked, ct_tier_prefix[tier]);
@@ -1336,7 +1336,7 @@ int ct_known_user_cache_change(Client *client)
 		if (!b)
 		{
 			zen_log(ULOG_ERROR, "connthrottle", "BUG_CT_BUCKET_MISSING", client,
-			           "[BUG] connthrottle bucket missing on transition for client $client.details");
+			        "[BUG] connthrottle bucket missing on transition for client $client.details");
 #ifdef DEBUGMODE
 			abort();
 #endif

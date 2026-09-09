@@ -1336,7 +1336,8 @@ int mm_install(int argc, char *args[], int upgrade)
 			for (l = m->post_install_text; l; l = l->next)
 				printf(" %s\n", l->line);
 			printf("---\n");
-		} else {
+		} else
+		{
 			printf("Don't forget to add a 'loadmodule' line for the module and rehash\n");
 		}
 		return 1;
@@ -1412,7 +1413,8 @@ int mm_install(int argc, char *args[], int upgrade)
 		{
 			modules[i] = NULL;
 			n_failed++;
-		} else {
+		} else
+		{
 			n_installed++;
 		}
 	}
@@ -1436,7 +1438,8 @@ int mm_install(int argc, char *args[], int upgrade)
 			for (l = modules[i]->post_install_text; l; l = l->next)
 				printf(" %s\n", l->line);
 			printf("---\n");
-		} else {
+		} else
+		{
 			printf("Don't forget to add a 'loadmodule' line for %s and rehash\n", modules[i]->name);
 		}
 	}
@@ -1585,7 +1588,8 @@ void mm_upgrade(int argc, char *args[])
 			{
 				results[i] = 0;
 				failed++;
-			} else {
+			} else
+			{
 				results[i] = 1;
 				upgraded++;
 			}
@@ -1597,7 +1601,7 @@ void mm_upgrade(int argc, char *args[])
 
 		if (n_modules > 1)
 		{
-			static const char *result_str[] = { "FAILED", "upgraded", "up to date" };
+			static const char *result_str[] = {"FAILED", "upgraded", "up to date"};
 			printf("\nUpgrade summary:\n");
 			for (i = 0; i < n_modules; i++)
 				printf("  %-40s %s\n", args[first_name_idx + i], result_str[results[i]]);

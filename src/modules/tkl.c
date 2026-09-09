@@ -1270,11 +1270,11 @@ void recompile_spamfilters(void)
 		if (!m)
 		{
 			zen_log(ULOG_WARNING, "tkl", "SPAMFILTER_COMPILE_ERROR", NULL,
-			           "Spamfilter no longer compiles upon utf8 change, error: $error. "
-			           "Spamfilter '$tkl' ($tkl.reason). "
-			           "Spamfilter not transformed to/from utf8.",
-			           log_data_tkl("tkl", tkl),
-			           log_data_string("error", err ? err : "Unknown"));
+			        "Spamfilter no longer compiles upon utf8 change, error: $error. "
+			        "Spamfilter '$tkl' ($tkl.reason). "
+			        "Spamfilter not transformed to/from utf8.",
+			        log_data_tkl("tkl", tkl),
+			        log_data_string("error", err ? err : "Unknown"));
 			continue;
 		}
 
@@ -1283,8 +1283,8 @@ void recompile_spamfilters(void)
 		converted++;
 	}
 	zen_log(ULOG_INFO, "tkl", "SPAMFILTER_UTF8_CONVERTED", NULL,
-	           "Spamfilter: Recompiled $count spamfilters due to set::spamfilter::utf8 change.",
-	           log_data_integer("count", converted));
+	        "Spamfilter: Recompiled $count spamfilters due to set::spamfilter::utf8 change.",
+	        log_data_integer("count", converted));
 }
 
 void check_set_spamfilter_utf8_setting_changed(void)
@@ -1547,17 +1547,17 @@ static void spamfilter_regex_error(TKL *tkl, const char *regex_error)
 	if (tkl->type & TKL_GLOBAL)
 	{
 		zen_log(ULOG_WARNING, "tkl", "SPAMFILTER_REGEX_ERROR", NULL,
-		           "[Spamfilter] Regex aborted ($regex_error) for '$tkl'. Possibly too complex regex? "
-		           "To delete, use: /SPAMFILTER del $tkl.id",
-		           log_data_string("regex_error", regex_error),
-		           log_data_tkl("tkl", tkl));
+		        "[Spamfilter] Regex aborted ($regex_error) for '$tkl'. Possibly too complex regex? "
+		        "To delete, use: /SPAMFILTER del $tkl.id",
+		        log_data_string("regex_error", regex_error),
+		        log_data_tkl("tkl", tkl));
 	} else
 	{
 		zen_log(ULOG_WARNING, "tkl", "SPAMFILTER_REGEX_ERROR", NULL,
-		           "[Spamfilter] Regex aborted ($regex_error) for '$tkl'. Possibly too complex regex? "
-		           "To remove it, edit your config file",
-		           log_data_string("regex_error", regex_error),
-		           log_data_tkl("tkl", tkl));
+		        "[Spamfilter] Regex aborted ($regex_error) for '$tkl'. Possibly too complex regex? "
+		        "To remove it, edit your config file",
+		        log_data_string("regex_error", regex_error),
+		        log_data_tkl("tkl", tkl));
 	}
 }
 
@@ -1721,9 +1721,9 @@ CMD_FUNC(cmd_tempshun)
 			{
 				SetShunned(target);
 				zen_log(ULOG_INFO, "tkl", "TKL_ADD_TEMPSHUN", client,
-				           "Temporary shun added on user $target.details [reason: $shun_reason] [by: $client]",
-				           log_data_string("shun_reason", comment),
-				           log_data_client("target", target));
+				        "Temporary shun added on user $target.details [reason: $shun_reason] [by: $client]",
+				        log_data_string("shun_reason", comment),
+				        log_data_client("target", target));
 			}
 		} else
 		{
@@ -1734,8 +1734,8 @@ CMD_FUNC(cmd_tempshun)
 			{
 				ClearShunned(target);
 				zen_log(ULOG_INFO, "tkl", "TKL_DEL_TEMPSHUN", client,
-				           "Temporary shun removed from user $target.details [by: $client]",
-				           log_data_client("target", target));
+				        "Temporary shun removed from user $target.details [by: $client]",
+				        log_data_client("target", target));
 			}
 		}
 	}
@@ -2965,8 +2965,8 @@ int _tkl_hash(unsigned int c)
 	else
 	{
 		zen_log(ULOG_ERROR, "bug", "TKL_HASH_INVALID", NULL,
-		           "tkl_hash() called with out of range parameter (c = '$tkl_char') !!!",
-		           log_data_char("tkl_char", c));
+		        "tkl_hash() called with out of range parameter (c = '$tkl_char') !!!",
+		        log_data_char("tkl_char", c));
 		return 0;
 	}
 #else
@@ -2984,8 +2984,8 @@ char _tkl_typetochar(int type)
 		if ((tkl_types[i].type == type) && tkl_types[i].tkltype)
 			return tkl_types[i].letter;
 	zen_log(ULOG_ERROR, "bug", "TKL_TYPETOCHAR_INVALID", NULL,
-	           "tkl_typetochar(): unknown type $tkl_type!!!",
-	           log_data_integer("tkl_type", type));
+	        "tkl_typetochar(): unknown type $tkl_type!!!",
+	        log_data_integer("tkl_type", type));
 	return 0;
 }
 
@@ -3730,9 +3730,9 @@ void _tkl_del_line(TKL *tkl)
 			if (!really_found)
 			{
 				zen_log(ULOG_FATAL, "tkl", "BUG_TKL_DEL_LINE_HASH", NULL,
-				           "[BUG] [Crash] tkl_del_line() for $tkl (type: $tkl.type_string): "
-				           "NOT found in tklines_ip_hash. This should never happen!",
-				           log_data_tkl("tkl", tkl));
+				        "[BUG] [Crash] tkl_del_line() for $tkl (type: $tkl.type_string): "
+				        "NOT found in tklines_ip_hash. This should never happen!",
+				        log_data_tkl("tkl", tkl));
 				abort();
 			}
 #endif
@@ -3885,25 +3885,25 @@ void tkl_expire_entry(TKL *tkl)
 	if (TKLIsServerBan(tkl))
 	{
 		zen_log(ULOG_INFO, "tkl", "TKL_EXPIRE", NULL,
-		           "Expiring $tkl.type_string '$tkl' [reason: $tkl.reason] [by: $tkl.set_by] [duration: $tkl.duration_string] $id $spamfilter_id",
-		           log_data_tkl("tkl", tkl),
-		           log_data_optional_name_value("id", "id", tkl->id),
-		           log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->spamfilter_id));
+		        "Expiring $tkl.type_string '$tkl' [reason: $tkl.reason] [by: $tkl.set_by] [duration: $tkl.duration_string] $id $spamfilter_id",
+		        log_data_tkl("tkl", tkl),
+		        log_data_optional_name_value("id", "id", tkl->id),
+		        log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->spamfilter_id));
 	} else if (TKLIsNameBan(tkl))
 	{
 		if (!tkl->ptr.nameban->hold)
 		{
 			zen_log(ULOG_INFO, "tkl", "TKL_EXPIRE", NULL,
-			           "Expiring $tkl.type_string '$tkl' [reason: $tkl.reason] [by: $tkl.set_by] [duration: $tkl.duration_string] $id",
-			           log_data_tkl("tkl", tkl),
-			           log_data_optional_name_value("id", "id", tkl->id));
+			        "Expiring $tkl.type_string '$tkl' [reason: $tkl.reason] [by: $tkl.set_by] [duration: $tkl.duration_string] $id",
+			        log_data_tkl("tkl", tkl),
+			        log_data_optional_name_value("id", "id", tkl->id));
 		}
 	} else if (TKLIsBanException(tkl))
 	{
 		zen_log(ULOG_INFO, "tkl", "TKL_EXPIRE", NULL,
-		           "Expiring $tkl.type_string '$tkl' [type: $tkl.exception_types] [reason: $tkl.reason] [by: $tkl.set_by] [duration: $tkl.duration_string] $id",
-		           log_data_tkl("tkl", tkl),
-		           log_data_optional_name_value("id", "id", tkl->id));
+		        "Expiring $tkl.type_string '$tkl' [type: $tkl.exception_types] [reason: $tkl.reason] [by: $tkl.set_by] [duration: $tkl.duration_string] $id",
+		        log_data_tkl("tkl", tkl),
+		        log_data_optional_name_value("id", "id", tkl->id));
 	}
 
 	// FIXME: so.. this isn't logged? or what?
@@ -4264,11 +4264,11 @@ int spamfilter_check_users(TKL *tkl)
 
 			/* matched! */
 			zen_log(ULOG_INFO, "tkl", "SPAMFILTER_MATCH", client,
-			           "[Spamfilter] $client.details matches filter '$tkl': [cmd: $command: '$str'] [reason: $tkl.reason] [action: $tkl.ban_action] $spamfilter_id",
-			           log_data_tkl("tkl", tkl),
-			           log_data_string("command", "USER"),
-			           log_data_string("str", spamfilter_user),
-			           log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->id));
+			        "[Spamfilter] $client.details matches filter '$tkl': [cmd: $command: '$str'] [reason: $tkl.reason] [action: $tkl.ban_action] $spamfilter_id",
+			        log_data_tkl("tkl", tkl),
+			        log_data_string("command", "USER"),
+			        log_data_string("str", spamfilter_user),
+			        log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->id));
 
 			RunHook(HOOKTYPE_LOCAL_SPAMFILTER, client, spamfilter_user, spamfilter_user, SPAMF_USER, NULL, tkl);
 			matches++;
@@ -4785,9 +4785,9 @@ void tkl_sync_send_entry(int add, Client *sender, Client *to, TKL *tkl)
 	} else
 	{
 		zen_log(ULOG_FATAL, "tkl", "BUG_TKL_SYNC_SEND_ENTRY", NULL,
-		           "[BUG] tkl_sync_send_entry() called, but unknown type: $tkl.type_string ($tkl_type_int)",
-		           log_data_tkl("tkl", tkl),
-		           log_data_integer("tkl_type_int", typ));
+		        "[BUG] tkl_sync_send_entry() called, but unknown type: $tkl.type_string ($tkl_type_int)",
+		        log_data_tkl("tkl", tkl),
+		        log_data_integer("tkl_type_int", typ));
 		abort();
 	}
 
@@ -4949,33 +4949,33 @@ void _sendnotice_tkl_add(TKL *tkl)
 	if (TKLIsServerBan(tkl))
 	{
 		zen_log(ULOG_INFO, "tkl", "TKL_ADD", NULL,
-		           "$tkl.type_string added: '$tkl' [reason: $tkl.reason] [by: $tkl.set_by] [duration: $tkl.duration_string] $id $spamfilter_id",
-		           log_data_tkl("tkl", tkl),
-		           log_data_optional_name_value("id", "id", tkl->id),
-		           log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->spamfilter_id));
+		        "$tkl.type_string added: '$tkl' [reason: $tkl.reason] [by: $tkl.set_by] [duration: $tkl.duration_string] $id $spamfilter_id",
+		        log_data_tkl("tkl", tkl),
+		        log_data_optional_name_value("id", "id", tkl->id),
+		        log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->spamfilter_id));
 	} else if (TKLIsNameBan(tkl))
 	{
 		zen_log(ULOG_INFO, "tkl", "TKL_ADD", NULL,
-		           "$tkl.type_string added: '$tkl' [reason: $tkl.reason] [by: $tkl.set_by] [duration: $tkl.duration_string] $id",
-		           log_data_tkl("tkl", tkl),
-		           log_data_optional_name_value("id", "id", tkl->id));
+		        "$tkl.type_string added: '$tkl' [reason: $tkl.reason] [by: $tkl.set_by] [duration: $tkl.duration_string] $id",
+		        log_data_tkl("tkl", tkl),
+		        log_data_optional_name_value("id", "id", tkl->id));
 	} else if (TKLIsSpamfilter(tkl))
 	{
 		zen_log(ULOG_INFO, "tkl", "TKL_ADD", NULL,
-		           "Spamfilter added: '$tkl' [type: $tkl.match_type] [targets: $tkl.spamfilter_targets] "
-		           "[action: $tkl.ban_action] [reason: $tkl.reason] [by: $tkl.set_by] $id",
-		           log_data_tkl("tkl", tkl),
-		           log_data_optional_name_value("id", "id", tkl->id));
+		        "Spamfilter added: '$tkl' [type: $tkl.match_type] [targets: $tkl.spamfilter_targets] "
+		        "[action: $tkl.ban_action] [reason: $tkl.reason] [by: $tkl.set_by] $id",
+		        log_data_tkl("tkl", tkl),
+		        log_data_optional_name_value("id", "id", tkl->id));
 	} else if (TKLIsBanException(tkl))
 	{
 		zen_log(ULOG_INFO, "tkl", "TKL_ADD", NULL,
-		           "$tkl.type_string added: '$tkl' [types: $tkl.exception_types] [by: $tkl.set_by] [duration: $tkl.duration_string] $id",
-		           log_data_tkl("tkl", tkl),
-		           log_data_optional_name_value("id", "id", tkl->id));
+		        "$tkl.type_string added: '$tkl' [types: $tkl.exception_types] [by: $tkl.set_by] [duration: $tkl.duration_string] $id",
+		        log_data_tkl("tkl", tkl),
+		        log_data_optional_name_value("id", "id", tkl->id));
 	} else
 	{
 		zen_log(ULOG_ERROR, "tkl", "BUG_UNKNOWN_TKL", NULL,
-		           "[BUG] TKL added of unknown type, unhandled in sendnotice_tkl_add()!!!!");
+		        "[BUG] TKL added of unknown type, unhandled in sendnotice_tkl_add()!!!!");
 	}
 }
 
@@ -4989,37 +4989,37 @@ void _sendnotice_tkl_del(const char *removed_by, TKL *tkl)
 	if (TKLIsServerBan(tkl))
 	{
 		zen_log(ULOG_INFO, "tkl", "TKL_DEL", NULL,
-		           "$tkl.type_string removed: '$tkl' [reason: $tkl.reason] [by: $removed_by] [set at: $tkl.set_at_string] $id $spamfilter_id",
-		           log_data_tkl("tkl", tkl),
-		           log_data_string("removed_by", removed_by),
-		           log_data_optional_name_value("id", "id", tkl->id),
-		           log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->spamfilter_id));
+		        "$tkl.type_string removed: '$tkl' [reason: $tkl.reason] [by: $removed_by] [set at: $tkl.set_at_string] $id $spamfilter_id",
+		        log_data_tkl("tkl", tkl),
+		        log_data_string("removed_by", removed_by),
+		        log_data_optional_name_value("id", "id", tkl->id),
+		        log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->spamfilter_id));
 	} else if (TKLIsNameBan(tkl))
 	{
 		zen_log(ULOG_INFO, "tkl", "TKL_DEL", NULL,
-		           "$tkl.type_string removed: '$tkl' [reason: $tkl.reason] [by: $removed_by] [set at: $tkl.set_at_string] $id",
-		           log_data_tkl("tkl", tkl),
-		           log_data_string("removed_by", removed_by),
-		           log_data_optional_name_value("id", "id", tkl->id));
+		        "$tkl.type_string removed: '$tkl' [reason: $tkl.reason] [by: $removed_by] [set at: $tkl.set_at_string] $id",
+		        log_data_tkl("tkl", tkl),
+		        log_data_string("removed_by", removed_by),
+		        log_data_optional_name_value("id", "id", tkl->id));
 	} else if (TKLIsSpamfilter(tkl))
 	{
 		zen_log(ULOG_INFO, "tkl", "TKL_DEL", NULL,
-		           "Spamfilter removed: '$tkl' [type: $tkl.match_type] [targets: $tkl.spamfilter_targets] "
-		           "[action: $tkl.ban_action] [reason: $tkl.reason] [by: $removed_by] [set at: $tkl.set_at_string] $id",
-		           log_data_tkl("tkl", tkl),
-		           log_data_string("removed_by", removed_by),
-		           log_data_optional_name_value("id", "id", tkl->id));
+		        "Spamfilter removed: '$tkl' [type: $tkl.match_type] [targets: $tkl.spamfilter_targets] "
+		        "[action: $tkl.ban_action] [reason: $tkl.reason] [by: $removed_by] [set at: $tkl.set_at_string] $id",
+		        log_data_tkl("tkl", tkl),
+		        log_data_string("removed_by", removed_by),
+		        log_data_optional_name_value("id", "id", tkl->id));
 	} else if (TKLIsBanException(tkl))
 	{
 		zen_log(ULOG_INFO, "tkl", "TKL_DEL", NULL,
-		           "$tkl.type_string removed: '$tkl' [types: $tkl.exception_types] [by: $removed_by] [set at: $tkl.set_at_string] $id",
-		           log_data_tkl("tkl", tkl),
-		           log_data_string("removed_by", removed_by),
-		           log_data_optional_name_value("id", "id", tkl->id));
+		        "$tkl.type_string removed: '$tkl' [types: $tkl.exception_types] [by: $removed_by] [set at: $tkl.set_at_string] $id",
+		        log_data_tkl("tkl", tkl),
+		        log_data_string("removed_by", removed_by),
+		        log_data_optional_name_value("id", "id", tkl->id));
 	} else
 	{
 		zen_log(ULOG_ERROR, "tkl", "BUG_UNKNOWN_TKL", NULL,
-		           "[BUG] TKL removed of unknown type, unhandled in sendnotice_tkl_del()!!!!");
+		        "[BUG] TKL removed of unknown type, unhandled in sendnotice_tkl_del()!!!!");
 	}
 }
 
@@ -5082,17 +5082,17 @@ CMD_FUNC(cmd_tkl_add)
 	if ((set_at < 0) || !short_date(set_at, NULL))
 	{
 		zen_log(ULOG_WARNING, "tkl", "TKL_ADD_INVALID", client,
-		           "Invalid TKL entry from $client: "
-		           "The set-at time is out of range ($set_at). Clock on other server incorrect or bogus entry.",
-		           log_data_integer("set_at", set_at));
+		        "Invalid TKL entry from $client: "
+		        "The set-at time is out of range ($set_at). Clock on other server incorrect or bogus entry.",
+		        log_data_integer("set_at", set_at));
 		return;
 	}
 	if ((expire_at < 0) || !short_date(expire_at, NULL))
 	{
 		zen_log(ULOG_WARNING, "tkl", "TKL_ADD_INVALID", client,
-		           "Invalid TKL entry from $client: "
-		           "The expire-at time is out of range ($expire_at). Clock on other server incorrect or bogus entry.",
-		           log_data_integer("expire_at", expire_at));
+		        "Invalid TKL entry from $client: "
+		        "The expire-at time is out of range ($expire_at). Clock on other server incorrect or bogus entry.",
+		        log_data_integer("expire_at", expire_at));
 		return;
 	}
 
@@ -5115,10 +5115,10 @@ CMD_FUNC(cmd_tkl_add)
 		if (strchr(usermask, '@') || strchr(hostmask, '@'))
 		{
 			zen_log(ULOG_WARNING, "tkl", "TKL_ADD_INVALID", client,
-			           "Invalid TKL entry from $client: "
-			           "Invalid user@host $usermask@$hostmask",
-			           log_data_string("usermask", usermask),
-			           log_data_string("hostmask", hostmask));
+			        "Invalid TKL entry from $client: "
+			        "Invalid user@host $usermask@$hostmask",
+			        log_data_string("usermask", usermask),
+			        log_data_string("hostmask", hostmask));
 			return;
 		}
 
@@ -5162,10 +5162,10 @@ CMD_FUNC(cmd_tkl_add)
 		if (strchr(usermask, '@') || strchr(hostmask, '@'))
 		{
 			zen_log(ULOG_WARNING, "tkl", "TKL_ADD_INVALID", client,
-			           "Invalid TKL entry from $client: "
-			           "Invalid TKL except user@host $usermask@$hostmask",
-			           log_data_string("usermask", usermask),
-			           log_data_string("hostmask", hostmask));
+			        "Invalid TKL entry from $client: "
+			        "Invalid TKL except user@host $usermask@$hostmask",
+			        log_data_string("usermask", usermask),
+			        log_data_string("hostmask", hostmask));
 			return;
 		}
 
@@ -5226,8 +5226,8 @@ CMD_FUNC(cmd_tkl_add)
 		if (parc < 12)
 		{
 			zen_log(ULOG_WARNING, "tkl", "TKL_ADD_INVALID", client,
-			           "Invalid TKL entry from $client: "
-			           "Spamfilter with too few parameters. Running very old ZenIRCd protocol (3.2.X?)");
+			        "Invalid TKL entry from $client: "
+			        "Spamfilter with too few parameters. Running very old ZenIRCd protocol (3.2.X?)");
 			return;
 		}
 
@@ -5237,30 +5237,30 @@ CMD_FUNC(cmd_tkl_add)
 		if (match_method == 0)
 		{
 			zen_log(ULOG_WARNING, "tkl", "TKL_ADD_INVALID", client,
-			           "Invalid TKL entry from $client: "
-			           "Spamfilter '$spamfilter_string' has unknown match-type '$spamfilter_type'",
-			           log_data_string("spamfilter_string", match_string),
-			           log_data_string("spamfilter_type", parv[10]));
+			        "Invalid TKL entry from $client: "
+			        "Spamfilter '$spamfilter_string' has unknown match-type '$spamfilter_type'",
+			        log_data_string("spamfilter_string", match_string),
+			        log_data_string("spamfilter_type", parv[10]));
 			return;
 		}
 
 		if (!(target = spamfilter_gettargets(parv[3], NULL)))
 		{
 			zen_log(ULOG_WARNING, "tkl", "TKL_ADD_INVALID", client,
-			           "Invalid TKL entry from $client: "
-			           "Spamfilter '$spamfilter_string' has unknown targets '$spamfilter_targets'",
-			           log_data_string("spamfilter_string", match_string),
-			           log_data_string("spamfilter_targets", parv[3]));
+			        "Invalid TKL entry from $client: "
+			        "Spamfilter '$spamfilter_string' has unknown targets '$spamfilter_targets'",
+			        log_data_string("spamfilter_string", match_string),
+			        log_data_string("spamfilter_targets", parv[3]));
 			return;
 		}
 
 		if (!(action = banact_chartoval(*parv[4])) || banact_config_only(action))
 		{
 			zen_log(ULOG_WARNING, "tkl", "TKL_ADD_INVALID", client,
-			           "Invalid TKL entry from $client: "
-			           "Spamfilter '$spamfilter_string' has unknown action '$spamfilter_action'",
-			           log_data_string("spamfilter_string", match_string),
-			           log_data_string("spamfilter_action", parv[4]));
+			        "Invalid TKL entry from $client: "
+			        "Spamfilter '$spamfilter_string' has unknown action '$spamfilter_action'",
+			        log_data_string("spamfilter_string", match_string),
+			        log_data_string("spamfilter_action", parv[4]));
 			return;
 		}
 
@@ -5278,10 +5278,10 @@ CMD_FUNC(cmd_tkl_add)
 			if (!m)
 			{
 				zen_log(ULOG_WARNING, "tkl", "TKL_ADD_INVALID", client,
-				           "Invalid TKL entry from $client: "
-				           "Spamfilter '$spamfilter_string': regex does not compile: $spamfilter_regex_error",
-				           log_data_string("spamfilter_string", match_string),
-				           log_data_string("spamfilter_regex_error", err));
+				        "Invalid TKL entry from $client: "
+				        "Spamfilter '$spamfilter_string': regex does not compile: $spamfilter_regex_error",
+				        log_data_string("spamfilter_string", match_string),
+				        log_data_string("spamfilter_regex_error", err));
 				return;
 			}
 			tkl = tkl_add_spamfilter(type, NULL, target, banact_value_to_struct(action), m, NULL, NULL,
@@ -5431,8 +5431,8 @@ CMD_FUNC(cmd_tkl_del)
 		if (parc < 9)
 		{
 			zen_log(ULOG_WARNING, "tkl", "TKL_DEL_INVALID", client,
-			           "Invalid TKL deletion request from $client: "
-			           "Spamfilter with too few parameters. Running very old ZenIRCd protocol (3.2.X?)");
+			        "Invalid TKL deletion request from $client: "
+			        "Spamfilter with too few parameters. Running very old ZenIRCd protocol (3.2.X?)");
 			return; /* bogus */
 		}
 		if (parc >= 12)
@@ -5445,20 +5445,20 @@ CMD_FUNC(cmd_tkl_del)
 		if (!(target = spamfilter_gettargets(parv[3], NULL)))
 		{
 			zen_log(ULOG_WARNING, "tkl", "TKL_DEL_INVALID", client,
-			           "Invalid TKL deletion request from $client: "
-			           "Spamfilter '$spamfilter_string' has unknown targets '$spamfilter_targets'",
-			           log_data_string("spamfilter_string", match_string),
-			           log_data_string("spamfilter_targets", parv[3]));
+			        "Invalid TKL deletion request from $client: "
+			        "Spamfilter '$spamfilter_string' has unknown targets '$spamfilter_targets'",
+			        log_data_string("spamfilter_string", match_string),
+			        log_data_string("spamfilter_targets", parv[3]));
 			return;
 		}
 
 		if (!(action = banact_chartoval(*parv[4])))
 		{
 			zen_log(ULOG_WARNING, "tkl", "TKL_DEL_INVALID", client,
-			           "Invalid TKL deletion request from $client: "
-			           "Spamfilter '$spamfilter_string' has unknown action '$spamfilter_action'",
-			           log_data_string("spamfilter_string", match_string),
-			           log_data_string("spamfilter_action", parv[4]));
+			        "Invalid TKL deletion request from $client: "
+			        "Spamfilter '$spamfilter_string' has unknown action '$spamfilter_action'",
+			        log_data_string("spamfilter_string", match_string),
+			        log_data_string("spamfilter_action", parv[4]));
 			return;
 		}
 		tkl = find_tkl_spamfilter(type, match_string, action, target);
@@ -5645,10 +5645,10 @@ void ban_act_set(Client *client, BanAction *action)
 	}
 	bump_tag_serial(client);
 	zen_log(ULOG_DEBUG, "tkl", "TAG_CLIENT", client,
-	           "Client $nick tag $tag is now set to $value",
-	           log_data_string("nick", client->name),
-	           log_data_string("tag", tag->name),
-	           log_data_integer("value", tag->value));
+	        "Client $nick tag $tag is now set to $value",
+	        log_data_string("nick", client->name),
+	        log_data_string("tag", tag->name),
+	        log_data_integer("value", tag->value));
 }
 
 void ban_action_run_all_sets_and_stops(Client *client, BanAction *action, int *stopped)
@@ -5797,9 +5797,9 @@ static int take_action_ex(Client *client, BanAction *actions, const char *reason
 					break;
 				/* We simply mark this connection as shunned and do not add a ban record */
 				zen_log(ULOG_INFO, "tkl", "TKL_ADD_TEMPSHUN", &me,
-				           "Temporary shun added on user $target.details [reason: $shun_reason] [by: $client]",
-				           log_data_string("shun_reason", reason),
-				           log_data_client("target", client));
+				        "Temporary shun added on user $target.details [reason: $shun_reason] [by: $client]",
+				        log_data_string("shun_reason", reason),
+				        log_data_client("target", client));
 				SetShunned(client);
 				break;
 			case BAN_ACT_REPORT:
@@ -5979,18 +5979,18 @@ static void match_spamfilter_hit(Client *client, const char *str_in, const char 
 			{
 				/* On-tag-change has no context, so log without the [cmd: ...] part */
 				zen_log(ULOG_INFO, "tkl", "SPAMFILTER_MATCH", client,
-				           "[Spamfilter] $client.details matches filter '$tkl': [reason: $tkl.reason] [action: $tkl.ban_action] $spamfilter_id",
-				           log_data_tkl("tkl", tkl),
-				           log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->id));
+				        "[Spamfilter] $client.details matches filter '$tkl': [reason: $tkl.reason] [action: $tkl.ban_action] $spamfilter_id",
+				        log_data_tkl("tkl", tkl),
+				        log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->id));
 			} else if (hide_content || (target == SPAMF_RAW))
 			{
 				zen_log(ULOG_INFO, "tkl", "SPAMFILTER_MATCH", client,
-				           "[Spamfilter] $client.details matches filter '$tkl': [cmd: $command$_space$destination] [reason: $tkl.reason] [action: $tkl.ban_action] $spamfilter_id",
-				           log_data_tkl("tkl", tkl),
-				           log_data_string("command", cmd),
-				           log_data_string("_space", destination ? " " : ""),
-				           log_data_string("destination", destination ? destination : ""),
-				           log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->id));
+				        "[Spamfilter] $client.details matches filter '$tkl': [cmd: $command$_space$destination] [reason: $tkl.reason] [action: $tkl.ban_action] $spamfilter_id",
+				        log_data_tkl("tkl", tkl),
+				        log_data_string("command", cmd),
+				        log_data_string("_space", destination ? " " : ""),
+				        log_data_string("destination", destination ? destination : ""),
+				        log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->id));
 			} else
 			{
 				// Yeah we are re-running the text analysis.
@@ -5998,14 +5998,14 @@ static void match_spamfilter_hit(Client *client, const char *str_in, const char 
 				memset(&textanalysis, 0, sizeof(textanalysis));
 				RunHook(HOOKTYPE_ANALYZE_TEXT, client, str, &textanalysis);
 				zen_log(ULOG_INFO, "tkl", "SPAMFILTER_MATCH", client,
-				           "[Spamfilter] $client.details matches filter '$tkl': [cmd: $command$_space$destination: '$str'] [reason: $tkl.reason] [action: $tkl.ban_action] $spamfilter_id",
-				           log_data_tkl("tkl", tkl),
-				           log_data_string("command", cmd),
-				           log_data_string("_space", destination ? " " : ""),
-				           log_data_string("destination", destination ? destination : ""),
-				           log_data_string("str", str),
-				           log_data_textanalysis("text_analysis", &textanalysis),
-				           log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->id));
+				        "[Spamfilter] $client.details matches filter '$tkl': [cmd: $command$_space$destination: '$str'] [reason: $tkl.reason] [action: $tkl.ban_action] $spamfilter_id",
+				        log_data_tkl("tkl", tkl),
+				        log_data_string("command", cmd),
+				        log_data_string("_space", destination ? " " : ""),
+				        log_data_string("destination", destination ? destination : ""),
+				        log_data_string("str", str),
+				        log_data_textanalysis("text_analysis", &textanalysis),
+				        log_data_optional_name_value("spamfilter_id", "spamfilter-id", tkl->id));
 				*content_revealed = 1;
 			}
 
@@ -6306,18 +6306,18 @@ int _match_spamfilter(Client *client, const char *str_in, int target, const char
 				if ((SPAMFILTER_DETECTSLOW_FATAL > 0) && (ms_past > SPAMFILTER_DETECTSLOW_FATAL))
 				{
 					zen_log(ULOG_ERROR, "tkl", "SPAMFILTER_SLOW_FATAL", NULL,
-					           "[Spamfilter] WARNING: Too slow spamfilter detected (took $msec_time msec to execute) "
-					           "-- spamfilter will be \002REMOVED!\002: $tkl",
-					           log_data_tkl("tkl", tkl),
-					           log_data_integer("msec_time", ms_past));
+					        "[Spamfilter] WARNING: Too slow spamfilter detected (took $msec_time msec to execute) "
+					        "-- spamfilter will be \002REMOVED!\002: $tkl",
+					        log_data_tkl("tkl", tkl),
+					        log_data_integer("msec_time", ms_past));
 					tkl_del_line(tkl);
 					return 0; /* Act as if it didn't match, even if it did.. it's gone now anyway.. */
 				} else if ((SPAMFILTER_DETECTSLOW_WARN > 0) && (ms_past > SPAMFILTER_DETECTSLOW_WARN))
 				{
 					zen_log(ULOG_WARNING, "tkl", "SPAMFILTER_SLOW_WARN", NULL,
-					           "[Spamfilter] WARNING: Slow spamfilter detected (took $msec_time msec to execute): $tkl",
-					           log_data_tkl("tkl", tkl),
-					           log_data_integer("msec_time", ms_past));
+					        "[Spamfilter] WARNING: Slow spamfilter detected (took $msec_time msec to execute): $tkl",
+					        log_data_tkl("tkl", tkl),
+					        log_data_integer("msec_time", ms_past));
 				}
 			}
 #endif

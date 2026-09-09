@@ -130,9 +130,9 @@ CMD_FUNC(cmd_squit)
 	if (MyConnect(target) && !MyUser(client))
 	{
 		zen_log(ULOG_INFO, "link", "SQUIT", client,
-		           "SQUIT: Forced server disconnect of $target by $client ($reason)",
-		           log_data_client("target", target),
-		           log_data_string("reason", comment));
+		        "SQUIT: Forced server disconnect of $target by $client ($reason)",
+		        log_data_client("target", target),
+		        log_data_string("reason", comment));
 	} else if (MyConnect(target))
 	{
 		if (target->user)
@@ -142,9 +142,9 @@ CMD_FUNC(cmd_squit)
 			return;
 		}
 		zen_log(ULOG_INFO, "link", "SQUIT", client,
-		           "SQUIT: Forced server disconnect of $target by $client ($reason)",
-		           log_data_client("target", target),
-		           log_data_string("reason", comment));
+		        "SQUIT: Forced server disconnect of $target by $client ($reason)",
+		        log_data_client("target", target),
+		        log_data_string("reason", comment));
 	}
 
 	exit_client_ex(target, client->direction, recv_mtags, comment);

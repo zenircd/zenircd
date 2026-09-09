@@ -210,8 +210,8 @@ Efunction *EfunctionAddMain(Module *module, EfunctionType eftype, int (*func)(),
 		if (module)
 		{
 			zen_log(ULOG_ERROR, "module", "BUG_EFUNCTIONADD_NOT_OFFICIAL", NULL,
-			           "[BUG] EfunctionAdd() called by unofficial module '$module_name'.",
-			           log_data_string("module_name", module->header->name));
+			        "[BUG] EfunctionAdd() called by unofficial module '$module_name'.",
+			        log_data_string("module_name", module->header->name));
 			module->errorcode = MODERR_INVALID;
 		}
 		return NULL;
@@ -220,8 +220,8 @@ Efunction *EfunctionAddMain(Module *module, EfunctionType eftype, int (*func)(),
 	if (loop.config_status != CONFIG_STATUS_TEST)
 	{
 		zen_log(ULOG_ERROR, "module", "BUG_EFUNCTIONADD_NOT_MOD_TEST", NULL,
-		           "[BUG] EfunctionAdd() called by module '$module_name' outside of MOD_TEST().",
-		           log_data_string("module_name", module->header->name));
+		        "[BUG] EfunctionAdd() called by module '$module_name' outside of MOD_TEST().",
+		        log_data_string("module_name", module->header->name));
 		module->errorcode = MODERR_INVALID;
 		return NULL;
 	}
@@ -371,8 +371,8 @@ void efunctions_switchover(void)
 			if (!efunction_table[i].funcptr)
 			{
 				zen_log(ULOG_FATAL, "module", "BUG_EFUNCTIONS_SWITCHOVER", NULL,
-				           "[BUG] efunctions_switchover(): someone forgot to initialize the function table for efunc $efunction_number",
-				           log_data_integer("efunction_number", i));
+				        "[BUG] efunctions_switchover(): someone forgot to initialize the function table for efunc $efunction_number",
+				        log_data_integer("efunction_number", i));
 				abort();
 			}
 			*efunction_table[i].funcptr = e->func.voidfunc;  /* This is the new one. */
@@ -397,9 +397,9 @@ void efunc_init_function_(EfunctionType what, char *name, void *func, void *defa
 	{
 		/* increase MAXEFUNCTIONS if you ever encounter that --k4be */
 		zen_log(ULOG_FATAL, "module", "BUG_EFUNC_INIT_FUNCTION_TOO_MANY", NULL,
-		           "Too many efunctions! ($efunctions_request > $efunctions_max)",
-		           log_data_integer("efunctions_request", what),
-		           log_data_integer("efunctions_max", MAXEFUNCTIONS));
+		        "Too many efunctions! ($efunctions_request > $efunctions_max)",
+		        log_data_integer("efunctions_request", what),
+		        log_data_integer("efunctions_max", MAXEFUNCTIONS));
 		abort();
 	}
 	safe_strdup(efunction_table[what].name, name);

@@ -140,18 +140,18 @@ CMD_FUNC(cmd_chgident)
 		if (issuer)
 		{
 			zen_log(ULOG_INFO, "chgcmds", "CHGIDENT_COMMAND", client,
-			           "CHGIDENT: $issuer changed the username of $target.details to be $new_username",
-			           log_data_string("issuer", issuer),
-			           log_data_string("change_type", "username"),
-			           log_data_client("target", target),
-			           log_data_string("new_username", parv[2]));
+			        "CHGIDENT: $issuer changed the username of $target.details to be $new_username",
+			        log_data_string("issuer", issuer),
+			        log_data_string("change_type", "username"),
+			        log_data_client("target", target),
+			        log_data_string("new_username", parv[2]));
 		} else
 		{
 			zen_log(ULOG_INFO, "chgcmds", "CHGIDENT_COMMAND", client,
-			           "CHGIDENT: $client changed the username of $target.details to be $new_username",
-			           log_data_string("change_type", "username"),
-			           log_data_client("target", target),
-			           log_data_string("new_username", parv[2]));
+			        "CHGIDENT: $client changed the username of $target.details to be $new_username",
+			        log_data_string("change_type", "username"),
+			        log_data_client("target", target),
+			        log_data_string("new_username", parv[2]));
 		}
 	}
 

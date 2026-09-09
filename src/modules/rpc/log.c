@@ -224,7 +224,7 @@ void rpc_log_send(Client *client, json_t *request, json_t *params)
 	if (!serialized)
 	{
 		zen_log(ULOG_INFO, "log", "RPC_LOG_INVALID", client,
-		           "Received malformed JSON in RPC log message (log.send) from $client.name");
+		        "Received malformed JSON in RPC log message (log.send) from $client.name");
 		return;
 	}
 

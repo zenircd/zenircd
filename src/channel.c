@@ -589,13 +589,13 @@ int remove_user_from_channel_withmb(Client *client, Channel *channel, Membership
 		if (MyUser(client))
 		{
 			zen_log(ULOG_INFO, "part", "LOCAL_CLIENT_PART", client,
-			           "User $client left $channel",
-			           log_data_channel("channel", channel));
+			        "User $client left $channel",
+			        log_data_channel("channel", channel));
 		} else
 		{
 			zen_log(ULOG_INFO, "part", "REMOTE_CLIENT_PART", client,
-			           "User $client left $channel",
-			           log_data_channel("channel", channel));
+			        "User $client left $channel",
+			        log_data_channel("channel", channel));
 		}
 	}
 

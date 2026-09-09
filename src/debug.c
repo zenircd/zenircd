@@ -150,10 +150,10 @@ int checkprotoflags(Client *client, int flags, const char *file, int line)
 	if (!MyConnect(client))
 	{
 		zen_log(ULOG_ERROR, "main", "BUG_ISTOKEN_REMOTE_CLIENT", client,
-		           "IsToken($token_value) used on remote client in $file:$line",
-		           log_data_integer("token_value", flags),
-		           log_data_string("file", file),
-		           log_data_integer("line", line));
+		        "IsToken($token_value) used on remote client in $file:$line",
+		        log_data_integer("token_value", flags),
+		        log_data_string("file", file),
+		        log_data_integer("line", line));
 	}
 	return ((client->local->proto & flags) == flags) ? 1 : 0;
 }

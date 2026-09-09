@@ -865,8 +865,8 @@ void flood_limit_exceeded_log(Client *client, const char *floodname)
 	// direct zen_log() calls with "FLOOD_BLOCKED" in the file
 	// src/modules/targetfloodprot.c, so update those as well.
 	zen_log(ULOG_INFO, "flood", "FLOOD_BLOCKED", client,
-	           "Flood blocked ($flood_type) from $client.details [$client.ip]",
-	           log_data_string("flood_type", floodname));
+	        "Flood blocked ($flood_type) from $client.details [$client.ip]",
+	        log_data_string("flood_type", floodname));
 }
 
 /** Is the flood limit exceeded for an option? eg for away-flood.
@@ -1192,8 +1192,8 @@ int update_known_user_cache(Client *client)
 				if (!IsDeadSocket(client) || IsDead(client))
 				{
 					zen_log(ULOG_WARNING, "user", "BUG_HOOKTYPE_KNOWN_USER_CACHE_CHANGE", client,
-					           "Module $module returned HOOK_DENY but did not use dead_socket(). Dangerous!",
-					           log_data_string("module", h->owner->header->name));
+					        "Module $module returned HOOK_DENY but did not use dead_socket(). Dangerous!",
+					        log_data_string("module", h->owner->header->name));
 				}
 #ifdef DEBUGMODE
 				if (IsDead(client))

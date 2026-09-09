@@ -74,7 +74,7 @@ CMD_FUNC(cmd_mkpasswd)
 		 */
 		add_fake_lag(client, 7000);
 		zen_log(ULOG_INFO, "mkpasswd", "MKPASSWD_COMMAND", client,
-		           "mkpasswd command used by $client.details");
+		        "mkpasswd command used by $client.details");
 	}
 
 	if ((parc < 3) || BadPtr(parv[2]))

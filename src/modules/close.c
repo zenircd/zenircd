@@ -75,7 +75,7 @@ CMD_FUNC(cmd_close)
 
 	sendnumeric(client, RPL_CLOSEEND, closed);
 	zen_log(ULOG_INFO, "close", "CLOSED_CONNECTIONS", client,
-	           "$client.details closed $num_closed unknown connections",
-	           log_data_integer("num_closed", closed));
+	        "$client.details closed $num_closed unknown connections",
+	        log_data_integer("num_closed", closed));
 	irccounts.unknown = 0;
 }

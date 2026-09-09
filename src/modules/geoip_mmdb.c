@@ -158,9 +158,9 @@ MOD_TEST()
 	if (!CallbackAddPVoid(modinfo->handle, CALLBACKTYPE_GEOIP_LOOKUP, TO_PVOIDFUNC(geoip_lookup_mmdb)))
 	{
 		zen_log(ULOG_ERROR, "geoip_mmdb", "GEOIP_ADD_CALLBACK_FAILED", NULL,
-		           "geoip_mmdb: Could not install GEOIP_LOOKUP callback. "
-		           "Most likely another geoip module is already loaded. "
-		           "You can only load one!");
+		        "geoip_mmdb: Could not install GEOIP_LOOKUP callback. "
+		        "Most likely another geoip module is already loaded. "
+		        "You can only load one!");
 		return MOD_FAILED;
 	}
 
@@ -192,9 +192,9 @@ MOD_LOAD()
 		if (status != MMDB_OK)
 		{
 			zen_log(ULOG_WARNING, "geoip_mmdb", "GEOIP_CANNOT_OPEN_DB", NULL,
-			           "Could not open '$filename' - $mmdb_error",
-			           log_data_string("filename", geoip_mmdb_config.db_file),
-			           log_data_string("mmdb_error", mmdb_strerror(status)));
+			        "Could not open '$filename' - $mmdb_error",
+			        log_data_string("filename", geoip_mmdb_config.db_file),
+			        log_data_string("mmdb_error", mmdb_strerror(status)));
 			geoip_mmdb_config.have_database = 0;
 		}
 	}
@@ -206,9 +206,9 @@ MOD_LOAD()
 		if (status != MMDB_OK)
 		{
 			zen_log(ULOG_WARNING, "geoip_mmdb", "GEOIP_CANNOT_OPEN_ASN_DB", NULL,
-			           "Could not open '$filename' - $mmdb_error",
-			           log_data_string("filename", geoip_mmdb_config.asn_db_file),
-			           log_data_string("mmdb_error", mmdb_strerror(status)));
+			        "Could not open '$filename' - $mmdb_error",
+			        log_data_string("filename", geoip_mmdb_config.asn_db_file),
+			        log_data_string("mmdb_error", mmdb_strerror(status)));
 			geoip_mmdb_config.have_asn_database = 0;
 		}
 	}
@@ -247,9 +247,9 @@ GeoIPResult *geoip_lookup_mmdb(char *ip)
 	if (status != MMDB_OK)
 	{
 		zen_log(ULOG_DEBUG, "geoip_mmdb", "GEOIP_DB_ERROR", NULL,
-		           "mmdb: lookup error for $ip: $error",
-		           log_data_string("ip", ip),
-		           log_data_string("error", mmdb_strerror(status)));
+		        "mmdb: lookup error for $ip: $error",
+		        log_data_string("ip", ip),
+		        log_data_string("error", mmdb_strerror(status)));
 		return NULL;
 	}
 
@@ -279,9 +279,9 @@ GeoIPResult *geoip_lookup_mmdb(char *ip)
 	if (status != MMDB_OK)
 	{
 		zen_log(ULOG_DEBUG, "geoip_mmdb", "GEOIP_ASN_DB_ERROR", NULL,
-		           "mmdb: lookup error for $ip: $error",
-		           log_data_string("ip", ip),
-		           log_data_string("error", mmdb_strerror(status)));
+		        "mmdb: lookup error for $ip: $error",
+		        log_data_string("ip", ip),
+		        log_data_string("error", mmdb_strerror(status)));
 		return r;
 	}
 

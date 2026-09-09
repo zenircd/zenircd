@@ -59,8 +59,8 @@ MOD_TEST()
 	if (!CallbackAddString(modinfo->handle, CALLBACKTYPE_CLOAK_KEY_CHECKSUM, cloakcsum))
 	{
 		zen_log(ULOG_ERROR, "config", "CLOAK_MODULE_DUPLICATE", NULL,
-		           "cloak_md5: Error while trying to install callback.\n"
-		           "Maybe you have multiple cloaking modules loaded? You can only load one!");
+		        "cloak_md5: Error while trying to install callback.\n"
+		        "Maybe you have multiple cloaking modules loaded? You can only load one!");
 		return MOD_FAILED;
 	}
 	if (!CallbackAddString(modinfo->handle, CALLBACKTYPE_CLOAK_EX, hidehost))
@@ -75,10 +75,10 @@ MOD_TEST()
 	if (!md5_function)
 	{
 		zen_log(ULOG_ERROR, "tls", "MD5_UNAVAILABLE", NULL,
-		           "You are trying to load the 'cloak_md5' module but the MD5 "
-		           "algorithm is not available in your OpenSSL/LibreSSL version. "
-		           "Either switch to 'cloak_sha256' or change your SSL library "
-		           "configuration (consult your distro docs).");
+		        "You are trying to load the 'cloak_md5' module but the MD5 "
+		        "algorithm is not available in your OpenSSL/LibreSSL version. "
+		        "Either switch to 'cloak_sha256' or change your SSL library "
+		        "configuration (consult your distro docs).");
 		return MOD_FAILED;
 	}
 #endif

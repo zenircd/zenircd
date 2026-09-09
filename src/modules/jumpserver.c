@@ -87,8 +87,8 @@ static void redirect_all_clients(void)
 		}
 	}
 	zen_log(ULOG_INFO, "jumpserver", "JUMPSERVER_REPORT", NULL,
-	           "[jumpserver] Redirected $num_clients client(s)",
-	           log_data_integer("num_clients", count));
+	        "[jumpserver] Redirected $num_clients client(s)",
+	        log_data_integer("num_clients", count));
 }
 
 int jumpserver_preconnect(Client *client)
@@ -154,7 +154,7 @@ CMD_FUNC(cmd_jumpserver)
 		}
 		free_jss();
 		zen_log(ULOG_INFO, "jumpserver", "JUMPSERVER_DISABLED", client,
-		           "[jumpserver] $client.details turned jumpserver OFF");
+		        "[jumpserver] $client.details turned jumpserver OFF");
 		return;
 	}
 
@@ -243,26 +243,26 @@ CMD_FUNC(cmd_jumpserver)
 	if (tlsserv)
 	{
 		zen_log(ULOG_INFO, "jumpserver", "JUMPSERVER_ENABLED", client,
-		           "[jumpserver] $client.details turned jumpserver ON for $jumpserver_who "
-		           "to $jumpserver_server:$jumpserver_port "
-		           "[TLS: $jumpserver_tls_server:$jumpserver_tls_port] "
-		           "($reason)",
-		           log_data_string("jumpserver_who", all ? "ALL CLIENTS" : "all new clients"),
-		           log_data_string("jumpserver_server", jss->server),
-		           log_data_integer("jumpserver_port", jss->port),
-		           log_data_string("jumpserver_tls_server", jss->tls_server),
-		           log_data_integer("jumpserver_tls_port", jss->tls_port),
-		           log_data_string("reason", jss->reason));
+		        "[jumpserver] $client.details turned jumpserver ON for $jumpserver_who "
+		        "to $jumpserver_server:$jumpserver_port "
+		        "[TLS: $jumpserver_tls_server:$jumpserver_tls_port] "
+		        "($reason)",
+		        log_data_string("jumpserver_who", all ? "ALL CLIENTS" : "all new clients"),
+		        log_data_string("jumpserver_server", jss->server),
+		        log_data_integer("jumpserver_port", jss->port),
+		        log_data_string("jumpserver_tls_server", jss->tls_server),
+		        log_data_integer("jumpserver_tls_port", jss->tls_port),
+		        log_data_string("reason", jss->reason));
 	} else
 	{
 		zen_log(ULOG_INFO, "jumpserver", "JUMPSERVER_ENABLED", client,
-		           "[jumpserver] $client.details turned jumpserver ON for $jumpserver_who "
-		           "to $jumpserver_server:$jumpserver_port "
-		           "($reason)",
-		           log_data_string("jumpserver_who", all ? "ALL CLIENTS" : "all new clients"),
-		           log_data_string("jumpserver_server", jss->server),
-		           log_data_integer("jumpserver_port", jss->port),
-		           log_data_string("reason", jss->reason));
+		        "[jumpserver] $client.details turned jumpserver ON for $jumpserver_who "
+		        "to $jumpserver_server:$jumpserver_port "
+		        "($reason)",
+		        log_data_string("jumpserver_who", all ? "ALL CLIENTS" : "all new clients"),
+		        log_data_string("jumpserver_server", jss->server),
+		        log_data_integer("jumpserver_port", jss->port),
+		        log_data_string("reason", jss->reason));
 	}
 
 	if (all)

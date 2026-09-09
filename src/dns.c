@@ -110,8 +110,8 @@ static void zendns_io_cb(int fd, int revents, void *data)
 #ifdef DEBUGMODE
 	else
 		zen_log(ULOG_ERROR, "dns", "DNS_IO_CALLBACK_BUG", NULL,
-		           "zendns_io_cb() called with invalid data ($data)",
-		           log_data_integer("data", (long long)data));
+		        "zendns_io_cb() called with invalid data ($data)",
+		        log_data_integer("data", (long long)data));
 #endif
 }
 
@@ -152,8 +152,8 @@ static int zendns_sock_create_cb(ares_socket_t fd, int type, void *data)
 #ifdef DEBUGMODE
 	else
 		zen_log(ULOG_ERROR, "dns", "DNS_SOCK_CREATE_CB_BUG", NULL,
-		           "zendns_io_cb() called with invalid data ($data)",
-		           log_data_integer("data", (long long)data));
+		        "zendns_io_cb() called with invalid data ($data)",
+		        log_data_integer("data", (long long)data));
 #endif
 	return ARES_SUCCESS;
 }
@@ -297,7 +297,7 @@ void reinit_resolver(Client *client)
 	zendns_timeout_hdl = NULL;
 
 	zen_log(ULOG_INFO, "dns", "REINIT_RESOLVER", client,
-	           "$client requested reinitalization of the DNS resolver");
+	        "$client requested reinitalization of the DNS resolver");
 	ares_destroy(resolver_channel_client);
 	ares_destroy(resolver_channel_https);
 	ares_destroy(resolver_channel_dnsbl);
@@ -519,8 +519,8 @@ void zendns_cb_nametoip_link(void *arg, int status, int timeouts, struct hostent
 
 		/* fatal error while resolving */
 		zen_log(ULOG_ERROR, "link", "LINK_ERROR_RESOLVING", NULL,
-		           "Unable to resolve hostname $link_block.hostname, when trying to connect to server $link_block.",
-		           log_data_link_block(r->linkblock));
+		        "Unable to resolve hostname $link_block.hostname, when trying to connect to server $link_block.",
+		        log_data_link_block(r->linkblock));
 		r->linkblock->refcount--;
 		zendns_freeandremovereq(r);
 		return;
@@ -532,8 +532,8 @@ void zendns_cb_nametoip_link(void *arg, int status, int timeouts, struct hostent
 	{
 		/* Illegal response -- fatal */
 		zen_log(ULOG_ERROR, "link", "LINK_ERROR_RESOLVING", NULL,
-		           "Unable to resolve hostname $link_block.hostname, when trying to connect to server $link_block.",
-		           log_data_link_block(r->linkblock));
+		        "Unable to resolve hostname $link_block.hostname, when trying to connect to server $link_block.",
+		        log_data_link_block(r->linkblock));
 		zendns_freeandremovereq(r);
 		return;
 	}
@@ -830,7 +830,7 @@ CMD_FUNC(cmd_dns)
 	} else if (*param == 'c') /* CLEAR CACHE */
 	{
 		zen_log(ULOG_INFO, "dns", "DNS_CACHE_CLEARED", client,
-		           "DNS cache cleared by $client");
+		        "DNS cache cleared by $client");
 
 		while (cache_list)
 		{

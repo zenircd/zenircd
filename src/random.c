@@ -323,8 +323,8 @@ static void _rs_stir(void)
 	if (RAND_bytes(rnd, sizeof(rnd)) <= 0)
 	{
 		zen_log(ULOG_FATAL, "random", "RANDOM_OUT_OF_BYTES", NULL,
-		           "Could not obtain random bytes, error $tls_error_code",
-		           log_data_integer("tls_error_code", ERR_get_error()));
+		        "Could not obtain random bytes, error $tls_error_code",
+		        log_data_integer("tls_error_code", ERR_get_error()));
 		abort();
 	}
 

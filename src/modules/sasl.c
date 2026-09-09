@@ -362,8 +362,8 @@ void auto_discover_sasl_server(int justlinked)
 			if (justlinked)
 			{
 				zen_log(ULOG_INFO, "config", "SASL_SERVER_AUTODETECT", client,
-				           "Services server $client provides SASL authentication, good! "
-				           "I'm setting set::sasl-server to \"$client\" internally.");
+				        "Services server $client provides SASL authentication, good! "
+				        "I'm setting set::sasl-server to \"$client\" internally.");
 			}
 			safe_strdup(SASL_SERVER, SERVICES_NAME);
 			if (justlinked)

@@ -289,15 +289,15 @@ const char *is_module_deprecated(const char *name)
 	if (!strcmp(name, "third/central-api"))
 	{
 		zen_log(ULOG_ERROR, "config", "CONFIG_LOAD_DEPRECATED_MODULE", NULL,
-		           "The central-api module has been moved from third party modules to the core.\n"
-		           "Please replace your loadmodule \"third/central-api\"; line with: loadmodule \"central-api\";");
+		        "The central-api module has been moved from third party modules to the core.\n"
+		        "Please replace your loadmodule \"third/central-api\"; line with: loadmodule \"central-api\";");
 		return "Don't load this third party module, see error above";
 	}
 	if (!strcmp(name, "third/centralblocklist"))
 	{
 		zen_log(ULOG_ERROR, "config", "CONFIG_LOAD_DEPRECATED_MODULE", NULL,
-		           "The centralblocklist module has been moved from third party modules to the core with a slightly changed name.\n"
-		           "Please replace your loadmodule \"third/centralblocklist\"; line with: loadmodule \"central-blocklist\";");
+		        "The centralblocklist module has been moved from third party modules to the core with a slightly changed name.\n"
+		        "Please replace your loadmodule \"third/centralblocklist\"; line with: loadmodule \"central-blocklist\";");
 		return "Don't load this third party module, see error above";
 	}
 	return NULL;
@@ -599,8 +599,8 @@ void FreeModObj(ModuleObject *obj, Module *m)
 	} else
 	{
 		zen_log(ULOG_FATAL, "module", "FREEMODOBJ_UNKNOWN_TYPE", NULL,
-		           "[BUG] FreeModObj() called for unknown object (type $type)",
-		           log_data_integer("type", obj->type));
+		        "[BUG] FreeModObj() called for unknown object (type $type)",
+		        log_data_integer("type", obj->type));
 		abort();
 	}
 }
@@ -1219,9 +1219,9 @@ CommandOverride *CommandOverrideAdd(Module *module, const char *name, int priori
 	if (module && (loop.config_status <= CONFIG_STATUS_INIT))
 	{
 		zen_log(ULOG_ERROR, "module", "BUG_COMMANDOVERRIDEADD_NOT_MOD_LOAD", NULL,
-		           "[BUG] CommandOverrideAdd() called by module '$module_name' before MOD_LOAD(). "
-		           "This must be in MOD_LOAD(), otherwise the command to be overridden may not exist yet.",
-		           log_data_string("module_name", module->header->name));
+		        "[BUG] CommandOverrideAdd() called by module '$module_name' before MOD_LOAD(). "
+		        "This must be in MOD_LOAD(), otherwise the command to be overridden may not exist yet.",
+		        log_data_string("module_name", module->header->name));
 		module->errorcode = MODERR_INVALID;
 		return NULL;
 	}
@@ -1321,8 +1321,8 @@ EVENT(e_unload_module_delayed)
 	if (i == 1)
 	{
 		zen_log(ULOG_INFO, "module", "MODULE_UNLOADING_DELAYED", NULL,
-		           "Unloaded module $module_name (was delayed earlier)",
-		           log_data_string("module_name", name));
+		        "Unloaded module $module_name (was delayed earlier)",
+		        log_data_string("module_name", name));
 	}
 	safe_free(name);
 	extcmodes_check_for_changes();
@@ -1339,8 +1339,8 @@ void unload_all_modules(void)
 	{
 #ifdef DEBUGMODE
 		zen_log(ULOG_DEBUG, "module", "MODULE_UNLOADING", NULL,
-		           "Unloading module $module_name",
-		           log_data_string("module_name", m->header->name));
+		        "Unloading module $module_name",
+		        log_data_string("module_name", m->header->name));
 #endif
 		irc_dlsym(m->dll, "Mod_Unload", Mod_Unload);
 		if (Mod_Unload)
@@ -1414,11 +1414,11 @@ int callbacks_check(void)
 	if (!Callbacks[CALLBACKTYPE_CLOAK_KEY_CHECKSUM])
 	{
 		zen_log(ULOG_ERROR, "config", "NO_CLOAKING_MODULE", NULL,
-		           "No cloaking module loaded, you must load 1 of these modules:\n"
-		           "1) cloak_sha256 - if you are a new network starting with ZenIRCd 6\n"
-		           "2) cloak_md5 - the old one if migrating an existing network from ZenIRCd 3.2/4/5\n"
-		           "3) cloak_none - if you don't want to use cloaking at all\n"
-		           "See also https://www.unrealircd.org/docs/FAQ#choose-a-cloaking-module");
+		        "No cloaking module loaded, you must load 1 of these modules:\n"
+		        "1) cloak_sha256 - if you are a new network starting with ZenIRCd 6\n"
+		        "2) cloak_md5 - the old one if migrating an existing network from ZenIRCd 3.2/4/5\n"
+		        "3) cloak_none - if you don't want to use cloaking at all\n"
+		        "See also https://www.unrealircd.org/docs/FAQ#choose-a-cloaking-module");
 		return -1;
 	}
 	return 0;

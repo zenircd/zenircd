@@ -88,8 +88,8 @@ CMD_FUNC(cmd_lusers)
 		if (max_connection_count % 10 == 0) /* only send on even tens */
 		{
 			zen_log(ULOG_INFO, "client", "NEW_USER_RECORD", NULL,
-			           "New record on this server: $num_users connections",
-			           log_data_integer("num_users", max_connection_count));
+			        "New record on this server: $num_users connections",
+			        log_data_integer("num_users", max_connection_count));
 		}
 	}
 }

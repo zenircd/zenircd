@@ -110,8 +110,8 @@ void _userhost_changed(Client *client)
 	if (strcmp(remember_nick, client->name))
 	{
 		zen_log(ULOG_ERROR, "main", "BUG_USERHOST_CHANGED", client,
-		           "[BUG] userhost_changed() was called but without calling userhost_save_current() first! Affected user: $client\n"
-		           "Please report above bug on https://bugs.unrealircd.org/");
+		        "[BUG] userhost_changed() was called but without calling userhost_save_current() first! Affected user: $client\n"
+		        "Please report above bug on https://bugs.unrealircd.org/");
 		return; /* We cannot safely process this request anymore */
 	}
 
@@ -344,18 +344,18 @@ CMD_FUNC(cmd_chghost)
 		if (issuer)
 		{
 			zen_log(ULOG_INFO, "chgcmds", "CHGHOST_COMMAND", client,
-			           "CHGHOST: $issuer changed the virtual hostname of $target.details to be $new_hostname",
-			           log_data_string("issuer", issuer),
-			           log_data_string("change_type", "hostname"),
-			           log_data_client("target", target),
-			           log_data_string("new_hostname", parv[2]));
+			        "CHGHOST: $issuer changed the virtual hostname of $target.details to be $new_hostname",
+			        log_data_string("issuer", issuer),
+			        log_data_string("change_type", "hostname"),
+			        log_data_client("target", target),
+			        log_data_string("new_hostname", parv[2]));
 		} else
 		{
 			zen_log(ULOG_INFO, "chgcmds", "CHGHOST_COMMAND", client,
-			           "CHGHOST: $client changed the virtual hostname of $target.details to be $new_hostname",
-			           log_data_string("change_type", "hostname"),
-			           log_data_client("target", target),
-			           log_data_string("new_hostname", parv[2]));
+			        "CHGHOST: $client changed the virtual hostname of $target.details to be $new_hostname",
+			        log_data_string("change_type", "hostname"),
+			        log_data_client("target", target),
+			        log_data_string("new_hostname", parv[2]));
 		}
 	}
 

@@ -252,17 +252,17 @@ void channel_svsmode(Client *client, int parc, const char *parv[])
 			if (!cm || (cm->type != CMODE_MEMBER))
 			{
 				zen_log(ULOG_WARNING, "svsmode", "INVALID_SVSMODE", client,
-				           "Invalid SVSMODE for mode '$mode_character' in channel $channel from $client.",
-				           log_data_char("mode_character", *m),
-				           log_data_channel("channel", channel));
+				        "Invalid SVSMODE for mode '$mode_character' in channel $channel from $client.",
+				        log_data_char("mode_character", *m),
+				        log_data_channel("channel", channel));
 				continue;
 			}
 			if (what != MODE_DEL)
 			{
 				zen_log(ULOG_WARNING, "svsmode", "INVALID_SVSMODE", client,
-				           "Invalid SVSMODE from $client trying to add '$mode_character' in $channel.",
-				           log_data_char("mode_character", *m),
-				           log_data_channel("channel", channel));
+				        "Invalid SVSMODE from $client trying to add '$mode_character' in $channel.",
+				        log_data_char("mode_character", *m),
+				        log_data_channel("channel", channel));
 				continue;
 			}
 			for (member = channel->members; member; member = member->next)
@@ -403,14 +403,14 @@ void do_svsmode(Client *client, MessageTag *recv_mtags, int parc, const char *pa
 					{
 						/* isn't an oper, and would not become one either.. abort! */
 						zen_log(ULOG_WARNING, "svsmode", "SVSMODE_INVALID", client,
-						           "[BUG] Server $client tried to set user mode +H (hidden ircop) "
-						           "on a user that is not +o (not ircop)! "
-						           "Please fix your services, or if you think it is our fault, then "
-						           "report at https://bugs.unrealircd.org/. "
-						           "Parameters: $para1 $para2. Target: $target.",
-						           log_data_string("para1", parv[1]),
-						           log_data_string("para2", parv[2]),
-						           log_data_client("target", target));
+						        "[BUG] Server $client tried to set user mode +H (hidden ircop) "
+						        "on a user that is not +o (not ircop)! "
+						        "Please fix your services, or if you think it is our fault, then "
+						        "report at https://bugs.unrealircd.org/. "
+						        "Parameters: $para1 $para2. Target: $target.",
+						        log_data_string("para1", parv[1]),
+						        log_data_string("para2", parv[2]),
+						        log_data_client("target", target));
 						break; /* abort! */
 					}
 					irccounts.operators--;

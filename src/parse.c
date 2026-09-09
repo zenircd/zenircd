@@ -64,7 +64,7 @@ int process_packet(Client *client, char *readbuf, int length, int killsafely)
 	if (IsUnknown(client) && (DBufLength(&client->local->recvQ) > iConf.handshake_data_flood_amount))
 	{
 		zen_log(ULOG_INFO, "flood", "HANDSHAKE_DATA_FLOOD", client,
-		           "Handshake data flood detected from $client.details [$client.ip]");
+		        "Handshake data flood detected from $client.details [$client.ip]");
 		if (!killsafely)
 			ban_handshake_data_flooder(client);
 		else
@@ -76,9 +76,9 @@ int process_packet(Client *client, char *readbuf, int length, int killsafely)
 	if (IsUser(client) && DBufLength(&client->local->recvQ) > get_recvq(client))
 	{
 		zen_log(ULOG_INFO, "flood", "RECVQ_EXCEEDED", client,
-		           "Flood from $client.details [$client.ip] exceeds class::recvq ($recvq > $class_recvq) (Client sending too much data)",
-		           log_data_integer("recvq", DBufLength(&client->local->recvQ)),
-		           log_data_integer("class_recvq", get_recvq(client)));
+		        "Flood from $client.details [$client.ip] exceeds class::recvq ($recvq > $class_recvq) (Client sending too much data)",
+		        log_data_integer("recvq", DBufLength(&client->local->recvQ)),
+		        log_data_integer("class_recvq", get_recvq(client)));
 		if (!killsafely)
 			exit_client(client, NULL, "Excess Flood");
 		else
@@ -210,7 +210,7 @@ void parse(Client *cptr, char *buffer, int length)
 	if ((cptr->local->traffic.bytes_received >= iConf.handshake_data_flood_amount) && IsUnknown(cptr))
 	{
 		zen_log(ULOG_INFO, "flood", "HANDSHAKE_DATA_FLOOD", cptr,
-		           "Handshake data flood detected from $client.details [$client.ip]");
+		        "Handshake data flood detected from $client.details [$client.ip]");
 		ban_handshake_data_flooder(cptr);
 		return;
 	}
@@ -220,8 +220,8 @@ void parse(Client *cptr, char *buffer, int length)
 
 #if defined(RAWCMDLOGGING)
 	zen_log(ULOG_INFO, "rawtraffic", "TRAFFIC_IN", cptr,
-	           "<- $client: $data",
-	           log_data_string("data", backupbuf));
+	        "<- $client: $data",
+	        log_data_string("data", backupbuf));
 #endif
 
 	/* This poisons unused para elements that code should never access */
@@ -773,8 +773,8 @@ static int do_numeric(int numeric, Client *client, MessageTag *recv_mtags, int p
 		if (numeric == 691)
 		{
 			zen_log(ULOG_WARNING, "link", "STARTTLS_FAILED", client,
-			           "Switching from plaintext to TLS via STARTTLS failed for server $client, this is unusual. "
-			           "Please check the other side of the link for errors.");
+			        "Switching from plaintext to TLS via STARTTLS failed for server $client, this is unusual. "
+			        "Please check the other side of the link for errors.");
 			reject_insecure_server(client);
 			return 0;
 		}
@@ -786,7 +786,7 @@ static int do_numeric(int numeric, Client *client, MessageTag *recv_mtags, int p
 			if (ret < 0)
 			{
 				zen_log(ULOG_WARNING, "link", "STARTTLS_FAILED", client,
-				           "Switching from plaintext to TLS via STARTTLS failed for server $client, this is unusual.");
+				        "Switching from plaintext to TLS via STARTTLS failed for server $client, this is unusual.");
 				reject_insecure_server(client);
 				return ret;
 			}

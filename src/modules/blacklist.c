@@ -873,13 +873,13 @@ int blacklist_action(Client *client, char *opernotice, BanAction *ban_action, ch
                      char *blacklist, char *blacklist_dns_name, int blacklist_dns_reply)
 {
 	zen_log_raw(ULOG_INFO, "blacklist", "BLACKLIST_HIT", client,
-	               opernotice,
-	               log_data_string("blacklist_name", blacklist),
-	               log_data_string("blacklist_dns_name", blacklist_dns_name),
-	               log_data_integer("blacklist_dns_reply", blacklist_dns_reply),
-	               log_data_string("ban_action", ban_actions_to_string(ban_action)),
-	               log_data_string("ban_reason", ban_reason),
-	               log_data_integer("ban_time", ban_time));
+	            opernotice,
+	            log_data_string("blacklist_name", blacklist),
+	            log_data_string("blacklist_dns_name", blacklist_dns_name),
+	            log_data_integer("blacklist_dns_reply", blacklist_dns_reply),
+	            log_data_string("ban_action", ban_actions_to_string(ban_action)),
+	            log_data_string("ban_reason", ban_reason),
+	            log_data_integer("ban_time", ban_time));
 	return take_action(client, ban_action, ban_reason, ban_time, 0, NULL);
 }
 

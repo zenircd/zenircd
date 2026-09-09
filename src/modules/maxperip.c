@@ -300,7 +300,7 @@ void decrease_ipusers_bucket(Client *client)
 	if (!p)
 	{
 		zen_log(ULOG_INFO, "user", "BUG_DECREASE_IPUSERS_BUCKET", client,
-		           "[BUG] decrease_ipusers_bucket() called but bucket is gone for client $client.details");
+		        "[BUG] decrease_ipusers_bucket() called but bucket is gone for client $client.details");
 		return;
 	}
 
@@ -556,32 +556,32 @@ const char *maxperip_allow_client(Client *client, ConfigItem_allow *aconf)
 			mask_ipv6_rawip(client->rawip, iConf.default_ipv6_clone_mask, masked);
 			if (bucket && bucket->local_clients > aconf->maxperip)
 				zen_log(ULOG_INFO, "maxperip", "MAXPERIP_LIMIT", client,
-				           "Client $client.name with IP $client.ip rejected: maxperip limit exceeded for $prefix_addr/$prefix_len ($count local, max $max)",
-				           log_data_string("prefix_addr", format_ipv6_addr(masked)),
-				           log_data_integer("prefix_len", iConf.default_ipv6_clone_mask),
-				           log_data_integer("count", bucket->local_clients),
-				           log_data_integer("max", aconf->maxperip));
+				        "Client $client.name with IP $client.ip rejected: maxperip limit exceeded for $prefix_addr/$prefix_len ($count local, max $max)",
+				        log_data_string("prefix_addr", format_ipv6_addr(masked)),
+				        log_data_integer("prefix_len", iConf.default_ipv6_clone_mask),
+				        log_data_integer("count", bucket->local_clients),
+				        log_data_integer("max", aconf->maxperip));
 			else
 				zen_log(ULOG_INFO, "maxperip", "MAXPERIP_LIMIT", client,
-				           "Client $client.name with IP $client.ip rejected: maxperip limit exceeded for $prefix_addr/$prefix_len ($count global, max $max)",
-				           log_data_string("prefix_addr", format_ipv6_addr(masked)),
-				           log_data_integer("prefix_len", iConf.default_ipv6_clone_mask),
-				           log_data_integer("count", bucket ? bucket->global_clients : 0),
-				           log_data_integer("max", aconf->global_maxperip));
+				        "Client $client.name with IP $client.ip rejected: maxperip limit exceeded for $prefix_addr/$prefix_len ($count global, max $max)",
+				        log_data_string("prefix_addr", format_ipv6_addr(masked)),
+				        log_data_integer("prefix_len", iConf.default_ipv6_clone_mask),
+				        log_data_integer("count", bucket ? bucket->global_clients : 0),
+				        log_data_integer("max", aconf->global_maxperip));
 			return format_ipv6_prefix_reject_message(
 			    iConf.reject_message_too_many_connections_ipv6_range,
 			    masked, iConf.default_ipv6_clone_mask);
 		}
 		if (bucket && bucket->local_clients > aconf->maxperip)
 			zen_log(ULOG_INFO, "maxperip", "MAXPERIP_LIMIT", client,
-			           "Client $client.name with IP $client.ip rejected: maxperip limit exceeded ($count local, max $max)",
-			           log_data_integer("count", bucket->local_clients),
-			           log_data_integer("max", aconf->maxperip));
+			        "Client $client.name with IP $client.ip rejected: maxperip limit exceeded ($count local, max $max)",
+			        log_data_integer("count", bucket->local_clients),
+			        log_data_integer("max", aconf->maxperip));
 		else
 			zen_log(ULOG_INFO, "maxperip", "MAXPERIP_LIMIT", client,
-			           "Client $client.name with IP $client.ip rejected: maxperip limit exceeded ($count global, max $max)",
-			           log_data_integer("count", bucket ? bucket->global_clients : 0),
-			           log_data_integer("max", aconf->global_maxperip));
+			        "Client $client.name with IP $client.ip rejected: maxperip limit exceeded ($count global, max $max)",
+			        log_data_integer("count", bucket ? bucket->global_clients : 0),
+			        log_data_integer("max", aconf->global_maxperip));
 		return iConf.reject_message_too_many_connections;
 	}
 	return NULL;

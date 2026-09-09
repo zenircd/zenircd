@@ -873,8 +873,8 @@ int antirandom_preconnect(Client *client)
 		if ((n == BAN_ACT_WARN) || (n == BAN_ACT_SOFT_WARN))
 		{
 			zen_log(ULOG_INFO, "antirandom", "ANTIRANDOM_DENIED_USER", client,
-			           "[antirandom] would have denied access to user with score $score: $client.details:$client.user.realname",
-			           log_data_integer("score", score));
+			        "[antirandom] would have denied access to user with score $score: $client.details:$client.user.realname",
+			        log_data_integer("score", score));
 		} else if (n <= 0)
 		{
 			/* No action / exempt */
@@ -883,8 +883,8 @@ int antirandom_preconnect(Client *client)
 			if (cfg.show_failedconnects)
 			{
 				zen_log(ULOG_INFO, "antirandom", "ANTIRANDOM_DENIED_USER", client,
-				           "[antirandom] denied access to user with score $score: $client.details:$client.user.realname",
-				           log_data_integer("score", score));
+				        "[antirandom] denied access to user with score $score: $client.details:$client.user.realname",
+				        log_data_integer("score", score));
 			}
 			return HOOK_DENY;
 		}

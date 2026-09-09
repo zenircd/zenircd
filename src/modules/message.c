@@ -663,8 +663,8 @@ int _can_send_to_channel(Client *client, Channel *channel, const char **msgtext,
 			if (!*errmsg)
 			{
 				zen_log(ULOG_ERROR, "main", "BUG_CAN_SEND_TO_CHANNEL_NO_ERRMSG", client,
-				           "[BUG] Module $module did not set errmsg!!!",
-				           log_data_string("module", h->owner->header->name));
+				        "[BUG] Module $module did not set errmsg!!!",
+				        log_data_string("module", h->owner->header->name));
 				abort();
 			}
 			break;

@@ -210,18 +210,18 @@ EVENT(checklinksec)
 	if (local_link_security < last_local_link_security)
 	{
 		zen_log(ULOG_INFO, "link-security", "LOCAL_LINK_SECURITY_DOWNGRADED", NULL,
-		           "Local link-security downgraded from level $previous_level to $new_level due to just linked in server(s)",
-		           log_data_integer("previous_level", last_local_link_security),
-		           log_data_integer("new_level", local_link_security));
+		        "Local link-security downgraded from level $previous_level to $new_level due to just linked in server(s)",
+		        log_data_integer("previous_level", last_local_link_security),
+		        log_data_integer("new_level", local_link_security));
 		warning_sent = 1;
 	}
 
 	if (global_link_security < last_global_link_security)
 	{
 		zen_log(ULOG_INFO, "link-security", "GLOBAL_LINK_SECURITY_DOWNGRADED", NULL,
-		           "Global link-security downgraded from level $previous_level to $new_level due to just linked in server(s)",
-		           log_data_integer("previous_level", last_global_link_security),
-		           log_data_integer("new_level", global_link_security));
+		        "Global link-security downgraded from level $previous_level to $new_level due to just linked in server(s)",
+		        log_data_integer("previous_level", last_global_link_security),
+		        log_data_integer("new_level", global_link_security));
 		warning_sent = 1;
 	}
 
@@ -230,9 +230,9 @@ EVENT(checklinksec)
 	if (warning_sent)
 	{
 		zen_log(ULOG_INFO, "link-security", "EFFECTIVE_LINK_SECURITY_REPORT", NULL,
-		           "Effective (network-wide) link-security is now: level $effective_link_security\n"
-		           "More information about this can be found at https://www.unrealircd.org/docs/Link_security",
-		           log_data_integer("effective_link_security", effective_link_security));
+		        "Effective (network-wide) link-security is now: level $effective_link_security\n"
+		        "More information about this can be found at https://www.unrealircd.org/docs/Link_security",
+		        log_data_integer("effective_link_security", effective_link_security));
 	}
 }
 

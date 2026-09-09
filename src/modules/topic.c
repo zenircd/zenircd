@@ -64,10 +64,10 @@ MOD_UNLOAD()
 void topic_operoverride_msg(Client *client, Channel *channel, const char *topic)
 {
 	zen_log(ULOG_INFO, "operoverride", "OPEROVERRIDE_TOPIC", client,
-	           "OperOverride: $client.details changed the topic of $channel to '$topic'",
-	           log_data_string("override_type", "topic"),
-	           log_data_string("topic", topic),
-	           log_data_channel("channel", channel));
+	        "OperOverride: $client.details changed the topic of $channel to '$topic'",
+	        log_data_string("override_type", "topic"),
+	        log_data_string("topic", topic),
+	        log_data_channel("channel", channel));
 }
 
 /** Query or change the channel topic.

@@ -61,9 +61,9 @@ void fd_setselect_real(int fd, int flags, IOCallbackFunc iocb, void *data)
 	if ((fd < 0) || (fd >= MAXCONNECTIONS))
 	{
 		zen_log(ULOG_ERROR, "io", "BUG_FD_SETSELECT_OUT_OF_RANGE", NULL,
-		           "[BUG] trying to modify fd $fd in fd table, but MAXCONNECTIONS is $maxconnections",
-		           log_data_integer("fd", fd),
-		           log_data_integer("maxconnections", MAXCONNECTIONS));
+		        "[BUG] trying to modify fd $fd in fd table, but MAXCONNECTIONS is $maxconnections",
+		        log_data_integer("fd", fd),
+		        log_data_integer("maxconnections", MAXCONNECTIONS));
 #ifdef DEBUGMODE
 		abort();
 #endif
@@ -152,8 +152,8 @@ void fd_debug(fd_set *f, int highest, char *name)
 			if (ioctlsocket(i, FIONBIO, &nonb) < 0)
 			{
 				zen_log(ULOG_ERROR, "io", "FD_DEBUG", NULL,
-				           "[BUG] fd_debug: fd $fd is invalid!!!",
-				           log_data_integer("fd", i));
+				        "[BUG] fd_debug: fd $fd is invalid!!!",
+				        log_data_integer("fd", i));
 			}
 		}
 	}
@@ -187,8 +187,8 @@ void fd_select(int delay)
 	if (num < 0)
 	{
 		zen_log(ULOG_FATAL, "io", "SELECT_ERROR", NULL,
-		           "select() returned error ($socket_error) -- SERIOUS TROUBLE!",
-		           log_data_socket_error(-1));
+		        "select() returned error ($socket_error) -- SERIOUS TROUBLE!",
+		        log_data_socket_error(-1));
 		/* DEBUG the actual problem: */
 		memcpy(&work_read_fds, &read_fds, sizeof(fd_set));
 		memcpy(&work_write_fds, &write_fds, sizeof(fd_set));
@@ -281,8 +281,8 @@ void fd_fork()
 
  #ifdef DEBUGMODE
 				zen_log(ULOG_ERROR, "io", "KEVENT_FAILED", NULL,
-				           "[io] fd_fork(): kevent returned error: $system_error",
-				           log_data_string("system_error", strerror(errno)));
+				        "[io] fd_fork(): kevent returned error: $system_error",
+				        log_data_string("system_error", strerror(errno)));
  #endif
 			}
 		}
@@ -312,11 +312,11 @@ void fd_refresh(int fd)
 			{
 				int save_err = errno;
 				zen_log(ULOG_ERROR, "io", "KEVENT_FAILED_REFRESH", NULL,
-				           "fd_refresh(): kevent returned error for fd $fd ($fd_action) ($callback): $system_error",
-				           log_data_string("system_error", strerror(save_err)),
-				           log_data_integer("fd", fd),
-				           log_data_string("fd_action", (fde->read_callback ? "add" : "delete")),
-				           log_data_string("callback", "read_callback"));
+				        "fd_refresh(): kevent returned error for fd $fd ($fd_action) ($callback): $system_error",
+				        log_data_string("system_error", strerror(save_err)),
+				        log_data_integer("fd", fd),
+				        log_data_string("fd_action", (fde->read_callback ? "add" : "delete")),
+				        log_data_string("callback", "read_callback"));
 			}
  #endif
 		}
@@ -332,11 +332,11 @@ void fd_refresh(int fd)
 			{
 				int save_err = errno;
 				zen_log(ULOG_ERROR, "io", "KEVENT_FAILED_REFRESH", NULL,
-				           "[io] fd_refresh(): kevent returned error for fd $fd ($fd_action) ($callback): $system_error",
-				           log_data_string("system_error", strerror(save_err)),
-				           log_data_integer("fd", fd),
-				           log_data_string("fd_action", "add"),
-				           log_data_string("callback", "write_callback"));
+				        "[io] fd_refresh(): kevent returned error for fd $fd ($fd_action) ($callback): $system_error",
+				        log_data_string("system_error", strerror(save_err)),
+				        log_data_integer("fd", fd),
+				        log_data_string("fd_action", "add"),
+				        log_data_string("callback", "write_callback"));
 			}
  #endif
 		}
@@ -456,10 +456,10 @@ void fd_refresh(int fd)
 			return;
 
 		zen_log(ULOG_ERROR, "io", "EPOLL_CTL_FAILED", NULL,
-		           "[io] fd_refresh(): epoll_ctl returned error for fd $fd ($fd_description): $system_error",
-		           log_data_string("system_error", strerror(save_errno)),
-		           log_data_integer("fd", fd),
-		           log_data_string("fd_description", fde->desc));
+		        "[io] fd_refresh(): epoll_ctl returned error for fd $fd ($fd_description): $system_error",
+		        log_data_string("system_error", strerror(save_errno)),
+		        log_data_integer("fd", fd),
+		        log_data_string("fd_description", fde->desc));
 		return;
 	}
 
@@ -546,11 +546,11 @@ void fd_select(int delay)
 	if (tdiff > 1000000)
 	{
 		zen_log(ULOG_WARNING, "io", "HIGH_LOAD", NULL,
-		           "HIGH CPU LOAD! fd_select() took $time_msec msec "
-		           "(read: $num_read_callbacks, write: $num_write_callbacks)",
-		           log_data_integer("time_msec", tdiff / 1000),
-		           log_data_integer("num_read_callbacks", read_callbacks),
-		           log_data_integer("num_write_callbacks", write_callbacks));
+		        "HIGH CPU LOAD! fd_select() took $time_msec msec "
+		        "(read: $num_read_callbacks, write: $num_write_callbacks)",
+		        log_data_integer("time_msec", tdiff / 1000),
+		        log_data_integer("num_read_callbacks", read_callbacks),
+		        log_data_integer("num_write_callbacks", write_callbacks));
 	}
  #endif
 }

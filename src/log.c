@@ -376,12 +376,12 @@ int config_test_log(ConfigFile *conf, ConfigEntry *block)
 	if (!any_sources && !destinations)
 	{
 		zen_log(ULOG_ERROR, "config", "CONFIG_OLD_LOG_BLOCK", NULL,
-		           "$config_file:$line_number: Your log block contains no sources and no destinations.\n"
-		           "The log block changed between ZenIRCd 5 and ZenIRCd 6, "
-		           "see https://www.unrealircd.org/docs/FAQ#old-log-block on how "
-		           "to convert it to the new syntax.",
-		           log_data_string("config_file", block->file->filename),
-		           log_data_integer("line_number", block->line_number));
+		        "$config_file:$line_number: Your log block contains no sources and no destinations.\n"
+		        "The log block changed between ZenIRCd 5 and ZenIRCd 6, "
+		        "see https://www.unrealircd.org/docs/FAQ#old-log-block on how "
+		        "to convert it to the new syntax.",
+		        log_data_string("config_file", block->file->filename),
+		        log_data_integer("line_number", block->line_number));
 		errors++;
 		return errors;
 	}
@@ -1683,12 +1683,12 @@ static void emit_log_throttle_summary(LogThrottleEntry *e)
 		return;
 
 	zen_log(ULOG_INFO, "log", "LOG_RATE_LIMIT_SUMMARY", NULL,
-	           "Suppressed $count log entries with event_id $throttled_event_id "
-	           "(subsystem $throttled_subsystem) over the last $period seconds",
-	           log_data_integer("count", suppressed),
-	           log_data_string("throttled_event_id", e->event_id),
-	           log_data_string("throttled_subsystem", log_throttle_subsystem_or(e)),
-	           log_data_integer("period", period));
+	        "Suppressed $count log entries with event_id $throttled_event_id "
+	        "(subsystem $throttled_subsystem) over the last $period seconds",
+	        log_data_integer("count", suppressed),
+	        log_data_string("throttled_event_id", e->event_id),
+	        log_data_string("throttled_subsystem", log_throttle_subsystem_or(e)),
+	        log_data_integer("period", period));
 }
 
 /* Returns 1 if this log line should be suppressed.
@@ -1794,7 +1794,7 @@ void free_log_throttle_config(LogThrottleConfig *c)
 
 /* Logging function, called by the zen_log() macro. */
 void do_zen_log(LogLevel loglevel, const char *subsystem, const char *event_id,
-                   Client *client, const char *msg, ...)
+                Client *client, const char *msg, ...)
 {
 	va_list vl;
 
@@ -1815,7 +1815,7 @@ void do_zen_log(LogLevel loglevel, const char *subsystem, const char *event_id,
 
 /* Logging function, called by the zen_log_raw() macro. */
 void do_zen_log_raw(LogLevel loglevel, const char *subsystem, const char *event_id,
-                       Client *client, const char *msg, ...)
+                    Client *client, const char *msg, ...)
 {
 	va_list vl;
 
@@ -1835,7 +1835,7 @@ void do_zen_log_raw(LogLevel loglevel, const char *subsystem, const char *event_
 }
 
 void do_zen_log_norecursioncheck(LogLevel loglevel, const char *subsystem, const char *event_id,
-                                    Client *client, const char *msg, ...)
+                                 Client *client, const char *msg, ...)
 {
 	va_list vl;
 
@@ -1845,7 +1845,7 @@ void do_zen_log_norecursioncheck(LogLevel loglevel, const char *subsystem, const
 }
 
 void do_zen_log_internal(LogLevel loglevel, const char *subsystem, const char *event_id,
-                            Client *client, int expand_msg, const char *msg, va_list vl)
+                         Client *client, int expand_msg, const char *msg, va_list vl)
 {
 	LogData *d;
 	char *json_serialized;
@@ -1865,31 +1865,31 @@ void do_zen_log_internal(LogLevel loglevel, const char *subsystem, const char *e
 	if (loglevel_string == NULL)
 	{
 		do_zen_log_norecursioncheck(ULOG_ERROR, "log", "BUG_LOG_LOGLEVEL", NULL,
-		                               "[BUG] Next log message had an invalid log level -- corrected to ULOG_ERROR",
-		                               NULL);
+		                            "[BUG] Next log message had an invalid log level -- corrected to ULOG_ERROR",
+		                            NULL);
 		loglevel = ULOG_ERROR;
 		loglevel_string = log_level_valtostring(loglevel);
 	}
 	if (!valid_subsystem(subsystem))
 	{
 		do_zen_log_norecursioncheck(ULOG_ERROR, "log", "BUG_LOG_SUBSYSTEM", NULL,
-		                               "[BUG] Next log message had an invalid subsystem -- changed to 'unknown'",
-		                               NULL);
+		                            "[BUG] Next log message had an invalid subsystem -- changed to 'unknown'",
+		                            NULL);
 		subsystem = "unknown";
 	}
 	if (!valid_event_id(event_id))
 	{
 		do_zen_log_norecursioncheck(ULOG_ERROR, "log", "BUG_LOG_EVENT_ID", NULL,
-		                               "[BUG] Next log message had an invalid event id -- changed to 'unknown'",
-		                               NULL);
+		                            "[BUG] Next log message had an invalid event id -- changed to 'unknown'",
+		                            NULL);
 		event_id = "unknown";
 	}
 	/* This one is probably temporary since it should not be a real error, actually (but often is) */
 	if (expand_msg && strchr(msg, '%'))
 	{
 		do_zen_log_norecursioncheck(ULOG_ERROR, "log", "BUG_LOG_MESSAGE_PERCENT", NULL,
-		                               "[BUG] Next log message contains a percent sign -- possibly accidental format string!",
-		                               NULL);
+		                            "[BUG] Next log message contains a percent sign -- possibly accidental format string!",
+		                            NULL);
 	}
 
 	j = json_object();
@@ -2036,7 +2036,7 @@ void do_zen_log_internal(LogLevel loglevel, const char *subsystem, const char *e
 }
 
 void do_zen_log_internal_from_remote(LogLevel loglevel, const char *subsystem, const char *event_id,
-                                        MultiLine *msg, json_t *json, const char *json_serialized, Client *from_server)
+                                     MultiLine *msg, json_t *json, const char *json_serialized, Client *from_server)
 {
 	if (zen_log_recursion_trap)
 		return;
@@ -2084,9 +2084,9 @@ int log_tests(void)
 	if (snomask_num_destinations == 0)
 	{
 		zen_log(ULOG_ERROR, "config", "LOG_SNOMASK_BLOCK_MISSING", NULL,
-		           "Missing snomask logging configuration:\n"
-		           "Please add the following line to your zenircd.conf: "
-		           "include \"snomasks.default.conf\";");
+		        "Missing snomask logging configuration:\n"
+		        "Please add the following line to your zenircd.conf: "
+		        "include \"snomasks.default.conf\";");
 		return 0;
 	}
 	return 1;
@@ -2102,8 +2102,8 @@ void postconf_defaults_log_block(void)
 		return;
 
 	zen_log(ULOG_WARNING, "log", "NO_DISK_LOG_BLOCK", NULL,
-	           "No log { } block found that logs to disk -- "
-	           "logging everything in text format to 'ircd.log'");
+	        "No log { } block found that logs to disk -- "
+	        "logging everything in text format to 'ircd.log'");
 
 	/* Create a default log block */
 	l = safe_alloc(sizeof(Log));

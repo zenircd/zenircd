@@ -127,8 +127,8 @@ CMD_FUNC(cmd_protoctl)
 			if (strstr(charsys_get_current_languages(), "utf8") && !strstr(value, "utf8"))
 			{
 				zen_log(ULOG_ERROR, "link", "LINK_DENIED_CHARSYS_INCOMPATIBLE", client,
-				           "Server link $client rejected. Server $me_name has utf8 in set::allowed-nickchars but $client does not.",
-				           log_data_string("me_name", me.name));
+				        "Server link $client rejected. Server $me_name has utf8 in set::allowed-nickchars but $client does not.",
+				        log_data_string("me_name", me.name));
 				exit_client(client, NULL, "Incompatible set::allowed-nickchars setting");
 				return;
 			}
@@ -136,10 +136,10 @@ CMD_FUNC(cmd_protoctl)
 			if (strcmp(value, charsys_get_current_languages()))
 			{
 				zen_log(ULOG_WARNING, "link", "LINK_WARNING_CHARSYS", client,
-				           "Server link $client does not have the same set::allowed-nickchars settings, "
-				           "this may possibly cause display issues. Our charset: '$our_charsys', theirs: '$their_charsys'",
-				           log_data_string("our_charsys", charsys_get_current_languages()),
-				           log_data_string("their_charsys", value));
+				        "Server link $client does not have the same set::allowed-nickchars settings, "
+				        "this may possibly cause display issues. Our charset: '$our_charsys', theirs: '$their_charsys'",
+				        log_data_string("our_charsys", charsys_get_current_languages()),
+				        log_data_string("their_charsys", value));
 			}
 			if (client->server)
 				safe_strdup(client->server->features.nickchars, value);
@@ -158,11 +158,11 @@ CMD_FUNC(cmd_protoctl)
 			if (their_value != iConf.allowed_channelchars)
 			{
 				zen_log(ULOG_ERROR, "link", "LINK_DENIED_ALLOWED_CHANNELCHARS_INCOMPATIBLE", client,
-				           "Server link $client rejected. Server has set::allowed-channelchars setting "
-				           "of $their_allowed_channelchars, while we have $our_allowed_channelchars.\n"
-				           "Please set set::allowed-channelchars to the same value on all servers.",
-				           log_data_string("their_allowed_channelchars", value),
-				           log_data_string("our_allowed_channelchars", allowed_channelchars_valtostr(iConf.allowed_channelchars)));
+				        "Server link $client rejected. Server has set::allowed-channelchars setting "
+				        "of $their_allowed_channelchars, while we have $our_allowed_channelchars.\n"
+				        "Please set set::allowed-channelchars to the same value on all servers.",
+				        log_data_string("their_allowed_channelchars", value),
+				        log_data_string("our_allowed_channelchars", allowed_channelchars_valtostr(iConf.allowed_channelchars)));
 				exit_client(client, NULL, "Incompatible set::allowed-channelchars setting");
 				return;
 			}
@@ -198,9 +198,9 @@ CMD_FUNC(cmd_protoctl)
 			if ((aclient = hash_find_id(sid, NULL)) != NULL)
 			{
 				zen_log(ULOG_ERROR, "link", "LINK_DENIED_SID_COLLISION", client,
-				           "Server link $client rejected. Server with SID $sid already exist via uplink $existing_client.server.uplink.",
-				           log_data_string("sid", sid),
-				           log_data_client("existing_client", aclient));
+				        "Server link $client rejected. Server with SID $sid already exist via uplink $existing_client.server.uplink.",
+				        log_data_string("sid", sid),
+				        log_data_client("existing_client", aclient));
 				exit_client(client, NULL, "SID collision");
 				return;
 			}
@@ -297,8 +297,8 @@ CMD_FUNC(cmd_protoctl)
 			if (aclient)
 			{
 				zen_log(ULOG_ERROR, "link", "LINK_DENIED_DUPLICATE_SID", client,
-				           "Denied server $client: Server with SID $existing_client.id ($existing_client) is already linked.",
-				           log_data_client("existing_client", aclient));
+				        "Denied server $client: Server with SID $existing_client.id ($existing_client) is already linked.",
+				        log_data_client("existing_client", aclient));
 				exit_client(client, NULL, "Server Exists (or non-unique me::sid)");
 				return;
 			}
@@ -307,11 +307,11 @@ CMD_FUNC(cmd_protoctl)
 			if (aclient)
 			{
 				zen_log(ULOG_ERROR, "link", "LINK_DENIED_DUPLICATE_SID_PENDING", client,
-				           "Denied server $client: Server would (later) introduce SID $sid, "
-				           "but $existing_client is also currently linking in with the same SID.\n"
-				           "Possible race condition, just wait a moment for the network to synchronize...",
-				           log_data_string("sid", sid),
-				           log_data_client("existing_client", aclient));
+				        "Denied server $client: Server would (later) introduce SID $sid, "
+				        "but $existing_client is also currently linking in with the same SID.\n"
+				        "Possible race condition, just wait a moment for the network to synchronize...",
+				        log_data_string("sid", sid),
+				        log_data_client("existing_client", aclient));
 				exit_client(client, NULL, "Server Exists (just wait a moment...)");
 				return;
 			}
@@ -336,24 +336,24 @@ CMD_FUNC(cmd_protoctl)
 			if ((TStime() - t) > MAX_SERVER_TIME_OFFSET)
 			{
 				zen_log(ULOG_ERROR, "link", "LINK_DENIED_CLOCK_INCORRECT", client,
-				           "Denied server $client: clock on server $client is $time_delta "
-				           "seconds behind the clock of $me_name.\n"
-				           "Correct time is very important for IRC servers, "
-				           "see https://www.unrealircd.org/docs/FAQ#fix-your-clock",
-				           log_data_integer("time_delta", TStime() - t),
-				           log_data_string("me_name", me.name));
+				        "Denied server $client: clock on server $client is $time_delta "
+				        "seconds behind the clock of $me_name.\n"
+				        "Correct time is very important for IRC servers, "
+				        "see https://www.unrealircd.org/docs/FAQ#fix-your-clock",
+				        log_data_integer("time_delta", TStime() - t),
+				        log_data_string("me_name", me.name));
 				exit_client_fmt(client, NULL, "Incorrect clock. Our clocks are %lld seconds apart.",
 				                (long long)(TStime() - t));
 				return;
 			} else if ((t - TStime()) > MAX_SERVER_TIME_OFFSET)
 			{
 				zen_log(ULOG_ERROR, "link", "LINK_DENIED_CLOCK_INCORRECT", client,
-				           "Denied server $client: clock on server $client is $time_delta "
-				           "seconds ahead the clock of $me_name.\n"
-				           "Correct time is very important for IRC servers, "
-				           "see https://www.unrealircd.org/docs/FAQ#fix-your-clock",
-				           log_data_integer("time_delta", t - TStime()),
-				           log_data_string("me_name", me.name));
+				        "Denied server $client: clock on server $client is $time_delta "
+				        "seconds ahead the clock of $me_name.\n"
+				        "Correct time is very important for IRC servers, "
+				        "see https://www.unrealircd.org/docs/FAQ#fix-your-clock",
+				        log_data_integer("time_delta", t - TStime()),
+				        log_data_string("me_name", me.name));
 				exit_client_fmt(client, NULL, "Incorrect clock. Our clocks are %lld seconds apart.",
 				                (long long)(t - TStime()));
 				return;

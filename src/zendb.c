@@ -234,9 +234,9 @@ ZenDB *zendb_open(const char *filename, ZenDBMode mode, char *secret_block)
 				{
 					/* We don't support this format, so refuse clearly */
 					zendb_set_error(c, ZENDB_ERROR_HEADER,
-					                   "Unsupported version of database. Is this database perhaps created on "
-					                   "a new version of ZenIRCd and are you trying to use it on an older "
-					                   "ZenIRCd version? (Downgrading is not supported!)");
+					                "Unsupported version of database. Is this database perhaps created on "
+					                "a new version of ZenIRCd and are you trying to use it on an older "
+					                "ZenIRCd version? (Downgrading is not supported!)");
 					goto zendb_open_fail;
 				} else
 				{
@@ -323,15 +323,15 @@ ZenDB *zendb_open(const char *filename, ZenDBMode mode, char *secret_block)
 		{
 #ifdef DEBUGMODE
 			zen_log(ULOG_DEBUG, "zendb", "DEBUG_ZENDB_CACHE_HIT", NULL,
-			           "Cache hit for '$secret_block' while writing",
-			           log_data_string("secret_block", secr->name));
+			        "Cache hit for '$secret_block' while writing",
+			        log_data_string("secret_block", secr->name));
 #endif
 		} else
 		{
 #ifdef DEBUGMODE
 			zen_log(ULOG_DEBUG, "zendb", "DEBUG_ZENDB_CACHE_MISS", NULL,
-			           "Cache miss for '$secret_block' while writing, need to run argon2",
-			           log_data_string("secret_block", secr->name));
+			        "Cache miss for '$secret_block' while writing, need to run argon2",
+			        log_data_string("secret_block", secr->name));
 #endif
 			if (!zendb_kdf(c, secr))
 			{
@@ -420,15 +420,15 @@ ZenDB *zendb_open(const char *filename, ZenDBMode mode, char *secret_block)
 			memcpy(c->config->key, dbcache->config->key, c->config->keylen);
 #ifdef DEBUGMODE
 			zen_log(ULOG_DEBUG, "zendb", "DEBUG_ZENDB_CACHE_HIT", NULL,
-			           "Cache hit for '$secret_block' while reading",
-			           log_data_string("secret_block", secr->name));
+			        "Cache hit for '$secret_block' while reading",
+			        log_data_string("secret_block", secr->name));
 #endif
 		} else
 		{
 #ifdef DEBUGMODE
 			zen_log(ULOG_DEBUG, "zendb", "DEBUG_ZENDB_CACHE_MISS", NULL,
-			           "Cache miss for '$secret_block' while reading, need to run argon2",
-			           log_data_string("secret_block", secr->name));
+			        "Cache miss for '$secret_block' while reading, need to run argon2",
+			        log_data_string("secret_block", secr->name));
 #endif
 			if (!zendb_kdf(c, secr))
 			{
@@ -665,8 +665,8 @@ int zendb_write_str(ZenDB *c, const char *x)
 		if (stringlen >= 0xffff)
 		{
 			zendb_set_error(c, ZENDB_ERROR_API,
-			                   "zendb_write_str(): string has length %d, while maximum allowed is 65534",
-			                   stringlen);
+			                "zendb_write_str(): string has length %d, while maximum allowed is 65534",
+			                stringlen);
 			return 0;
 		}
 		len = stringlen;
@@ -774,7 +774,7 @@ static int zendb_read(ZenDB *c, void *rbuf, int len)
 		if (rlen < len)
 		{
 			zendb_set_error(c, ZENDB_ERROR_IO, "Short read - premature end of file (want:%d, got:%d bytes)",
-			                   len, (int)rlen);
+			                len, (int)rlen);
 			return 0;
 		}
 		return 1;

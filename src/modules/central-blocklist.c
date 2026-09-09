@@ -531,9 +531,9 @@ EVENT(centralblocklist_timeout_evt)
 		    (TStime() - cbl->request_sent > CBL_TRANSFER_TIMEOUT))
 		{
 			zen_log(ULOG_WARNING, "central-blocklist", "CENTRAL_BLOCKLIST_TIMEOUT", client,
-			           "Central blocklist too slow to respond. "
-			           "Possible problem with infrastructure at unrealircd.org. "
-			           "Allowing user $client.details in unchecked.");
+			        "Central blocklist too slow to respond. "
+			        "Possible problem with infrastructure at unrealircd.org. "
+			        "Allowing user $client.details in unchecked.");
 			cbl_allow(client);
 		}
 	}
@@ -548,8 +548,8 @@ void show_client_json(Client *client)
 	json_serialized = json_dumps(CBL(client)->handshake, JSON_COMPACT);
 
 	zen_log(ULOG_DEBUG, "central-blocklist", "DEBUG_CENTRAL_BLOCKLIST", client,
-	           "OUT: $data",
-	           log_data_string("data", json_serialized));
+	        "OUT: $data",
+	        log_data_string("data", json_serialized));
 	safe_free(json_serialized);
 }
 
@@ -847,13 +847,13 @@ void cbl_handle_response(Client *client, json_t *response)
 			if (highest_ban_action(action->ban_action) <= BAN_ACT_WARN)
 			{
 				zen_log(ULOG_INFO, "central-blocklist", "CBL_HIT", client,
-				           "CBL: Client $client.details flagged by central-blocklist, but allowed in (score $spam_score)",
-				           log_data_integer("spam_score", spam_score));
+				        "CBL: Client $client.details flagged by central-blocklist, but allowed in (score $spam_score)",
+				        log_data_integer("spam_score", spam_score));
 			} else
 			{
 				zen_log(ULOG_INFO, "central-blocklist", "CBL_HIT_REJECTED_USER", client,
-				           "CBL: Client $client.details is rejected by central-blocklist (score $spam_score)",
-				           log_data_integer("spam_score", spam_score));
+				        "CBL: Client $client.details is rejected by central-blocklist (score $spam_score)",
+				        log_data_integer("spam_score", spam_score));
 			}
 			if (take_action(client, action->ban_action, action->ban_reason, action->ban_time, 0, NULL) <= BAN_ACT_WARN)
 				cbl_allow(client);
@@ -861,8 +861,8 @@ void cbl_handle_response(Client *client, json_t *response)
 		}
 	}
 	zen_log(ULOG_DEBUG, "central-blocklist", "DEBUG_CENTRAL_BLOCKLIST", client,
-	           "CBL: Client $client.details is allowed (score $spam_score)",
-	           log_data_integer("spam_score", spam_score));
+	        "CBL: Client $client.details is allowed (score $spam_score)",
+	        log_data_integer("spam_score", spam_score));
 	cbl_allow(client);
 }
 
@@ -880,17 +880,17 @@ void cbl_error_response(CBLTransfer *transfer, const char *error)
 		if (CBL(client) && CBL(client)->allowed_in)
 			continue; /* Client allowed in already (eg due to timeout) */
 		zen_log(ULOG_DEBUG, "central-blocklist", "DEBUG_CENTRAL_BLOCKLIST_ERROR", client,
-		           "CBL: Client $client.details allowed in due to CBL error: $error",
-		           log_data_string("error", error));
+		        "CBL: Client $client.details allowed in due to CBL error: $error",
+		        log_data_string("error", error));
 		cbl_allow(client);
 		num++;
 	}
 	if (num > 0)
 	{
 		zen_log(ULOG_INFO, "central-blocklist", "CENTRAL_BLOCKLIST_ERROR", NULL,
-		           "CBL: Allowed $num_clients client(s) in due to CBL error: $error",
-		           log_data_integer("num_clients", num),
-		           log_data_string("error", error));
+		        "CBL: Allowed $num_clients client(s) in due to CBL error: $error",
+		        log_data_integer("num_clients", num),
+		        log_data_string("error", error));
 	}
 	del_cbl_transfer(transfer);
 }
@@ -917,8 +917,8 @@ void cbl_download_complete(OutgoingWebRequest *request, OutgoingWebResponse *res
 	{
 		char buf[512];
 		zen_log(ULOG_DEBUG, "central-blocklist", "DEBUG_CENTRAL_BLOCKLIST", NULL,
-		           "CBL ERROR: $error",
-		           log_data_string("error", response->errorbuf ? response->errorbuf : "No data returned"));
+		        "CBL ERROR: $error",
+		        log_data_string("error", response->errorbuf ? response->errorbuf : "No data returned"));
 		snprintf(buf, sizeof(buf), "error contacting CBL: %s", response->errorbuf ? response->errorbuf : "No data returned");
 		cbl_error_response(transfer, buf);
 		return;
@@ -926,8 +926,8 @@ void cbl_download_complete(OutgoingWebRequest *request, OutgoingWebResponse *res
 
 #ifdef DEBUGMODE
 	zen_log(ULOG_DEBUG, "central-blocklist", "DEBUG_CENTRAL_BLOCKLIST", NULL,
-	           "CBL Got result: $buf",
-	           log_data_string("buf", response->memory));
+	        "CBL Got result: $buf",
+	        log_data_string("buf", response->memory));
 #endif
 
 	// NOTE: if we didn't have that debug from above, we could avoid the strlncpy and use json_loadb here
@@ -935,7 +935,7 @@ void cbl_download_complete(OutgoingWebRequest *request, OutgoingWebResponse *res
 	if (!result)
 	{
 		zen_log(ULOG_DEBUG, "central-blocklist", "DEBUG_CENTRAL_BLOCKLIST", NULL,
-		           "CBL ERROR: JSON parse error");
+		        "CBL ERROR: JSON parse error");
 		cbl_error_response(transfer, "invalid CBL response (JSON parse error)");
 		return;
 	}
@@ -956,8 +956,8 @@ void cbl_download_complete(OutgoingWebRequest *request, OutgoingWebResponse *res
 	if ((str = json_object_get_string(result, "warning")))
 	{
 		zen_log(ULOG_WARNING, "central-blocklist", "CENTRAL_BLOCKLIST_WARNING", NULL,
-		           "CBL Server gave a warning: $warning",
-		           log_data_string("warning", str));
+		        "CBL Server gave a warning: $warning",
+		        log_data_string("warning", str));
 	}
 
 	responses = json_object_get(result, "responses");
@@ -1011,8 +1011,8 @@ void send_request_for_pending_clients(void)
 	if (num > cfg.max_downloads)
 	{
 		zen_log(ULOG_WARNING, "central-blocklist", "CENTRAL_BLOCKLIST_TOO_MANY_CONCURRENT_REQUESTS", NULL,
-		           "Already $num_requests HTTP(S) requests in progress.",
-		           log_data_integer("num_requests", num));
+		        "Already $num_requests HTTP(S) requests in progress.",
+		        log_data_integer("num_requests", num));
 		return;
 	}
 
@@ -1041,7 +1041,7 @@ void send_request_for_pending_clients(void)
 	if (!json_serialized)
 	{
 		zen_log(ULOG_WARNING, "central-blocklist", "CENTRAL_BLOCKLIST_BUG_SERIALIZE", client,
-		           "Unable to serialize JSON request. Weird.");
+		        "Unable to serialize JSON request. Weird.");
 		json_decref(j);
 		free_entire_name_list(clientlist);
 		return;
@@ -1140,8 +1140,8 @@ int _central_spamreport(Client *client, Client *by, const char *url)
 	if (num > cfg.max_downloads)
 	{
 		zen_log(ULOG_WARNING, "central-blocklist", "CENTRAL_BLOCKLIST_TOO_MANY_CONCURRENT_REQUESTS", NULL,
-		           "Already $num_requests HTTP(S) requests in progress.",
-		           log_data_integer("num_requests", num));
+		        "Already $num_requests HTTP(S) requests in progress.",
+		        log_data_integer("num_requests", num));
 		return 0;
 	}
 
@@ -1197,7 +1197,7 @@ int _central_spamreport(Client *client, Client *by, const char *url)
 	if (!json_serialized)
 	{
 		zen_log(ULOG_WARNING, "central-blocklist", "CENTRAL_BLOCKLIST_BUG_SERIALIZE", client,
-		           "Unable to serialize JSON request. Weird.");
+		        "Unable to serialize JSON request. Weird.");
 		json_decref(j);
 		return 0;
 	}

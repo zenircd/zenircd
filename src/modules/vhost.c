@@ -361,10 +361,10 @@ CMD_FUNC(cmd_vhost)
 	if (!(vhost = find_vhost(login)))
 	{
 		zen_log(ULOG_WARNING, "vhost", "VHOST_FAILED", client,
-		           "Failed VHOST attempt by $client.details [reason: $reason] [vhost-block: $vhost_block]",
-		           log_data_string("reason", "Vhost block not found"),
-		           log_data_string("fail_type", "UNKNOWN_VHOST_NAME"),
-		           log_data_string("vhost_block", login));
+		        "Failed VHOST attempt by $client.details [reason: $reason] [vhost-block: $vhost_block]",
+		        log_data_string("reason", "Vhost block not found"),
+		        log_data_string("fail_type", "UNKNOWN_VHOST_NAME"),
+		        log_data_string("vhost_block", login));
 		sendnotice(client, "*** [\2vhost\2] Login for %s failed - password incorrect", login);
 		return;
 	}
@@ -372,10 +372,10 @@ CMD_FUNC(cmd_vhost)
 	if (!user_allowed_by_security_group(client, vhost->match))
 	{
 		zen_log(ULOG_WARNING, "vhost", "VHOST_FAILED", client,
-		           "Failed VHOST attempt by $client.details [reason: $reason] [vhost-block: $vhost_block]",
-		           log_data_string("reason", "Host does not match"),
-		           log_data_string("fail_type", "NO_HOST_MATCH"),
-		           log_data_string("vhost_block", login));
+		        "Failed VHOST attempt by $client.details [reason: $reason] [vhost-block: $vhost_block]",
+		        log_data_string("reason", "Host does not match"),
+		        log_data_string("fail_type", "NO_HOST_MATCH"),
+		        log_data_string("vhost_block", login));
 		sendnotice(client, "*** No vHost lines available for your host");
 		return;
 	}
@@ -383,10 +383,10 @@ CMD_FUNC(cmd_vhost)
 	if (!Auth_Check(client, vhost->auth, password))
 	{
 		zen_log(ULOG_WARNING, "vhost", "VHOST_FAILED", client,
-		           "Failed VHOST attempt by $client.details [reason: $reason] [vhost-block: $vhost_block]",
-		           log_data_string("reason", "Authentication failed"),
-		           log_data_string("fail_type", "AUTHENTICATION_FAILED"),
-		           log_data_string("vhost_block", login));
+		        "Failed VHOST attempt by $client.details [reason: $reason] [vhost-block: $vhost_block]",
+		        log_data_string("reason", "Authentication failed"),
+		        log_data_string("fail_type", "AUTHENTICATION_FAILED"),
+		        log_data_string("vhost_block", login));
 		sendnotice(client, "*** [\2vhost\2] Login for %s failed - password incorrect", login);
 		return;
 	}
@@ -439,10 +439,10 @@ void do_vhost(Client *client, ConfigItem_vhost *vhost)
 		if (vhost->auto_login)
 		{
 			zen_log(ULOG_WARNING, "vhost", "AUTO_VHOST_FAILED", client,
-			           "Unable to set auto-vhost on user $client.details. "
-			           "Vhost '$vhost_format' expanded to '$newhost' but is invalid.",
-			           log_data_string("vhost_format", vhost->virthost),
-			           log_data_string("newhost", newhost));
+			        "Unable to set auto-vhost on user $client.details. "
+			        "Vhost '$vhost_format' expanded to '$newhost' but is invalid.",
+			        log_data_string("vhost_format", vhost->virthost),
+			        log_data_string("newhost", newhost));
 		}
 		return;
 	}
@@ -488,17 +488,17 @@ void do_vhost(Client *client, ConfigItem_vhost *vhost)
 		{
 			/* virtuser@virthost */
 			zen_log(ULOG_INFO, "vhost", "VHOST_SUCCESS", client,
-			           "$client.details is now using vhost $virtuser@$virthost [vhost-block: $vhost_block]",
-			           log_data_string("virtuser", vhost->virtuser),
-			           log_data_string("virthost", newhost),
-			           log_data_string("vhost_block", vhost->login));
+			        "$client.details is now using vhost $virtuser@$virthost [vhost-block: $vhost_block]",
+			        log_data_string("virtuser", vhost->virtuser),
+			        log_data_string("virthost", newhost),
+			        log_data_string("vhost_block", vhost->login));
 		} else
 		{
 			/* just virthost */
 			zen_log(ULOG_INFO, "vhost", "VHOST_SUCCESS", client,
-			           "$client.details is now using vhost $virthost [vhost-block: $vhost_block]",
-			           log_data_string("virthost", newhost),
-			           log_data_string("vhost_block", vhost->login));
+			        "$client.details is now using vhost $virthost [vhost-block: $vhost_block]",
+			        log_data_string("virthost", newhost),
+			        log_data_string("vhost_block", vhost->login));
 		}
 	}
 

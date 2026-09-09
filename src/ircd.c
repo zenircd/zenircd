@@ -61,7 +61,7 @@ EVENT(garbage_collect)
 		{
 			loop.do_garbage_collect = 0;
 			zen_log(ULOG_INFO, "main", "GARBAGE_COLLECT_STARTED", NULL, "Cleaned up $count garbage blocks",
-			           log_data_integer("count", (ii - freelinks)));
+			        log_data_integer("count", (ii - freelinks)));
 		}
 	}
 	if (loop.do_garbage_collect == 1)
@@ -86,8 +86,8 @@ int match_tkls(Client *client)
 		if (!ValidatePermissionsForPath("immune", client, NULL, NULL, NULL) && (bconf = find_ban(NULL, client->info, CONF_BAN_REALNAME)))
 		{
 			zen_log(ULOG_INFO, "tkl", "BAN_REALNAME", client,
-			           "Banned client $client.details due to realname ban: $reason",
-			           log_data_string("reason", bconf->reason ? bconf->reason : "no reason"));
+			        "Banned client $client.details due to realname ban: $reason",
+			        log_data_string("reason", bconf->reason ? bconf->reason : "no reason"));
 
 			if (bconf->reason)
 			{
@@ -182,8 +182,8 @@ void check_ping(Client *client)
 		    IsHandshake(client) || IsTLSConnectHandshake(client))
 		{
 			zen_log(ULOG_ERROR, "link", "LINK_DISCONNECTED", client,
-			           "Lost server link to $client [$client.ip]: No response (Ping timeout)",
-			           client->server->conf ? log_data_link_block(client->server->conf) : NULL);
+			        "Lost server link to $client [$client.ip]: No response (Ping timeout)",
+			        client->server->conf ? log_data_link_block(client->server->conf) : NULL);
 			SetServerDisconnectLogged(client);
 		}
 		ircsnprintf(scratch, sizeof(scratch), "Ping timeout: %lld seconds",
@@ -205,9 +205,9 @@ void check_ping(Client *client)
 	{
 		SetPingWarning(client);
 		zen_log(ULOG_WARNING, "link", "LINK_UNRELIABLE", client,
-		           "Warning, no response from $client for $time_delta seconds",
-		           log_data_integer("time_delta", PINGWARNING),
-		           client->server->conf ? log_data_link_block(client->server->conf) : NULL);
+		        "Warning, no response from $client for $time_delta seconds",
+		        log_data_integer("time_delta", PINGWARNING),
+		        client->server->conf ? log_data_link_block(client->server->conf) : NULL);
 	}
 
 	return;
@@ -390,29 +390,29 @@ void detect_timeshift_and_warn(void)
 		/* tdiff = # of seconds of time set backwards (positive number! eg: 60) */
 		time_t tdiff = oldtimeofday - timeofday;
 		zen_log(ULOG_WARNING, "system", "SYSTEM_CLOCK_JUMP_BACKWARDS", NULL,
-		           "System clock jumped back in time ~$time_delta seconds ($time_from -> $time_to)\n"
-		           "Incorrect time for IRC servers is a serious problem. "
-		           "Time being set backwards (system clock changed) is "
-		           "even more serious and can cause clients to freeze, channels to be "
-		           "taken over, and other issues.\n"
-		           "Please be sure your clock is always synchronized before the IRCd is started!",
-		           log_data_integer("time_delta", tdiff),
-		           log_data_timestamp("time_from", oldtimeofday),
-		           log_data_timestamp("time_to", timeofday));
+		        "System clock jumped back in time ~$time_delta seconds ($time_from -> $time_to)\n"
+		        "Incorrect time for IRC servers is a serious problem. "
+		        "Time being set backwards (system clock changed) is "
+		        "even more serious and can cause clients to freeze, channels to be "
+		        "taken over, and other issues.\n"
+		        "Please be sure your clock is always synchronized before the IRCd is started!",
+		        log_data_integer("time_delta", tdiff),
+		        log_data_timestamp("time_from", oldtimeofday),
+		        log_data_timestamp("time_to", timeofday));
 		fix_timers();
 	} else if (mytdiff(timeofday, oldtimeofday) > POSITIVE_SHIFT_WARN) /* do not set too low or you get false positives */
 	{
 		/* tdiff = # of seconds of time set forward (eg: 60) */
 		time_t tdiff = timeofday - oldtimeofday;
 		zen_log(ULOG_WARNING, "system", "SYSTEM_CLOCK_JUMP_FORWARDS", NULL,
-		           "System clock jumped ~$time_delta seconds forward ($time_from -> $time_to)\n"
-		           "Incorrect time for IRC servers is a serious problem. "
-		           "Time being adjusted (by changing the system clock) "
-		           "more than a few seconds forward/backward can lead to serious issues.\n"
-		           "Please be sure your clock is always synchronized before the IRCd is started!",
-		           log_data_integer("time_delta", tdiff),
-		           log_data_timestamp("time_from", oldtimeofday),
-		           log_data_timestamp("time_to", timeofday));
+		        "System clock jumped ~$time_delta seconds forward ($time_from -> $time_to)\n"
+		        "Incorrect time for IRC servers is a serious problem. "
+		        "Time being adjusted (by changing the system clock) "
+		        "more than a few seconds forward/backward can lead to serious issues.\n"
+		        "Please be sure your clock is always synchronized before the IRCd is started!",
+		        log_data_integer("time_delta", tdiff),
+		        log_data_timestamp("time_from", oldtimeofday),
+		        log_data_timestamp("time_to", timeofday));
 		fix_timers();
 	}
 
@@ -423,10 +423,10 @@ void detect_timeshift_and_warn(void)
 		if (timeofday - lasthighwarn > 300)
 		{
 			zen_log(ULOG_WARNING, "system", "SYSTEM_CLOCK_JUMP_BACKWARDS_PREVIOUSLY", NULL,
-			           "The system clock previously went backwards. Waiting for time to be OK again. This will be in $time_delta seconds.",
-			           log_data_integer("time_delta", highesttimeofday - timeofday),
-			           log_data_timestamp("time_from", highesttimeofday),
-			           log_data_timestamp("time_to", timeofday));
+			        "The system clock previously went backwards. Waiting for time to be OK again. This will be in $time_delta seconds.",
+			        log_data_integer("time_delta", highesttimeofday - timeofday),
+			        log_data_timestamp("time_from", highesttimeofday),
+			        log_data_timestamp("time_to", timeofday));
 			lasthighwarn = timeofday;
 		}
 	} else
@@ -468,25 +468,25 @@ EVENT(detect_high_connection_rate)
 		if (connections_past_period >= iConf.high_connection_rate * DETECT_HIGH_CONNECTION_RATE_SAMPLE_TIME)
 		{
 			zen_log(ULOG_WARNING, "htm", "HIGH_CONNECTION_RATE", NULL,
-			           "High rate of connection attempts detected: $connects_per_second/sec exceeds $limit/sec: some minor functionality is now disabled. "
-			           "This could be an attack, or lots of genuine users connecting after a network outage.\n"
-			           "This message will appear every 10 minutes for as long as this is the case. "
-			           "You will NOT get a notification if all is normal again (which is evaluated every $sample_time seconds). "
-			           "See https://www.unrealircd.org/docs/FAQ#hi-conn-rate",
-			           log_data_integer("connects_per_second", connections_past_period / DETECT_HIGH_CONNECTION_RATE_SAMPLE_TIME),
-			           log_data_integer("limit", iConf.high_connection_rate),
-			           log_data_integer("sample_time", DETECT_HIGH_CONNECTION_RATE_SAMPLE_TIME));
+			        "High rate of connection attempts detected: $connects_per_second/sec exceeds $limit/sec: some minor functionality is now disabled. "
+			        "This could be an attack, or lots of genuine users connecting after a network outage.\n"
+			        "This message will appear every 10 minutes for as long as this is the case. "
+			        "You will NOT get a notification if all is normal again (which is evaluated every $sample_time seconds). "
+			        "See https://www.unrealircd.org/docs/FAQ#hi-conn-rate",
+			        log_data_integer("connects_per_second", connections_past_period / DETECT_HIGH_CONNECTION_RATE_SAMPLE_TIME),
+			        log_data_integer("limit", iConf.high_connection_rate),
+			        log_data_integer("sample_time", DETECT_HIGH_CONNECTION_RATE_SAMPLE_TIME));
 		} else
 		{
 			zen_log(ULOG_WARNING, "htm", "HIGH_CONNECTION_RATE", NULL,
-			           "High amount of connections in use ($connections is near limit of $maxclients maximum clients). Some minor functionality is now disabled. "
-			           "This could be an attack, or lots of genuine users connecting.\n"
-			           "This message will appear every 10 minutes for as long as this is the case. "
-			           "You will NOT get a notification if all is normal again (which is evaluated every $sample_time seconds). "
-			           "See https://www.unrealircd.org/docs/FAQ#hi-conn-rate",
-			           log_data_integer("connections", OpenFiles),
-			           log_data_integer("maxclients", maxclients),
-			           log_data_integer("sample_time", DETECT_HIGH_CONNECTION_RATE_SAMPLE_TIME));
+			        "High amount of connections in use ($connections is near limit of $maxclients maximum clients). Some minor functionality is now disabled. "
+			        "This could be an attack, or lots of genuine users connecting.\n"
+			        "This message will appear every 10 minutes for as long as this is the case. "
+			        "You will NOT get a notification if all is normal again (which is evaluated every $sample_time seconds). "
+			        "See https://www.unrealircd.org/docs/FAQ#hi-conn-rate",
+			        log_data_integer("connections", OpenFiles),
+			        log_data_integer("maxclients", maxclients),
+			        log_data_integer("sample_time", DETECT_HIGH_CONNECTION_RATE_SAMPLE_TIME));
 		}
 		last_detect_high_connection_rate_warning = TStime();
 	}
@@ -795,11 +795,11 @@ int InitZenIRCd(int argc, char *argv[])
 	                "https://github.com/zenircd/zenircd\n\n");
 
 	fprintf(stderr, "ZenIRCd is using the following libraries:\n");
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+ #if OPENSSL_VERSION_NUMBER >= 0x10100000L
 	fprintf(stderr, "* %s\n", OpenSSL_version(OPENSSL_VERSION));
-#else
+ #else
 	fprintf(stderr, "* %s\n", SSLeay_version(SSLEAY_VERSION));
-#endif
+ #endif
 	fprintf(stderr, "* libsodium %s\n", sodium_version_string());
  #ifdef USE_LIBCURL
 	fprintf(stderr, "* %s\n", curl_version());

@@ -141,8 +141,8 @@ Extban *ExtbanAdd(Module *module, ExtbanInfo req)
 	{
 		module->errorcode = MODERR_INVALID;
 		zen_log(ULOG_ERROR, "module", "EXTBANADD_API_ERROR", NULL,
-		           "ExtbanAdd(): name must be specified for ban (new in U6). Module: $module_name",
-		           log_data_string("module_name", module->header->name));
+		        "ExtbanAdd(): name must be specified for ban (new in U6). Module: $module_name",
+		        log_data_string("module_name", module->header->name));
 		return NULL;
 	}
 
@@ -150,9 +150,9 @@ Extban *ExtbanAdd(Module *module, ExtbanInfo req)
 	{
 		module->errorcode = MODERR_INVALID;
 		zen_log(ULOG_ERROR, "module", "EXTBANADD_API_ERROR", NULL,
-		           "ExtbanAdd(): module must indicate via .is_banned_events on which BANCHK_* "
-		           "events to listen on (new in U6). Module: $module_name",
-		           log_data_string("module_name", module->header->name));
+		        "ExtbanAdd(): module must indicate via .is_banned_events on which BANCHK_* "
+		        "events to listen on (new in U6). Module: $module_name",
+		        log_data_string("module_name", module->header->name));
 		return NULL;
 	}
 
@@ -160,9 +160,9 @@ Extban *ExtbanAdd(Module *module, ExtbanInfo req)
 	{
 		module->errorcode = MODERR_INVALID;
 		zen_log(ULOG_ERROR, "module", "EXTBANADD_API_ERROR", NULL,
-		           "ExtbanAdd(): module tried to add extban which is not alphanumeric. "
-		           "Module: $module_name",
-		           log_data_string("module_name", module->header->name));
+		        "ExtbanAdd(): module tried to add extban which is not alphanumeric. "
+		        "Module: $module_name",
+		        log_data_string("module_name", module->header->name));
 		return NULL;
 	}
 
@@ -170,10 +170,10 @@ Extban *ExtbanAdd(Module *module, ExtbanInfo req)
 	{
 		module->errorcode = MODERR_INVALID;
 		zen_log(ULOG_ERROR, "module", "EXTBANADD_API_ERROR", NULL,
-		           "ExtbanAdd(): module tried to add extban with an invalid name ($extban_name). "
-		           "Module: $module_name",
-		           log_data_string("module_name", module->header->name),
-		           log_data_string("extban_name", req.name));
+		        "ExtbanAdd(): module tried to add extban with an invalid name ($extban_name). "
+		        "Module: $module_name",
+		        log_data_string("module_name", module->header->name),
+		        log_data_string("extban_name", req.name));
 		return NULL;
 	}
 
@@ -181,8 +181,8 @@ Extban *ExtbanAdd(Module *module, ExtbanInfo req)
 	{
 		module->errorcode = MODERR_INVALID;
 		zen_log(ULOG_ERROR, "module", "EXTBANADD_API_ERROR", NULL,
-		           "ExtbanAdd(): conv_param event missing. Module: $module_name",
-		           log_data_string("module_name", module->header->name));
+		        "ExtbanAdd(): conv_param event missing. Module: $module_name",
+		        log_data_string("module_name", module->header->name));
 		return NULL;
 	}
 

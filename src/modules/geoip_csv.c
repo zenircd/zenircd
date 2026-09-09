@@ -249,9 +249,9 @@ MOD_TEST()
 	if (!CallbackAddPVoid(modinfo->handle, CALLBACKTYPE_GEOIP_LOOKUP, TO_PVOIDFUNC(geoip_lookup_csv)))
 	{
 		zen_log(ULOG_ERROR, "geoip_csv", "GEOIP_ADD_CALLBACK_FAILED", NULL,
-		           "geoip_csv: Could not install GEOIP_LOOKUP callback. "
-		           "Most likely another geoip module is already loaded. "
-		           "You can only load one!");
+		        "geoip_csv: Could not install GEOIP_LOOKUP callback. "
+		        "Most likely another geoip module is already loaded. "
+		        "You can only load one!");
 		return MOD_FAILED;
 	}
 
@@ -295,7 +295,7 @@ MOD_LOAD()
 	if (!geoip_csv_config.countries_db_file)
 	{
 		zen_log(ULOG_DEBUG, "geoip_csv", "GEOIP_NO_COUNTRIES", NULL,
-		           "[BUG] No countries file specified");
+		        "[BUG] No countries file specified");
 		geoip_csv_free();
 		return MOD_FAILED;
 	}
@@ -303,7 +303,7 @@ MOD_LOAD()
 	if (geoip_csv_read_countries(geoip_csv_config.countries_db_file))
 	{
 		zen_log(ULOG_ERROR, "geoip_csv", "GEOIP_CANNOT_OPEN_DB", NULL,
-		           "could not open required countries file!");
+		        "could not open required countries file!");
 		geoip_csv_free();
 		return MOD_FAILED;
 	}
@@ -311,7 +311,7 @@ MOD_LOAD()
 	if (!found_good_file)
 	{
 		zen_log(ULOG_ERROR, "geoip_csv", "GEOIP_CANNOT_OPEN_DB", NULL,
-		           "could not open any database!");
+		        "could not open any database!");
 		geoip_csv_free();
 		return MOD_FAILED;
 	}

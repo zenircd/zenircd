@@ -60,30 +60,30 @@ static void log_sapart(Client *client, MessageTag *mtags, Client *target, const 
 		if (comment)
 		{
 			zen_log(ULOG_INFO, "sacmds", "SAPART_COMMAND", client, "SAPART: $issuer used SAPART to make $target part $channels ($reason)",
-			           log_data_string("issuer", issuer),
-			           log_data_client("target", target),
-			           log_data_string("channels", channels),
-			           log_data_string("reason", comment));
+			        log_data_string("issuer", issuer),
+			        log_data_client("target", target),
+			        log_data_string("channels", channels),
+			        log_data_string("reason", comment));
 		} else
 		{
 			zen_log(ULOG_INFO, "sacmds", "SAPART_COMMAND", client, "SAPART: $issuer used SAPART to make $target part $channels",
-			           log_data_string("issuer", issuer),
-			           log_data_client("target", target),
-			           log_data_string("channels", channels));
+			        log_data_string("issuer", issuer),
+			        log_data_client("target", target),
+			        log_data_string("channels", channels));
 		}
 	} else
 	{
 		if (comment)
 		{
 			zen_log(ULOG_INFO, "sacmds", "SAPART_COMMAND", client, "SAPART: $client used SAPART to make $target part $channels ($reason)",
-			           log_data_client("target", target),
-			           log_data_string("channels", channels),
-			           log_data_string("reason", comment));
+			        log_data_client("target", target),
+			        log_data_string("channels", channels),
+			        log_data_string("reason", comment));
 		} else
 		{
 			zen_log(ULOG_INFO, "sacmds", "SAPART_COMMAND", client, "SAPART: $client used SAPART to make $target part $channels",
-			           log_data_client("target", target),
-			           log_data_string("channels", channels));
+			        log_data_client("target", target),
+			        log_data_string("channels", channels));
 		}
 	}
 }

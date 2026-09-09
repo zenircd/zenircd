@@ -860,9 +860,9 @@ int user_allowed_by_security_group_context(Client *client, SecurityGroup *s, cru
 	if (recursion_security_group > 8)
 	{
 		zen_log(ULOG_WARNING, "main", "SECURITY_GROUP_LOOP_DETECTED", client,
-		           "Loop detected while processing security-group '$security_group' -- "
-		           "are you perhaps referencing a security-group from a security-group?",
-		           log_data_string("security_group", s->name));
+		        "Loop detected while processing security-group '$security_group' -- "
+		        "are you perhaps referencing a security-group from a security-group?",
+		        log_data_string("security_group", s->name));
 		return 0;
 	}
 	recursion_security_group++;

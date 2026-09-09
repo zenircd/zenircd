@@ -67,7 +67,7 @@ CMD_FUNC(cmd_svsnoop)
 		{
 			SVSNOOP = 1;
 			zen_log(ULOG_INFO, "svsnoop", "SVSNOOP_ENABLED", client,
-			           "This server has been placed in NOOP mode (by $client) -- all IRCOp rights disabled");
+			        "This server has been placed in NOOP mode (by $client) -- all IRCOp rights disabled");
 			list_for_each_entry(acptr, &client_list, client_node)
 			{
 				if (MyUser(acptr) && IsOper(acptr))
@@ -89,7 +89,7 @@ CMD_FUNC(cmd_svsnoop)
 		{
 			SVSNOOP = 0;
 			zen_log(ULOG_INFO, "svsnoop", "SVSNOOP_ENABLED", client,
-			           "This server is no longer in NOOP mode (by $client) -- IRCOps can oper up again");
+			        "This server is no longer in NOOP mode (by $client) -- IRCOps can oper up again");
 		}
 	}
 }

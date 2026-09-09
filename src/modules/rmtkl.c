@@ -291,6 +291,6 @@ CMD_FUNC(rmtkl)
 	}
 
 	zen_log(ULOG_INFO, "tkl", "RMTKL_COMMAND", client,
-	           "[rmtkl] $client removed $tkl_removed_count TKLine(s) using /RMTKL",
-	           log_data_integer("tkl_removed_count", count));
+	        "[rmtkl] $client removed $tkl_removed_count TKLine(s) using /RMTKL",
+	        log_data_integer("tkl_removed_count", count));
 }

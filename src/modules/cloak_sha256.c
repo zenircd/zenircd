@@ -61,8 +61,8 @@ MOD_TEST()
 	if (!CallbackAddString(modinfo->handle, CALLBACKTYPE_CLOAK_KEY_CHECKSUM, cloakcsum))
 	{
 		zen_log(ULOG_ERROR, "config", "CLOAK_MODULE_DUPLICATE", NULL,
-		           "cloak_sha256: Error while trying to install callback.\n"
-		           "Maybe you have multiple cloaking modules loaded? You can only load one!");
+		        "cloak_sha256: Error while trying to install callback.\n"
+		        "Maybe you have multiple cloaking modules loaded? You can only load one!");
 		return MOD_FAILED;
 	}
 	if (!CallbackAddString(modinfo->handle, CALLBACKTYPE_CLOAK_EX, hidehost))

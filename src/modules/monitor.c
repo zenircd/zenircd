@@ -174,7 +174,7 @@ CMD_FUNC(cmd_monitor)
 	if (!watchCounterMD || !watchListMD)
 	{
 		zen_log(ULOG_ERROR, "monitor", "WATCH_BACKEND_MISSING", NULL,
-		           "[monitor] moddata unavailable. Is the 'watch-backend' module loaded?");
+		        "[monitor] moddata unavailable. Is the 'watch-backend' module loaded?");
 		sendnotice(client, "MONITOR command is not available at this moment. Please try again later.");
 		return;
 	}

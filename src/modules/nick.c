@@ -149,9 +149,9 @@ CMD_FUNC(cmd_nick_remote)
 	{
 		ircstats.is_kill++;
 		zen_log(ULOG_ERROR, "nick", "BAD_NICK_REMOTE", client,
-		           "Server link $server tried to change '$client' to bad nick '$nick' -- rejected.",
-		           log_data_string("nick", parv[1]),
-		           log_data_client("server", client->uplink));
+		        "Server link $server tried to change '$client' to bad nick '$nick' -- rejected.",
+		        log_data_string("nick", parv[1]),
+		        log_data_client("server", client->uplink));
 		mtags = NULL;
 		new_message(client, NULL, &mtags);
 		sendto_one(client, mtags, ":%s KILL %s :Illegal nick name", me.id, client->id);
@@ -166,11 +166,11 @@ CMD_FUNC(cmd_nick_remote)
 	if (!IsULine(client) && (tklban = find_qline(client, nick, &ishold)) && !ishold)
 	{
 		zen_log(ULOG_INFO, "nick", "QLINE_NICK_REMOTE", client,
-		           "Banned nick $nick used by $client.details, allowed through by server $server ($reason)",
-		           log_data_string("nick", parv[1]),
-		           log_data_string("ip", GetIP(client)),
-		           log_data_client("server", client->uplink),
-		           log_data_string("reason", tklban->ptr.nameban->reason));
+		        "Banned nick $nick used by $client.details, allowed through by server $server ($reason)",
+		        log_data_string("nick", parv[1]),
+		        log_data_string("ip", GetIP(client)),
+		        log_data_client("server", client->uplink),
+		        log_data_string("reason", tklban->ptr.nameban->reason));
 		/* Let it through */
 	}
 
@@ -222,8 +222,8 @@ CMD_FUNC(cmd_nick_remote)
 	if (!IsULine(client))
 	{
 		zen_log(ULOG_INFO, "nick", "REMOTE_NICK_CHANGE", client,
-		           "Client $client.details has changed their nickname to $new_nick",
-		           log_data_string("new_nick", nick));
+		        "Client $client.details has changed their nickname to $new_nick",
+		        log_data_string("new_nick", nick));
 	}
 
 	new_message(client, recv_mtags, &mtags);
@@ -314,11 +314,11 @@ CMD_FUNC(cmd_nick_local)
 			add_fake_lag(client, 4000); /* lag them up */
 			sendnumeric(client, ERR_ERRONEUSNICKNAME, nick, tklban->ptr.nameban->reason);
 			zen_log(ULOG_INFO, "nick", "QLINE_NICK_LOCAL_ATTEMPT", client,
-			           "Attempt to use banned nick $nick by $client.details blocked ($reason)",
-			           log_data_string("nick", parv[1]),
-			           log_data_string("ip", GetIP(client)),
-			           log_data_client("server", client->uplink),
-			           log_data_string("reason", tklban->ptr.nameban->reason));
+			        "Attempt to use banned nick $nick by $client.details blocked ($reason)",
+			        log_data_string("nick", parv[1]),
+			        log_data_string("ip", GetIP(client)),
+			        log_data_client("server", client->uplink),
+			        log_data_string("reason", tklban->ptr.nameban->reason));
 			return; /* NICK message ignored */
 		}
 		/* fallthrough for ircops that have sufficient privileges */
@@ -456,8 +456,8 @@ CMD_FUNC(cmd_nick_local)
 		}
 
 		zen_log(ULOG_INFO, "nick", "LOCAL_NICK_CHANGE", client,
-		           "Client $client.details has changed their nickname to $new_nick",
-		           log_data_string("new_nick", nick));
+		        "Client $client.details has changed their nickname to $new_nick",
+		        log_data_string("new_nick", nick));
 
 		new_message(client, recv_mtags, &mtags);
 		RunHook(HOOKTYPE_LOCAL_NICKCHANGE, client, mtags, nick);
@@ -552,8 +552,8 @@ CMD_FUNC(cmd_uid)
 	if (!do_remote_nick_name(nick) || !strcasecmp("ircd", nick) || !strcasecmp("irc", nick))
 	{
 		zen_log(ULOG_ERROR, "nick", "BAD_NICK_REMOTE", client->uplink,
-		           "Server link $client tried to introduce bad nick '$nick' -- rejected.",
-		           log_data_string("nick", parv[1]));
+		        "Server link $client tried to introduce bad nick '$nick' -- rejected.",
+		        log_data_string("nick", parv[1]));
 		sendnumeric(client, ERR_ERRONEUSNICKNAME, parv[1], "Illegal nick name");
 
 		ircstats.is_kill++;
@@ -566,9 +566,9 @@ CMD_FUNC(cmd_uid)
 	{
 		ircstats.is_kill++;
 		zen_log(ULOG_ERROR, "link", "BAD_UID", client,
-		           "Server link $client ($sid) used bad UID $uid in UID command.",
-		           log_data_string("sid", client->id),
-		           log_data_string("uid", parv[6]));
+		        "Server link $client ($sid) used bad UID $uid in UID command.",
+		        log_data_string("sid", client->id),
+		        log_data_string("uid", parv[6]));
 		/* Send kill to uplink only, hasn't been broadcasted to the rest, anyway */
 		sendto_one(client, NULL, ":%s KILL %s :Bad UID", me.id, parv[6]);
 		return;
@@ -578,9 +578,9 @@ CMD_FUNC(cmd_uid)
 	{
 		ircstats.is_kill++;
 		zen_log(ULOG_ERROR, "link", "BAD_HOSTNAME", client,
-		           "Server link $client ($client.id) introduced user $nick with bad host name: $bad_hostname.",
-		           log_data_string("nick", nick),
-		           log_data_string("bad_hostname", hostname));
+		        "Server link $client ($client.id) introduced user $nick with bad host name: $bad_hostname.",
+		        log_data_string("nick", nick),
+		        log_data_string("bad_hostname", hostname));
 		/* Send kill to uplink only, hasn't been broadcasted to the rest, anyway */
 		sendto_one(client, NULL, ":%s KILL %s :Bad hostname", me.id, parv[6]);
 		return;
@@ -590,9 +590,9 @@ CMD_FUNC(cmd_uid)
 	{
 		ircstats.is_kill++;
 		zen_log(ULOG_ERROR, "link", "BAD_HOSTNAME", client,
-		           "Server link $client ($client.id) introduced user $nick with bad virtual hostname: $bad_hostname.",
-		           log_data_string("nick", nick),
-		           log_data_string("bad_hostname", virthost));
+		        "Server link $client ($client.id) introduced user $nick with bad virtual hostname: $bad_hostname.",
+		        log_data_string("nick", nick),
+		        log_data_string("bad_hostname", virthost));
 		/* Send kill to uplink only, hasn't been broadcasted to the rest, anyway */
 		sendto_one(client, NULL, ":%s KILL %s :Bad virtual host", me.id, parv[6]);
 		return;
@@ -604,9 +604,9 @@ CMD_FUNC(cmd_uid)
 		{
 			ircstats.is_kill++;
 			zen_log(ULOG_ERROR, "link", "BAD_IP", client,
-			           "Server link $client ($client.id) introduced user $nick with bad IP: $bad_ip.",
-			           log_data_string("nick", nick),
-			           log_data_string("bad_ip", ip_raw));
+			        "Server link $client ($client.id) introduced user $nick with bad IP: $bad_ip.",
+			        log_data_string("nick", nick),
+			        log_data_string("bad_ip", ip_raw));
 			/* Send kill to uplink only, hasn't been broadcasted to the rest, anyway */
 			sendto_one(client, NULL, ":%s KILL %s :Bad IP in UID command", me.id, parv[6]);
 			return;
@@ -619,9 +619,9 @@ CMD_FUNC(cmd_uid)
 		ircstats.is_kill++;
 		/* Send kill to uplink only, hasn't been broadcasted to the rest, anyway */
 		zen_log(ULOG_INFO, "link", "OPER_KILLED_QUARANTINE", NULL,
-		           "QUARANTINE: Oper $nick on server $server killed, due to quarantine",
-		           log_data_string("nick", parv[1]),
-		           log_data_client("server", client));
+		        "QUARANTINE: Oper $nick on server $server killed, due to quarantine",
+		        log_data_string("nick", parv[1]),
+		        log_data_client("server", client));
 		sendto_one(client, NULL, ":%s KILL %s :Quarantined: no oper privileges allowed", me.id, parv[6]);
 		return;
 	}
@@ -629,11 +629,11 @@ CMD_FUNC(cmd_uid)
 	if (!IsULine(client) && (tklban = find_qline(client, nick, &ishold)))
 	{
 		zen_log(ULOG_INFO, "nick", "QLINE_NICK_REMOTE", client,
-		           "Banned nick $nick [$nick.ip] from server $server ($reason)",
-		           log_data_string("nick", parv[1]),
-		           log_data_string("ip", ip),
-		           log_data_client("server", client->uplink),
-		           log_data_string("reason", tklban->ptr.nameban->reason));
+		        "Banned nick $nick [$nick.ip] from server $server ($reason)",
+		        log_data_string("nick", parv[1]),
+		        log_data_string("ip", ip),
+		        log_data_client("server", client->uplink),
+		        log_data_string("reason", tklban->ptr.nameban->reason));
 		/* Let it through */
 	}
 
@@ -702,8 +702,8 @@ nickkill2done:
 			 * the call to decode_ip() about 100 lines up.
 			 */
 			zen_log(ULOG_ERROR, "nick", "REMOTE_CLIENT_IP_BUG", client,
-			           "[BUG] client $client has invalid ip $ip -- rejected",
-			           log_data_string("ip", ip));
+			        "[BUG] client $client has invalid ip $ip -- rejected",
+			        log_data_string("ip", ip));
 #ifdef DEBUGMODE
 			abort();
 #endif
@@ -762,9 +762,9 @@ nickkill2done:
 	if (!IsULine(serv) && IsSynched(serv))
 	{
 		zen_log(ULOG_INFO, "connect", "REMOTE_CLIENT_CONNECT", client,
-		           "Client connecting: $client ($client.user.username@$client.hostname) [$client.ip] $extended_client_info",
-		           log_data_string("extended_client_info", get_connect_extinfo(client)),
-		           log_data_string("from_server_name", client->user->server));
+		        "Client connecting: $client ($client.user.username@$client.hostname) [$client.ip] $extended_client_info",
+		        log_data_string("extended_client_info", get_connect_extinfo(client)),
+		        log_data_string("from_server_name", client->user->server));
 	}
 }
 
@@ -789,10 +789,10 @@ CMD_FUNC(cmd_nick)
 	} else if (!IsUser(client))
 	{
 		zen_log(ULOG_ERROR, "link", "LINK_OLD_PROTOCOL_NICK", client->direction,
-		           "Server link $client tried to introduce $nick using NICK command. "
-		           "Server is using an old and unsupported protocol from ZenIRCd 3.2.x or earlier, should use the UID command. "
-		           "See https://www.unrealircd.org/docs/FAQ#old-server-protocol",
-		           log_data_string("nick", parv[1]));
+		        "Server link $client tried to introduce $nick using NICK command. "
+		        "Server is using an old and unsupported protocol from ZenIRCd 3.2.x or earlier, should use the UID command. "
+		        "See https://www.unrealircd.org/docs/FAQ#old-server-protocol",
+		        log_data_string("nick", parv[1]));
 		/* Split the entire uplink, as it should never have allowed this (and probably they are to blame too) */
 		exit_client(client->direction, NULL, "Server used NICK command, bad, must use UID!");
 		return;
@@ -1010,7 +1010,7 @@ int _register_user(Client *client)
 		 * Otherwise, we return 0.
 		 */
 		zen_log(ULOG_ERROR, "user", "BUG_REGISTER_USER_CALLED_TWICE", client,
-		           "[BUG] register_user() was called more than once on user $client.details");
+		        "[BUG] register_user() was called more than once on user $client.details");
 #ifdef DEBUGMODE
 		abort();
 #else
@@ -1183,8 +1183,8 @@ int _register_user(Client *client)
 	update_known_user_cache(client);
 
 	zen_log(ULOG_INFO, "connect", "LOCAL_CLIENT_CONNECT", client,
-	           "Client connecting: $client ($client.user.username@$client.hostname) [$client.ip] $extended_client_info",
-	           log_data_string("extended_client_info", get_connect_extinfo(client)));
+	        "Client connecting: $client ($client.user.username@$client.hostname) [$client.ip] $extended_client_info",
+	        log_data_string("extended_client_info", get_connect_extinfo(client)));
 
 	/* Send the RPL_WELCOME, LUSERS, MOTD, auto join channels, everything... */
 	welcome_user(client, savetkl);
@@ -1213,17 +1213,17 @@ void nick_collision(Client *cptr, const char *newnick, const char *newid, Client
 	nickcol_reason = new ? "nick change" : "new user connecting";
 
 	zen_log(ULOG_ERROR, "nick", "NICK_COLLISION", NULL,
-	           "Nick collision: "
-	           "$new_nick[$new_id]@$uplink (new) vs "
-	           "$existing_client[$existing_client.id]@$existing_client.user.servername (existing). "
-	           "Winner: $nick_collision_winner. "
-	           "Cause: $nick_collision_reason",
-	           log_data_string("new_nick", newnick),
-	           log_data_string("new_id", newid),
-	           log_data_client("uplink", cptr),
-	           log_data_client("existing_client", existing),
-	           log_data_string("nick_collision_winner", who_won),
-	           log_data_string("nick_collision_reason", nickcol_reason));
+	        "Nick collision: "
+	        "$new_nick[$new_id]@$uplink (new) vs "
+	        "$existing_client[$existing_client.id]@$existing_client.user.servername (existing). "
+	        "Winner: $nick_collision_winner. "
+	        "Cause: $nick_collision_reason",
+	        log_data_string("new_nick", newnick),
+	        log_data_string("new_id", newid),
+	        log_data_client("uplink", cptr),
+	        log_data_client("existing_client", existing),
+	        log_data_string("nick_collision_winner", who_won),
+	        log_data_string("nick_collision_reason", nickcol_reason));
 
 	new_server = cptr->name;
 	existing_server = (existing == existing->direction) ? me.name : existing->direction->name;

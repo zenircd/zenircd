@@ -444,10 +444,10 @@ CMD_FUNC(cmd_smod)
 		{
 			// Send this particular notice to local opers only
 			zen_log(ULOG_ERROR, "link", "LINK_DENY_MODULE", client,
-			           "Server $client is using module '$module_name', "
-			           "which is specified in a deny module { } config block (reason: $ban_reason) -- aborting link",
-			           log_data_string("module_name", name),
-			           log_data_string("ban_reason", dmod->reason));
+			        "Server $client is using module '$module_name', "
+			        "which is specified in a deny module { } config block (reason: $ban_reason) -- aborting link",
+			        log_data_string("module_name", name),
+			        log_data_string("ban_reason", dmod->reason));
 			abort = 1; // Always SQUIT because it was explicitly denied by admins
 			continue;
 		}
@@ -463,18 +463,18 @@ CMD_FUNC(cmd_smod)
 			{
 				// We don't need to check the version yet because there's nothing to compare it to, so we'll treat it as if no require module::min-version was specified
 				zen_log(ULOG_ERROR, "link", "LINK_MISSING_REQUIRED_MODULE", client,
-				           "Server $me is missing module '$module_name' which "
-				           "is required by server $client. -- aborting link",
-				           log_data_client("me", &me),
-				           log_data_string("module_name", name));
+				        "Server $me is missing module '$module_name' which "
+				        "is required by server $client. -- aborting link",
+				        log_data_client("me", &me),
+				        log_data_string("module_name", name));
 				abort = 1; // Always SQUIT here too (explicitly required by admins)
 			} else if (modflag == 'G')
 			{
 				zen_log(ULOG_WARNING, "link", "LINK_MISSING_GLOBAL_MODULE", client,
-				           "Server $me is missing module '$module_name', which is "
-				           "marked as global at $client",
-				           log_data_client("me", &me),
-				           log_data_string("module_name", name));
+				        "Server $me is missing module '$module_name', which is "
+				        "marked as global at $client",
+				        log_data_client("me", &me),
+				        log_data_string("module_name", name));
 			}
 			continue;
 		}
@@ -488,13 +488,13 @@ CMD_FUNC(cmd_smod)
 		if (*version != '*' && strnatcasecmp(mod->header->version, version) < 0)
 		{
 			zen_log(ULOG_ERROR, "link", "LINK_MODULE_OLD_VERSION", client,
-			           "Server $me is using an old version of module '$module_name'. "
-			           "Server $client requires us to have version $minimum_module_version or later (we have $our_module_version). "
-			           "-- aborting link",
-			           log_data_client("me", &me),
-			           log_data_string("module_name", name),
-			           log_data_string("minimum_module_version", version),
-			           log_data_string("our_module_version", mod->header->version));
+			        "Server $me is using an old version of module '$module_name'. "
+			        "Server $client requires us to have version $minimum_module_version or later (we have $our_module_version). "
+			        "-- aborting link",
+			        log_data_client("me", &me),
+			        log_data_string("module_name", name),
+			        log_data_string("minimum_module_version", version),
+			        log_data_string("our_module_version", mod->header->version));
 			abort = 1;
 		}
 	}

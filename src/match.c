@@ -757,11 +757,11 @@ const char *stripbadwords(const char *str, ConfigItem_badword *start_bw, int *bl
 						if ((start < 0) || (end < 0) || (start > strlen(ptr)) || (end > strlen(ptr) + 1))
 						{
 							zen_log(ULOG_FATAL, "main", "BUG_STRIPBADWORDS_PCRE2_MATCH_OOB", NULL,
-							           "[BUG] pcre2_match() returned an ovector with OOB start/end: $start/$end, len $length: '$buf'",
-							           log_data_integer("start", start),
-							           log_data_integer("end", end),
-							           log_data_integer("length", strlen(ptr)),
-							           log_data_string("buf", ptr));
+							        "[BUG] pcre2_match() returned an ovector with OOB start/end: $start/$end, len $length: '$buf'",
+							        log_data_integer("start", start),
+							        log_data_integer("end", end),
+							        log_data_integer("length", strlen(ptr)),
+							        log_data_string("buf", ptr));
 							abort();
 						}
 						m = end - start;

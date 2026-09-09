@@ -82,9 +82,9 @@ ModuleHeader MOD_HEADER = {
 	do \
 	{ \
 		zen_log(ULOG_ERROR, "reputation", "REPUTATION_FILE_WRITE_ERROR", NULL, \
-		           "[reputation] Error writing to temporary database file $filename: $system_error", \
-		           log_data_string("filename", fname), \
-		           log_data_string("system_error", zendb_get_error_string())); \
+		        "[reputation] Error writing to temporary database file $filename: $system_error", \
+		        log_data_string("filename", fname), \
+		        log_data_string("system_error", zendb_get_error_string())); \
 	} while (0)
 
 #define W_SAFE(x) \
@@ -488,8 +488,8 @@ void reputation_load_db_old(void)
 #ifdef BENCHMARK
 	gettimeofday(&tv_beta, NULL);
 	zen_log(ULOG_DEBUG, "reputation", "REPUTATION_BENCHMARK", NULL,
-	           "[reputation] Benchmark: LOAD DB: $time_msec microseconds",
-	           log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
+	        "[reputation] Benchmark: LOAD DB: $time_msec microseconds",
+	        log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
 #endif
 }
 
@@ -555,8 +555,8 @@ int reputation_load_db_new(ZenDB *db)
 #ifdef BENCHMARK
 	gettimeofday(&tv_beta, NULL);
 	zen_log(ULOG_DEBUG, "reputation", "REPUTATION_BENCHMARK", NULL,
-	           "Reputation benchmark: LOAD DB: $time_msec microseconds",
-	           log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
+	        "Reputation benchmark: LOAD DB: $time_msec microseconds",
+	        log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
 #endif
 	return 1;
 }
@@ -682,8 +682,8 @@ int reputation_save_db_old(void)
 #ifdef BENCHMARK
 	gettimeofday(&tv_beta, NULL);
 	zen_log(ULOG_DEBUG, "reputation", "REPUTATION_BENCHMARK", NULL,
-	           "Reputation benchmark: SAVE DB: $time_msec microseconds",
-	           log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
+	        "Reputation benchmark: SAVE DB: $time_msec microseconds",
+	        log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
 #endif
 
 	return 1;
@@ -768,8 +768,8 @@ int reputation_save_db(void)
 #ifdef BENCHMARK
 	gettimeofday(&tv_beta, NULL);
 	zen_log(ULOG_DEBUG, "reputation", "REPUTATION_BENCHMARK", NULL,
-	           "Reputation benchmark: SAVE DB: $time_msec microseconds",
-	           log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
+	        "Reputation benchmark: SAVE DB: $time_msec microseconds",
+	        log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
 #endif
 	return 1;
 }
@@ -1007,10 +1007,10 @@ EVENT(delete_old_records)
 			{
 #ifdef DEBUGMODE
 				zen_log(ULOG_DEBUG, "reputation", "REPUTATION_EXPIRY", NULL,
-				           "Deleting expired entry for $ip (score $score, last seen $time_delta seconds ago)",
-				           log_data_string("ip", e->ip),
-				           log_data_integer("score", e->score),
-				           log_data_integer("time_delta", TStime() - e->last_seen));
+				        "Deleting expired entry for $ip (score $score, last seen $time_delta seconds ago)",
+				        log_data_string("ip", e->ip),
+				        log_data_integer("score", e->score),
+				        log_data_integer("time_delta", TStime() - e->last_seen));
 #endif
 				DelListItem(e, ReputationHashTable[i]);
 				safe_free(e);
@@ -1021,8 +1021,8 @@ EVENT(delete_old_records)
 #ifdef BENCHMARK
 	gettimeofday(&tv_beta, NULL);
 	zen_log(ULOG_DEBUG, "reputation", "REPUTATION_BENCHMARK", NULL,
-	           "Reputation benchmark: EXPIRY IN MEM: $time_msec microseconds",
-	           log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
+	        "Reputation benchmark: EXPIRY IN MEM: $time_msec microseconds",
+	        log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
 #endif
 }
 
@@ -1042,8 +1042,8 @@ CMD_FUNC(reputationunperm)
 	ModuleSetOptions(ModInf.handle, MOD_OPT_PERM, 0);
 
 	zen_log(ULOG_INFO, "reputation", "REPUTATIONUNPERM_COMMAND", client,
-	           "$client used /REPUTATIONUNPERM. On next REHASH the module can be RELOADED or UNLOADED. "
-	           "Note however that for a few minutes the scoring may be skipped, so don't do this too often.");
+	        "$client used /REPUTATIONUNPERM. On next REHASH the module can be RELOADED or UNLOADED. "
+	        "Note however that for a few minutes the scoring may be skipped, so don't do this too often.");
 }
 
 int reputation_connect_extinfo(Client *client, NameValuePrioList **list)
@@ -1092,10 +1092,10 @@ void reputation_channel_query(Client *client, Channel *channel)
 		if (++cnt > channel->users)
 		{
 			zen_log(ULOG_WARNING, "bug", "REPUTATION_CHANNEL_QUERY_BUG", client,
-			           "[BUG] reputation_channel_query() expected $expected_users users, but $found_users (or more) users were present in $channel",
-			           log_data_integer("expected_users", channel->users),
-			           log_data_integer("found_users", cnt),
-			           log_data_string("channel", channel->name));
+			        "[BUG] reputation_channel_query() expected $expected_users users, but $found_users (or more) users were present in $channel",
+			        log_data_integer("expected_users", channel->users),
+			        log_data_integer("found_users", cnt),
+			        log_data_string("channel", channel->name));
 #ifdef DEBUGMODE
 			abort();
 #endif
@@ -1370,10 +1370,10 @@ CMD_FUNC(reputation_server_cmd)
 		sendto_one(client, NULL, ":%s REPUTATION %s *%d", me.id, parv[1], e->score);
 #ifdef DEBUGMODE
 		zen_log(ULOG_DEBUG, "reputation", "REPUTATION_DIFFERS", client,
-		           "Reputation score for for $ip from $client is $their_score, but we have $score, sending back $score",
-		           log_data_string("ip", ip),
-		           log_data_integer("their_score", score),
-		           log_data_integer("score", e->score));
+		        "Reputation score for for $ip from $client is $their_score, but we have $score, sending back $score",
+		        log_data_string("ip", ip),
+		        log_data_integer("their_score", score),
+		        log_data_integer("score", e->score));
 #endif
 		score = e->score; /* Update for propagation in the non-client direction */
 	}
@@ -1383,10 +1383,10 @@ CMD_FUNC(reputation_server_cmd)
 	{
 #ifdef DEBUGMODE
 		zen_log(ULOG_DEBUG, "reputation", "REPUTATION_DIFFERS", client,
-		           "Reputation score for for $ip from $client is $their_score, but we have $score, updating our score to $score",
-		           log_data_string("ip", ip),
-		           log_data_integer("their_score", score),
-		           log_data_integer("score", e->score));
+		        "Reputation score for for $ip from $client is $their_score, but we have $score, updating our score to $score",
+		        log_data_string("ip", ip),
+		        log_data_integer("their_score", score),
+		        log_data_integer("score", e->score));
 #endif
 		e->score = score;
 		reputation_changed_update_users(e);
@@ -1394,10 +1394,10 @@ CMD_FUNC(reputation_server_cmd)
 	{
 #ifdef DEBUGMODE
 		zen_log(ULOG_DEBUG, "reputation", "REPUTATION_DECREASE", client,
-		           "Reputation score for for $ip from $client is $score, force-setting to $their_score.",
-		           log_data_string("ip", ip),
-		           log_data_integer("their_score", score),
-		           log_data_integer("score", e->score));
+		        "Reputation score for for $ip from $client is $score, force-setting to $their_score.",
+		        log_data_string("ip", ip),
+		        log_data_integer("their_score", score),
+		        log_data_integer("score", e->score));
 #endif
 		e->score = score;
 		reputation_changed_update_users(e);
@@ -1408,10 +1408,10 @@ CMD_FUNC(reputation_server_cmd)
 	{
 #ifdef DEBUGMODE
 		zen_log(ULOG_DEBUG, "reputation", "REPUTATION_NEW", client,
-		           "Reputation score for for $ip from $client is $their_score, we had no entry, adding it",
-		           log_data_string("ip", ip),
-		           log_data_integer("their_score", score),
-		           log_data_integer("score", 0));
+		        "Reputation score for for $ip from $client is $their_score, we had no entry, adding it",
+		        log_data_string("ip", ip),
+		        log_data_integer("their_score", score),
+		        log_data_integer("score", 0));
 #endif
 		e = safe_alloc(sizeof(ReputationEntry) + strlen(ip) + 1);
 		strcpy(e->ip, ip); /* safe, see alloc above */

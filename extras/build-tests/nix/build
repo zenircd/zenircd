@@ -44,7 +44,15 @@ $MAKE
 (echo 'Y'; yes '')|./zenircd mkcert
 $MAKE || exit 1
 $MAKE install || exit 1
-./zenircd module install third/dumpcmds || exit 1
+
+# third/dumpcmds needs a configured module repository. ZenIRCd does not
+# ship UnrealIRCd's modules.list by default, so skip when none is set.
+if grep -qE '^[[:space:]]*https://' "$HOME/zenircd/conf/modules.sources.list" 2>/dev/null || \
+   grep -qE '^[[:space:]]*https://' doc/conf/modules.sources.list 2>/dev/null; then
+	./zenircd module install third/dumpcmds || exit 1
+else
+	echo "Skipping './zenircd module install third/dumpcmds' (no module repository in modules.sources.list)"
+fi
 
 set +x
 echo ""

@@ -208,13 +208,13 @@ int Auth_CheckError(ConfigEntry *ce, int warn_on_plaintext)
 			{
 				const char *hashedpass = mkpass_argon2(ce->value);
 				zen_log(ULOG_ADVICE, "config", "BEST_PRACTICES_HASHED_PASSWORDS", NULL,
-				           "$file:$line_number: $config_item: Advice: it is not recommended to use plaintext passwords in the config file. "
-				           "You can replace this password with the following password hash:\n"
-				           "password \"$hashed_password\";",
-				           log_data_string("config_item", config_item_name(ce)),
-				           log_data_string("file", ce->file->filename),
-				           log_data_integer("line_number", ce->line_number),
-				           log_data_string("hashed_password", hashedpass));
+				        "$file:$line_number: $config_item: Advice: it is not recommended to use plaintext passwords in the config file. "
+				        "You can replace this password with the following password hash:\n"
+				        "password \"$hashed_password\";",
+				        log_data_string("config_item", config_item_name(ce)),
+				        log_data_string("file", ce->file->filename),
+				        log_data_integer("line_number", ce->line_number),
+				        log_data_string("hashed_password", hashedpass));
 				bestpractices.hashed_passwords_hits++;
 			}
 			break;
@@ -474,8 +474,8 @@ int Auth_Check(Client *client, AuthConfig *as, const char *para)
 				if (!strcmp(as->data, "changemeplease") && !strcmp(para, as->data))
 				{
 					zen_log(ULOG_INFO, "auth", "AUTH_REJECT_DEFAULT_PASSWORD", client,
-					           "Rejecting default password 'changemeplease'. "
-					           "Please change the password in the configuration file.");
+					        "Rejecting default password 'changemeplease'. "
+					        "Please change the password in the configuration file.");
 					return 0;
 				}
 				/* Constant-time plaintext compare (CRYPTO_memcmp does not short-circuit) */

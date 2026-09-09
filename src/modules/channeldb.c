@@ -33,9 +33,9 @@ ModuleHeader MOD_HEADER = {
 	do \
 	{ \
 		zen_log(ULOG_ERROR, "channeldb", "CHANNELDB_FILE_WRITE_ERROR", NULL, \
-		           "[channeldb] Error writing to temporary database file $filename: $system_error", \
-		           log_data_string("filename", fname), \
-		           log_data_string("system_error", zendb_get_error_string())); \
+		        "[channeldb] Error writing to temporary database file $filename: $system_error", \
+		        log_data_string("filename", fname), \
+		        log_data_string("system_error", zendb_get_error_string())); \
 	} while (0)
 
 #define W_SAFE(x) \
@@ -566,8 +566,8 @@ int read_channeldb(void)
 #ifdef BENCHMARK
 	gettimeofday(&tv_beta, NULL);
 	zen_log(ULOG_DEBUG, "channeldb", "CHANNELDB_BENCHMARK", NULL,
-	           "[channeldb] Benchmark: LOAD DB: $time_msec microseconds",
-	           log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
+	        "[channeldb] Benchmark: LOAD DB: $time_msec microseconds",
+	        log_data_integer("time_msec", ((tv_beta.tv_sec - tv_alpha.tv_sec) * 1000000) + (tv_beta.tv_usec - tv_alpha.tv_usec)));
 #endif
 	return 1;
 }

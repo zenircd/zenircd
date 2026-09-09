@@ -237,8 +237,8 @@ int usc_reparse_sjoin(char **msg, char *p, int *length)
 			if (!next)
 			{
 				zen_log(ULOG_WARNING, "zen_server_compat", "USC_REPARSE_SJOIN_FAILURE", NULL,
-				           "[zen_server_compat] usc_reparse_sjoin(): sjoin data '$ban' seemed like a SJSBY but was not??",
-				           log_data_string("ban", s));
+				        "[zen_server_compat] usc_reparse_sjoin(): sjoin data '$ban' seemed like a SJSBY but was not??",
+				        log_data_string("ban", s));
 				continue;
 			}
 			if (!strchr("&\"'", next[1]))
@@ -248,8 +248,8 @@ int usc_reparse_sjoin(char **msg, char *p, int *length)
 			if (!result)
 			{
 				zen_log(ULOG_WARNING, "zen_server_compat", "USC_REPARSE_SJOIN_FAILURE", NULL,
-				           "[zen_server_compat] usc_reparse_sjoin(): ban '$ban' could not be converted",
-				           log_data_string("ban", s + 1));
+				        "[zen_server_compat] usc_reparse_sjoin(): ban '$ban' could not be converted",
+				        log_data_string("ban", s + 1));
 				continue;
 			}
 			strlcat(obuf, s, sizeof(obuf)); /* "<123,nick" */
@@ -264,8 +264,8 @@ int usc_reparse_sjoin(char **msg, char *p, int *length)
 			if (!result)
 			{
 				zen_log(ULOG_WARNING, "zen_server_compat", "USC_REPARSE_SJOIN_FAILURE", NULL,
-				           "[zen_server_compat] usc_reparse_sjoin(): ban '$ban' could not be converted",
-				           log_data_string("ban", s + 1));
+				        "[zen_server_compat] usc_reparse_sjoin(): ban '$ban' could not be converted",
+				        log_data_string("ban", s + 1));
 				continue;
 			}
 			strlncat(obuf, s, sizeof(obuf), 1);

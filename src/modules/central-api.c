@@ -219,7 +219,7 @@ CMD_FUNC(cmd_centralapisrv)
 			char *json_serialized;
 
 			zen_log(ULOG_INFO, "central-api", "CENTRALAPI_HANDSHAKE", client,
-			           "Received central-api key request handshake from $client.details");
+			        "Received central-api key request handshake from $client.details");
 
 			j = json_object();
 			json_object_set_new(j, "response", json_string_zen(cfg.request_key_response));
@@ -231,7 +231,7 @@ CMD_FUNC(cmd_centralapisrv)
 			if (!json_serialized)
 			{
 				zen_log(ULOG_ERROR, "central-api", "CENTRALAPI_JSON_OUTPUT_ERROR", client,
-				           "Error writing JSON response!?");
+				        "Error writing JSON response!?");
 				json_decref(j);
 				return;
 			}

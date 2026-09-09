@@ -92,8 +92,8 @@ long ClientCapabilityBit(const char *token)
 	if (!clicap)
 	{
 		zen_log(ULOG_WARNING, "main", "BUG_CLIENTCAPABILITYBIT_UNKNOWN_TOKEN", NULL,
-		           "[BUG] ClientCapabilityBit() check for unknown token: $token",
-		           log_data_string("token", token));
+		        "[BUG] ClientCapabilityBit() check for unknown token: $token",
+		        log_data_string("token", token));
 	}
 #endif
 
@@ -192,7 +192,7 @@ ClientCapability *ClientCapabilityAdd(Module *module, ClientCapabilityInfo *clic
 			if (v == 0)
 			{
 				zen_log(ULOG_ERROR, "module", "CLIENTCAPABILITY_OUT_OF_SPACE", NULL,
-				           "ClientCapabilityAdd: out of space!!!");
+				        "ClientCapabilityAdd: out of space!!!");
 				if (module)
 					module->errorcode = MODERR_NOSPACE;
 				return NULL;
@@ -237,8 +237,8 @@ void unload_clicap_commit(ClientCapability *clicap)
 {
 	/* This is an unusual operation, I think we should log it. */
 	zen_log(ULOG_INFO, "module", "UNLOAD_CLICAP", NULL,
-	           "Unloading client capability '$token'",
-	           log_data_string("token", clicap->name));
+	        "Unloading client capability '$token'",
+	        log_data_string("token", clicap->name));
 
 	/* NOTE: Stripping the CAP from local clients is done
 	 * in clicap_check_for_changes(), so not here.
@@ -316,8 +316,8 @@ void clicap_pre_rehash(void)
 		if (i == MAXCLICAPS)
 		{
 			zen_log(ULOG_ERROR, "module", "BUG_TOO_MANY_CLIENTCAPABILITIES", NULL,
-			           "[BUG] clicap_pre_rehash: More than $count caps loaded - this should never happen",
-			           log_data_integer("count", MAXCLICAPS));
+			        "[BUG] clicap_pre_rehash: More than $count caps loaded - this should never happen",
+			        log_data_integer("count", MAXCLICAPS));
 			break;
 		}
 		safe_strdup(old_caps[i], clicap->name);

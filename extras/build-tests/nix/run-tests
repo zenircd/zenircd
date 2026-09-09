@@ -10,12 +10,30 @@ set -e
 set -x
 
 # Kill old instances
-killall -9 zenircd || true
+killall -9 zenircd unrealircd || true
 
-# Install 'zenircd-tests'
-rm -rf zenircd-tests/
-git clone -q --branch unreal60 https://github.com/zenircd/zenircd-tests.git zenircd-tests
-cd zenircd-tests
+# Compatibility for the UnrealIRCd test harness, which expects ~/unrealircd
+# and unrealircd binary/pid names. ZenIRCd installs to ~/zenircd.
+if [ -d "$HOME/zenircd" ]; then
+	ln -sfn "$HOME/zenircd" "$HOME/unrealircd"
+	mkdir -p "$HOME/zenircd/data" "$HOME/zenircd/conf" "$HOME/zenircd/bin"
+	# Pid file name differs; dangling symlink is fine until the daemon starts.
+	ln -sfn zenircd.pid "$HOME/zenircd/data/unrealircd.pid"
+	if [ -e "$HOME/zenircd/zenircd" ] && [ ! -e "$HOME/zenircd/unrealircd" ]; then
+		ln -sfn zenircd "$HOME/zenircd/unrealircd"
+	fi
+	if [ -e "$HOME/zenircd/bin/zenircd" ] && [ ! -e "$HOME/zenircd/bin/unrealircd" ]; then
+		ln -sfn zenircd "$HOME/zenircd/bin/unrealircd"
+	fi
+	if [ -e "$HOME/zenircd/conf/zenircd.conf" ] && [ ! -e "$HOME/zenircd/conf/unrealircd.conf" ]; then
+		ln -sfn zenircd.conf "$HOME/zenircd/conf/unrealircd.conf"
+	fi
+fi
+
+# Upstream UnrealIRCd tests (no Zen-specific fork yet)
+rm -rf unrealircd-tests/
+git clone -q --branch unreal60 https://github.com/unrealircd/unrealircd-tests.git unrealircd-tests
+cd unrealircd-tests
 
 # FreeBSD has various issues with the tests from us and others,
 # better set a flag to keep it simple:

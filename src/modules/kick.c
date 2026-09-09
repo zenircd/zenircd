@@ -61,11 +61,11 @@ MOD_UNLOAD()
 void kick_operoverride_msg(Client *client, Channel *channel, Client *target, char *reason)
 {
 	zen_log(ULOG_INFO, "operoverride", "OPEROVERRIDE_KICK", client,
-	           "OperOverride: $client.details kicked $target from $channel ($reason)",
-	           log_data_string("override_type", "kick"),
-	           log_data_string("reason", reason),
-	           log_data_client("target", target),
-	           log_data_channel("channel", channel));
+	        "OperOverride: $client.details kicked $target from $channel ($reason)",
+	        log_data_string("override_type", "kick"),
+	        log_data_string("reason", reason),
+	        log_data_client("target", target),
+	        log_data_channel("channel", channel));
 }
 
 /** Kick a user from a channel.
@@ -136,13 +136,13 @@ void _kick_user(MessageTag *initial_mtags, Channel *channel, Client *client, Cli
 	if (MyUser(victim))
 	{
 		zen_log(ULOG_INFO, "kick", "LOCAL_CLIENT_KICK", victim,
-		           "User $client kicked from $channel",
-		           log_data_channel("channel", channel));
+		        "User $client kicked from $channel",
+		        log_data_channel("channel", channel));
 	} else
 	{
 		zen_log(ULOG_INFO, "kick", "REMOTE_CLIENT_KICK", victim,
-		           "User $client kicked from $channel",
-		           log_data_channel("channel", channel));
+		        "User $client kicked from $channel",
+		        log_data_channel("channel", channel));
 	}
 
 	remove_user_from_channel(victim, channel, 1);

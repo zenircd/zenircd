@@ -2082,18 +2082,18 @@ void postconf(void)
 		if (!has_any_trusted_cert())
 		{
 			zen_log(ULOG_ADVICE, "config", "BEST_PRACTICES_TRUSTED_CERT", NULL,
-			           "You don't have any valid SSL/TLS certificate that is issued by a trusted Certificate Authority.\n"
-			           "It is highly recommended to use a 'real certificate'. To get a free one, see: "
-			           "https://www.unrealircd.org/docs/Using_Let's_Encrypt_with_ZenIRCd");
+			        "You don't have any valid SSL/TLS certificate that is issued by a trusted Certificate Authority.\n"
+			        "It is highly recommended to use a 'real certificate'. To get a free one, see: "
+			        "https://www.unrealircd.org/docs/Using_Let's_Encrypt_with_ZenIRCd");
 			bestpractices.trusted_cert_hits++;
 		} else if (bestpractices.trusted_cert_valid_hostname && !has_any_trusted_cert_with_correct_hostname())
 		{
 			zen_log(ULOG_ADVICE, "config", "BEST_PRACTICES_TRUSTED_CERT_VALID_HOSTNAME", NULL,
-			           "You have an SSL/TLS certificate that is issued by a trusted Certificate Authority "
-			           "(which is good). However, it is not valid for hostname '$servername'. "
-			           "It is recommended for the certificate (or at least one of them) to be "
-			           "valid for your server name, for clients that connect to that name. ",
-			           log_data_string("servername", me.name));
+			        "You have an SSL/TLS certificate that is issued by a trusted Certificate Authority "
+			        "(which is good). However, it is not valid for hostname '$servername'. "
+			        "It is recommended for the certificate (or at least one of them) to be "
+			        "valid for your server name, for clients that connect to that name. ",
+			        log_data_string("servername", me.name));
 			bestpractices.trusted_cert_valid_hostname_hits++;
 		}
 	}
@@ -2102,10 +2102,10 @@ void postconf(void)
 	    (iConf.plaintext_policy_user != POLICY_DENY))
 	{
 		zen_log(ULOG_ADVICE, "config", "BEST_PRACTICES_PLAINTEXT_PORT", NULL,
-		           "You have at least one IRC plaintext port open to users (such as $port). "
-		           "Nowadays, everyone should be using SSL/TLS (on port 6697). "
-		           "See https://www.unrealircd.org/docs/Use_TLS.",
-		           log_data_integer("port", bestpractices.listen_nontls_port));
+		        "You have at least one IRC plaintext port open to users (such as $port). "
+		        "Nowadays, everyone should be using SSL/TLS (on port 6697). "
+		        "See https://www.unrealircd.org/docs/Use_TLS.",
+		        log_data_integer("port", bestpractices.listen_nontls_port));
 		bestpractices.listen_nontls_port_hits++;
 	}
 
@@ -2395,17 +2395,17 @@ int config_test(void)
 	    bestpractices.listen_nontls_port_hits)
 	{
 		zen_log(ULOG_ADVICE, "config", "BEST_PRACTICES", NULL,
-		           "Your config has NO errors, but you received some best practices tips above.");
+		        "Your config has NO errors, but you received some best practices tips above.");
 		if (bestpractices.hashed_passwords_hits)
 		{
 			zen_log(ULOG_ADVICE, "config", "BEST_PRACTICES_HASHED_PASSWORDS_INFO", NULL,
-			           "* Use hashed passwords, see https://www.unrealircd.org/docs/Authentication_types "
-			           "to learn more about this.");
+			        "* Use hashed passwords, see https://www.unrealircd.org/docs/Authentication_types "
+			        "to learn more about this.");
 		}
 		zen_log(ULOG_ADVICE, "config", "BEST_PRACTICES_POST_INFO", NULL,
-		           "It is recommended for you to follow best practices, but if you want to hide "
-		           "such suggestions see "
-		           "https://www.unrealircd.org/docs/Set_block#set::best-practices");
+		        "It is recommended for you to follow best practices, but if you want to hide "
+		        "such suggestions see "
+		        "https://www.unrealircd.org/docs/Set_block#set::best-practices");
 	}
 	unload_all_unused_mtag_handlers();
 	free_best_practices();
@@ -2484,11 +2484,11 @@ int config_read_file(const char *filename, const char *display_name)
 	if (counter > 1)
 	{
 		zen_log(ULOG_ERROR, "config", "CONFIG_BUG_DUPLICATE_RESOURCE", NULL,
-		           "[BUG] Config file $file has been loaded $counter times. "
-		           "This should not happen. Someone forgot to call "
-		           "add_config_resource() or check its return value!",
-		           log_data_string("file", filename),
-		           log_data_integer("counter", counter));
+		        "[BUG] Config file $file has been loaded $counter times. "
+		        "This should not happen. Someone forgot to call "
+		        "add_config_resource() or check its return value!",
+		        log_data_string("file", filename),
+		        log_data_integer("counter", counter));
 		return -1;
 	}
 	/* end include recursion checking code */
@@ -2547,9 +2547,9 @@ int config_read_file(const char *filename, const char *display_name)
 	} else
 	{
 		zen_log(ULOG_ERROR, "config", "CONFIG_LOAD_FILE_FAILED", NULL,
-		           "Could not load configuration file: $resource",
-		           log_data_string("resource", display_name),
-		           log_data_string("filename", filename));
+		        "Could not load configuration file: $resource",
+		        log_data_string("resource", display_name),
+		        log_data_string("filename", filename));
 #ifdef _WIN32
 		if (!strcmp(filename, "conf/zenircd.conf"))
 		{
@@ -3592,7 +3592,7 @@ static int path_collapse(const char *in, char *out, size_t outlen)
 	int is_abs = 0;
 	size_t pos;
 #ifdef _WIN32
-	char drive[3] = { '\0', '\0', '\0' };
+	char drive[3] = {'\0', '\0', '\0'};
 #endif
 
 	if (!in || !*in || outlen < 2)
@@ -3614,7 +3614,7 @@ static int path_collapse(const char *in, char *out, size_t outlen)
 		p = buf + 3;
 	} else
 #endif
-	if (buf[0] == '/')
+	    if (buf[0] == '/')
 	{
 		is_abs = 1;
 		p = buf + 1;
@@ -3658,7 +3658,7 @@ static int path_collapse(const char *in, char *out, size_t outlen)
 		pos = strlen(out);
 	} else
 #endif
-	if (is_abs)
+	    if (is_abs)
 	{
 		out[pos++] = '/';
 		out[pos] = '\0';
@@ -7160,17 +7160,17 @@ int _test_link(ConfigFile *conf, ConfigEntry *ce)
 			if (config_checkval(cep->value, CFG_YESNO))
 			{
 				zen_log(ULOG_WARNING, "config", "CONFIG_VERIFY_CERTIFICATE_DEPRECATED", NULL,
-				           "$file:$line_number: link::verify-certificate should no longer be used because public "
-				           "certificate authorities are dropping the 'Client Authentication EKU' from TLS certs, "
-				           "see e.g. https://letsencrypt.org/2025/05/14/ending-tls-client-authentication.\n"
-				           "We recommend using a 'dual certificate setup' as outlined in "
-				           "https://www.unrealircd.org/docs/Using_Let's_Encrypt_with_ZenIRCd which will give you: "
-				           "1) A short-lived certificate from Let's Encrypt on port 6697 and "
-				           "2) A long-lived self-signed certificate used for linking on serversonly port 6900.\n"
-				           "And then simply use 'spkifp' for linking on port 6900 as outlined in "
-				           "https://www.unrealircd.org/docs/Tutorial:_Linking_servers",
-				           log_data_string("file", cep->file->filename),
-				           log_data_integer("line_number", cep->line_number));
+				        "$file:$line_number: link::verify-certificate should no longer be used because public "
+				        "certificate authorities are dropping the 'Client Authentication EKU' from TLS certs, "
+				        "see e.g. https://letsencrypt.org/2025/05/14/ending-tls-client-authentication.\n"
+				        "We recommend using a 'dual certificate setup' as outlined in "
+				        "https://www.unrealircd.org/docs/Using_Let's_Encrypt_with_ZenIRCd which will give you: "
+				        "1) A short-lived certificate from Let's Encrypt on port 6697 and "
+				        "2) A long-lived self-signed certificate used for linking on serversonly port 6900.\n"
+				        "And then simply use 'spkifp' for linking on port 6900 as outlined in "
+				        "https://www.unrealircd.org/docs/Tutorial:_Linking_servers",
+				        log_data_string("file", cep->file->filename),
+				        log_data_integer("line_number", cep->line_number));
 			}
 		} else if (!strcmp(cep->name, "options"))
 		{
@@ -7669,8 +7669,7 @@ void test_tlsblock(ConfigFile *conf, ConfigEntry *cep, int *totalerrors)
 				config_error("%s:%i: %s: no protocols enabled. Hint: set at least TLSv1.2",
 				             cepp->file->filename, cepp->line_number, config_var(cepp));
 				errors++;
-			}
-			else if (v & (TLS_PROTOCOL_TLSV1 | TLS_PROTOCOL_TLSV1_1))
+			} else if (v & (TLS_PROTOCOL_TLSV1 | TLS_PROTOCOL_TLSV1_1))
 			{
 				config_warn("%s:%i: SECURITY WARNING: %s enables TLSv1.0 and/or TLSv1.1. "
 				            "This forces OpenSSL security level 0 (weaker crypto policy) "
@@ -10408,16 +10407,16 @@ void start_listeners(void)
 					if (listener->socket_type == SOCKET_TYPE_UNIX)
 					{
 						zen_log(ULOG_INFO, "listen", "LISTEN_ADDED", NULL,
-						           "ZenIRCd is now also listening on $listen_file [$protocol]",
-						           log_data_string("listen_file", listener->file),
-						           log_data_string("protocol", socket_type_valtostr(listener->socket_type)));
+						        "ZenIRCd is now also listening on $listen_file [$protocol]",
+						        log_data_string("listen_file", listener->file),
+						        log_data_string("protocol", socket_type_valtostr(listener->socket_type)));
 					} else
 					{
 						zen_log(ULOG_INFO, "listen", "LISTEN_ADDED", NULL,
-						           "ZenIRCd is now also listening on $listen_ip:$listen_port [$protocol]",
-						           log_data_string("listen_ip", listener->ip),
-						           log_data_integer("listen_port", listener->port),
-						           log_data_string("protocol", socket_type_valtostr(listener->socket_type)));
+						        "ZenIRCd is now also listening on $listen_ip:$listen_port [$protocol]",
+						        log_data_string("listen_ip", listener->ip),
+						        log_data_integer("listen_port", listener->port),
+						        log_data_string("protocol", socket_type_valtostr(listener->socket_type)));
 					}
 				} else
 				{
@@ -10462,15 +10461,15 @@ void start_listeners(void)
 		{
 			/* We can be specific */
 			zen_log(ULOG_FATAL, "listen", "ALL_LISTEN_PORTS_FAILED", NULL,
-			           "Unable to listen on any ports. "
-			           "Most likely ZenIRCd is already running.");
+			        "Unable to listen on any ports. "
+			        "Most likely ZenIRCd is already running.");
 		} else
 		{
 			zen_log(ULOG_FATAL, "listen", "ALL_LISTEN_PORTS_FAILED", NULL,
-			           "Unable to listen on any ports. "
-			           "Please verify that no other process is using the ports. "
-			           "Also, on some IRCd shells you may have to use listen::bind-ip "
-			           "with a specific IP assigned to you (rather than \"*\").");
+			        "Unable to listen on any ports. "
+			        "Please verify that no other process is using the ports. "
+			        "Also, on some IRCd shells you may have to use listen::bind-ip "
+			        "with a specific IP assigned to you (rather than \"*\").");
 		}
 		exit(-1);
 	}
@@ -10478,10 +10477,10 @@ void start_listeners(void)
 	if (failed && !loop.booted)
 	{
 		zen_log(ULOG_FATAL, "listen", "SOME_LISTEN_PORTS_FAILED", NULL,
-		           "Unable to listen on all ports (some of them succeeded, some of them failed). "
-		           "Please verify that no other process is using the port(s). "
-		           "Also, on some IRCd shells you may have to use listen::bind-ip "
-		           "with a specific IP assigned to you (rather than \"*\").");
+		        "Unable to listen on all ports (some of them succeeded, some of them failed). "
+		        "Please verify that no other process is using the port(s). "
+		        "Also, on some IRCd shells you may have to use listen::bind-ip "
+		        "with a specific IP assigned to you (rather than \"*\").");
 		exit(-1);
 	}
 
@@ -10502,13 +10501,13 @@ void start_listeners(void)
 			strlcpy(boundmsg_unix, "<none>", sizeof(boundmsg_unix));
 
 		zen_log(ULOG_INFO, "listen", "LISTENING", NULL,
-		           "ZenIRCd is now listening on the following addresses/ports:\n"
-		           "IPv4: $ipv4_port_list\n"
-		           "IPv6: $ipv6_port_list\n"
-		           "Unix Sockets: $unix_socket_list\n",
-		           log_data_string("ipv4_port_list", boundmsg_ipv4),
-		           log_data_string("ipv6_port_list", boundmsg_ipv6),
-		           log_data_string("unix_socket_list", boundmsg_unix));
+		        "ZenIRCd is now listening on the following addresses/ports:\n"
+		        "IPv4: $ipv4_port_list\n"
+		        "IPv6: $ipv6_port_list\n"
+		        "Unix Sockets: $unix_socket_list\n",
+		        log_data_string("ipv4_port_list", boundmsg_ipv4),
+		        log_data_string("ipv6_port_list", boundmsg_ipv6),
+		        log_data_string("unix_socket_list", boundmsg_unix));
 	}
 }
 
@@ -11477,34 +11476,34 @@ void resource_download_complete(OutgoingWebRequest *request, OutgoingWebResponse
 		if (rs->cache_file)
 		{
 			zen_log(ULOG_ERROR, "config", "DOWNLOAD_FAILED_SOFT", NULL,
-			           "$file:$line_number: Failed to download '$url': $error_message\n"
-			           "Using a cached copy instead.",
-			           log_data_string("file", rs->wce->ce->file->filename),
-			           log_data_integer("line_number", rs->wce->ce->line_number),
-			           log_data_string("url", displayurl(request->url)),
-			           log_data_string("error_message", response->errorbuf));
+			        "$file:$line_number: Failed to download '$url': $error_message\n"
+			        "Using a cached copy instead.",
+			        log_data_string("file", rs->wce->ce->file->filename),
+			        log_data_integer("line_number", rs->wce->ce->line_number),
+			        log_data_string("url", displayurl(request->url)),
+			        log_data_string("error_message", response->errorbuf));
 			safe_strdup(rs->file, rs->cache_file);
 		} else if (rs->warn_only_on_fail)
 		{
 			const char *cache_file;
 			zen_log(ULOG_WARNING, "config", "DOWNLOAD_FAILED_WARN", NULL,
-			           "$file:$line_number: Failed to download '$url': $error_message\n"
-			           "Continuing anyway...",
-			           log_data_string("file", rs->wce->ce->file->filename),
-			           log_data_integer("line_number", rs->wce->ce->line_number),
-			           log_data_string("url", displayurl(request->url)),
-			           log_data_string("error_message", response->errorbuf));
+			        "$file:$line_number: Failed to download '$url': $error_message\n"
+			        "Continuing anyway...",
+			        log_data_string("file", rs->wce->ce->file->filename),
+			        log_data_integer("line_number", rs->wce->ce->line_number),
+			        log_data_string("url", displayurl(request->url)),
+			        log_data_string("error_message", response->errorbuf));
 			cache_file = zen_mkcache(request->url);
 			zen_touch(cache_file, 1577880000); /* 2020-01-01 12:00 GMT */
 			safe_strdup(rs->file, cache_file);
 		} else
 		{
 			zen_log(ULOG_ERROR, "config", "DOWNLOAD_FAILED_HARD", NULL,
-			           "$file:$line_number: Failed to download '$url': $error_message",
-			           log_data_string("file", rs->wce->ce->file->filename),
-			           log_data_integer("line_number", rs->wce->ce->line_number),
-			           log_data_string("url", displayurl(request->url)),
-			           log_data_string("error_message", response->errorbuf));
+			        "$file:$line_number: Failed to download '$url': $error_message",
+			        log_data_string("file", rs->wce->ce->file->filename),
+			        log_data_integer("line_number", rs->wce->ce->line_number),
+			        log_data_string("url", displayurl(request->url)),
+			        log_data_string("error_message", response->errorbuf));
 			/* Set error condition, this so config_read_file() later will stop. */
 			loop.config_load_failed = 1;
 			/* We keep the other transfers running since they may raise (more) errors.
@@ -12073,14 +12072,14 @@ int modules_default_conf_modified(const char *filebuf)
 	}
 
 	zen_log(ULOG_ERROR, "config", "CONFIG_BAD_MODULES_DEFAULT_CONF", NULL,
-	           "Your 'modules.default.conf' is from $your_conf_version and "
-	           "not the one shipped with ZenIRCd $version.\n"
-	           "* Maybe you accidentally copied an old modules.default.conf from a previous installation?\n"
-	           "* Or you deliberately modified modules.default.conf? That is not allowed,"
-	           " see the BIG warning at the beginning of that file.\n"
-	           "Solution: re-run 'make install' and then try to REHASH or boot again.\n",
-	           log_data_string("your_conf_version", conf_version),
-	           log_data_string("version", VERSIONONLY));
+	        "Your 'modules.default.conf' is from $your_conf_version and "
+	        "not the one shipped with ZenIRCd $version.\n"
+	        "* Maybe you accidentally copied an old modules.default.conf from a previous installation?\n"
+	        "* Or you deliberately modified modules.default.conf? That is not allowed,"
+	        " see the BIG warning at the beginning of that file.\n"
+	        "Solution: re-run 'make install' and then try to REHASH or boot again.\n",
+	        log_data_string("your_conf_version", conf_version),
+	        log_data_string("version", VERSIONONLY));
 	return 1;
 }
 
@@ -12356,7 +12355,7 @@ void central_spamfilter_download_complete(OutgoingWebRequest *request, OutgoingW
 	if (iConf.central_spamfilter_verbose > 2)
 	{
 		zen_log(ULOG_INFO, "central-spamfilter", "CENTRAL_SPAMFILTER_STATUS", NULL,
-		           "Processing central spamfilter rules...");
+		        "Processing central spamfilter rules...");
 	}
 
 	if (response->errorbuf)
@@ -12368,7 +12367,7 @@ void central_spamfilter_download_complete(OutgoingWebRequest *request, OutgoingW
 	if (!(cfptr = config_load(response->file, "central_spamfilter.conf")))
 	{
 		zen_log(ULOG_ERROR, "central-spamfilter", "CENTRAL_SPAMFILTER_LOAD_FAILED", NULL,
-		           "[Central spamfilter] Failed to load"); // Where is the REASON ???
+		        "[Central spamfilter] Failed to load"); // Where is the REASON ???
 		return;
 	}
 
@@ -12378,7 +12377,7 @@ void central_spamfilter_download_complete(OutgoingWebRequest *request, OutgoingW
 	if (errors)
 	{
 		zen_log(ULOG_ERROR, "central-spamfilter", "CENTRAL_SPAMFILTER_LOAD_FAILED", NULL,
-		           "[Central spamfilter] Errors in the central central_spamfilter.conf -- not loaded.");
+		        "[Central spamfilter] Errors in the central central_spamfilter.conf -- not loaded.");
 		config_free(cfptr);
 		return;
 	}
@@ -12397,9 +12396,9 @@ void central_spamfilter_download_complete(OutgoingWebRequest *request, OutgoingW
 	if (iConf.central_spamfilter_verbose > 2)
 	{
 		zen_log(ULOG_INFO, "central-spamfilter", "CENTRAL_SPAMFILTER_STATUS", NULL,
-		           "Central spamfilter loaded (active rules: $active_rules, skipped: $skipped_rules)",
-		           log_data_integer("active_rules", active_rules),
-		           log_data_integer("skipped_rules", num_rules - active_rules));
+		        "Central spamfilter loaded (active rules: $active_rules, skipped: $skipped_rules)",
+		        log_data_integer("active_rules", active_rules),
+		        log_data_integer("skipped_rules", num_rules - active_rules));
 	}
 	config_free(cfptr);
 }
@@ -12417,7 +12416,7 @@ void central_spamfilter_start_download(void)
 	if (iConf.central_spamfilter_verbose > 2)
 	{
 		zen_log(ULOG_INFO, "central-spamfilter", "CENTRAL_SPAMFILTER_STATUS", NULL,
-		           "Starting download of central spamfilter rules...");
+		        "Starting download of central spamfilter rules...");
 	}
 
 	central_spamfilter_downloading = 1;

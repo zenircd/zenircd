@@ -382,11 +382,11 @@ int spamfilter_block_rate_limited(Spamreport *spamreport)
 		if (s->last_warning_sent + SPAMREPORT_RATE_LIMIT_WARNING_EVERY < TStime())
 		{
 			zen_log(ULOG_WARNING, "spamreport", "SPAMREPORT_RATE_LIMIT", NULL,
-			           "[spamreport] Rate limit of $rate_limit_count:$rate_limit_period hit "
-			           "for block $spamreport_block -- further requests dropped (throttled).",
-			           log_data_integer("rate_limit_count", spamreport->rate_limit_count),
-			           log_data_integer("rate_limit_period", spamreport->rate_limit_period),
-			           log_data_string("spamreport_block", spamreport->name));
+			        "[spamreport] Rate limit of $rate_limit_count:$rate_limit_period hit "
+			        "for block $spamreport_block -- further requests dropped (throttled).",
+			        log_data_integer("rate_limit_count", spamreport->rate_limit_count),
+			        log_data_integer("rate_limit_period", spamreport->rate_limit_period),
+			        log_data_string("spamreport_block", spamreport->name));
 			s->last_warning_sent = TStime();
 		}
 		return 1; /* Limit exceeded */
@@ -420,8 +420,8 @@ int _spamreport(Client *client, const char *ip, NameValuePrioList *details, cons
 	{
 		// TODO: throttle this error
 		zen_log(ULOG_WARNING, "spamreport", "SPAMREPORT_TOO_MANY_CONCURRENT_REQUESTS", NULL,
-		           "Already $num_requests HTTP(S) requests in progress, new spamreport requests ignored.",
-		           log_data_integer("num_requests", num));
+		        "Already $num_requests HTTP(S) requests in progress, new spamreport requests ignored.",
+		        log_data_integer("num_requests", num));
 		return 0;
 	}
 
@@ -487,9 +487,9 @@ int _spamreport(Client *client, const char *ip, NameValuePrioList *details, cons
 
 #ifdef DEBUGMODE
 	zen_log(ULOG_DEBUG, "spamreport", "SPAMREPORT_SEND_REQUEST", NULL,
-	           "Calling url '$url' with body '$body'",
-	           log_data_string("url", url),
-	           log_data_string("body", (body ? body : "")));
+	        "Calling url '$url' with body '$body'",
+	        log_data_string("url", url),
+	        log_data_string("body", (body ? body : "")));
 #endif
 	/* Do the web request */
 	request = safe_alloc(sizeof(OutgoingWebRequest));

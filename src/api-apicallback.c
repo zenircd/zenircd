@@ -37,9 +37,9 @@ APICallback *APICallbackAdd(Module *module, APICallback *mreq)
 	if (!mreq->callback_type)
 	{
 		zen_log(ULOG_ERROR, "module", "API_CALLBACK_ADD_API_ERROR", NULL,
-		           "APICallbackAdd() from module $module_name: "
-		           "Missing required fields.",
-		           log_data_string("module_name", module->header->name));
+		        "APICallbackAdd() from module $module_name: "
+		        "Missing required fields.",
+		        log_data_string("module_name", module->header->name));
 		abort();
 	}
 
@@ -140,8 +140,8 @@ static void unload_apicallback_commit(APICallback *m)
 {
 	/* This is an unusual operation, I think we should log it. */
 	zen_log(ULOG_INFO, "module", "UNLOAD_API_CALLBACK", NULL,
-	           "Unloading API callback for '$object_name'",
-	           log_data_string("object_name", m->name));
+	        "Unloading API callback for '$object_name'",
+	        log_data_string("object_name", m->name));
 
 	/* Destroy the object */
 	DelListItem(m, apicallbacks);
@@ -179,9 +179,9 @@ void print_apicallbacks(void)
 	{
 		m_next = m->next;
 		zen_log(ULOG_DEBUG, "module", "API_CALLBACK_LIST", NULL,
-		           "$name ($deleted)",
-		           log_data_string("name", m->name),
-		           log_data_string("deleted", m->unloaded ? "deleted" : ""));
+		        "$name ($deleted)",
+		        log_data_string("name", m->name),
+		        log_data_string("deleted", m->unloaded ? "deleted" : ""));
 	}
 	zen_log(ULOG_DEBUG, "module", "API_CALLBACK_LIST", NULL, "----");
 }

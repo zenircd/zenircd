@@ -387,7 +387,7 @@ void url_start_async(OutgoingWebRequest *request)
 	if (!curl)
 	{
 		zen_log(ULOG_ERROR, "main", "CURL_INTERNAL_FAILURE", NULL,
-		           "Could not initialize curl handle. Maybe out of memory/resources?");
+		        "Could not initialize curl handle. Maybe out of memory/resources?");
 		snprintf(errorbuf, sizeof(errorbuf), "Could not initialize curl handle");
 		return;
 	}

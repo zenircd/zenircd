@@ -56,15 +56,15 @@ int exceeds_moddatatype_limit(int type, int slot)
 			if (slot >= moddatatypelimits[i].limit)
 			{
 				zen_log(ULOG_ERROR, "module", "MOD_DATA_OUT_OF_SPACE", NULL,
-				           "ModDataAdd: out of space! Your $mod_data_type limit of $limit is reached. "
-				           "Perhaps you have many third party modules loaded?\n"
-				           "If you need more space then you could open include/config.h and "
-				           "raise $mod_data_type_limit_name. You may also want to raise the other limits "
-				           "there, just to be sure. After changing that file, you will have to "
-				           "recompile (make clean; make install) and restart the IRCd.",
-				           log_data_string("mod_data_type", moddatatypelimits[i].type_name),
-				           log_data_string("mod_data_type_limit_name", moddatatypelimits[i].limit_name),
-				           log_data_integer("limit", moddatatypelimits[i].limit));
+				        "ModDataAdd: out of space! Your $mod_data_type limit of $limit is reached. "
+				        "Perhaps you have many third party modules loaded?\n"
+				        "If you need more space then you could open include/config.h and "
+				        "raise $mod_data_type_limit_name. You may also want to raise the other limits "
+				        "there, just to be sure. After changing that file, you will have to "
+				        "recompile (make clean; make install) and restart the IRCd.",
+				        log_data_string("mod_data_type", moddatatypelimits[i].type_name),
+				        log_data_string("mod_data_type_limit_name", moddatatypelimits[i].limit_name),
+				        log_data_integer("limit", moddatatypelimits[i].limit));
 				return 1;
 			}
 			return 0;

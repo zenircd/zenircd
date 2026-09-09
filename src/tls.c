@@ -233,11 +233,11 @@ void disable_ssl_protocols(SSL_CTX *ctx, TLSOptions *tlsoptions)
 		{
 			security_level_warning_logged = 1;
 			zen_log(ULOG_WARNING, "tls", "TLS_SECURITY_LEVEL_LOWERED", NULL,
-			           "WARNING: OpenSSL security level set to 0 because TLSv1.0 and/or "
-			           "TLSv1.1 are explicitly enabled in tls-options::protocols. "
-			           "This weakens cryptographic policy (weaker keys/algorithms may be "
-			           "accepted). Prefer TLSv1.2+ only unless you have a hard requirement "
-			           "for outdated TLS.");
+			        "WARNING: OpenSSL security level set to 0 because TLSv1.0 and/or "
+			        "TLSv1.1 are explicitly enabled in tls-options::protocols. "
+			        "This weakens cryptographic policy (weaker keys/algorithms may be "
+			        "accepted). Prefer TLSv1.2+ only unless you have a hard requirement "
+			        "for outdated TLS.");
 		}
 	}
 #endif
@@ -328,8 +328,8 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 	if (!ctx)
 	{
 		zen_log(ULOG_ERROR, "config", "TLS_LOAD_FAILED", NULL,
-		           "Failed to do SSL_CTX_new() !?\n$tls_error.all",
-		           log_data_tls_error());
+		        "Failed to do SSL_CTX_new() !?\n$tls_error.all",
+		        log_data_tls_error());
 		return NULL;
 	}
 	disable_ssl_protocols(ctx, tlsoptions);
@@ -367,16 +367,16 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 		{
 			int saved_errno = errno;
 			zen_log(ULOG_ERROR, "config", "TLS_LOAD_FAILED", NULL,
-			           "Could not open TLS certificate $filename: $system_error",
-			           log_data_string("filename", n->name),
-			           log_data_string("system_error", strerror(saved_errno)));
+			        "Could not open TLS certificate $filename: $system_error",
+			        log_data_string("filename", n->name),
+			        log_data_string("system_error", strerror(saved_errno)));
 
 			if (str_ends_with_case_sensitive(n->name, "tls/server.cert.pem"))
 			{
 				zen_log(ULOG_ERROR, "config", "TLS_LOAD_FAILED_DEFAULT_CERT", NULL,
-				           "It seems the default certificate is missing. "
-				           "Run './zenircd mkcert' "
-				           "to generate a self-signed cert.");
+				        "It seems the default certificate is missing. "
+				        "Run './zenircd mkcert' "
+				        "to generate a self-signed cert.");
 			}
 			goto fail;
 		}
@@ -389,9 +389,9 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 		{
 			int saved_errno = errno;
 			zen_log(ULOG_ERROR, "config", "TLS_LOAD_FAILED", NULL,
-			           "Could not open TLS key $filename: $system_error",
-			           log_data_string("filename", n->name),
-			           log_data_string("system_error", strerror(saved_errno)));
+			        "Could not open TLS key $filename: $system_error",
+			        log_data_string("filename", n->name),
+			        log_data_string("system_error", strerror(saved_errno)));
 			goto fail;
 		}
 	}
@@ -413,38 +413,38 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 		if (SSL_CTX_use_certificate_chain_file(ctx, n->name) <= 0)
 		{
 			zen_log(ULOG_ERROR, "config", "TLS_LOAD_FAILED", NULL,
-			           "Failed to load TLS certificate $filename\n$tls_error.all",
-			           log_data_string("filename", n->name),
-			           log_data_tls_error());
+			        "Failed to load TLS certificate $filename\n$tls_error.all",
+			        log_data_string("filename", n->name),
+			        log_data_tls_error());
 			goto fail;
 		}
 		if (SSL_CTX_use_PrivateKey_file(ctx, n2->name, SSL_FILETYPE_PEM) <= 0)
 		{
 			zen_log(ULOG_ERROR, "config", "TLS_LOAD_FAILED", NULL,
-			           "Failed to load TLS private key $filename\n$tls_error.all",
-			           log_data_string("filename", n2->name),
-			           log_data_tls_error());
+			        "Failed to load TLS private key $filename\n$tls_error.all",
+			        log_data_string("filename", n2->name),
+			        log_data_tls_error());
 			goto fail;
 		}
 		if (!SSL_CTX_check_private_key(ctx))
 		{
 			zen_log(ULOG_ERROR, "config", "TLS_LOAD_FAILED", NULL,
-			           "Check for TLS private key(s) failed: "
-			           "certificate $certificate_filename vs key $key_filename\n"
-			           "$tls_error.all",
-			           log_data_string("certificate_filename", n->name),
-			           log_data_string("key_filename", n2->name),
-			           log_data_tls_error());
+			        "Check for TLS private key(s) failed: "
+			        "certificate $certificate_filename vs key $key_filename\n"
+			        "$tls_error.all",
+			        log_data_string("certificate_filename", n->name),
+			        log_data_string("key_filename", n2->name),
+			        log_data_tls_error());
 			/* An extra hint for dual cert as this mistake will likely happen
 			 * to some users and the OpenSSL error may be a bit too cryptic.
 			 */
 			if (tlsoptions->certificate_files->next)
 			{
 				zen_log(ULOG_ERROR, "config", "TLS_LOAD_FAILED", NULL,
-				           "HINT: You are using multiple 'certificate' and 'key' items. "
-				           "Make sure each certificate/key pair belongs to each other, "
-				           "they should be in the correct order! "
-				           "E.g. certificate \"cert1\"; key \"key1\"; certificate \"cert2\"; key \"key2\";");
+				        "HINT: You are using multiple 'certificate' and 'key' items. "
+				        "Make sure each certificate/key pair belongs to each other, "
+				        "they should be in the correct order! "
+				        "E.g. certificate \"cert1\"; key \"key1\"; certificate \"cert2\"; key \"key2\";");
 			}
 			goto fail;
 		}
@@ -471,9 +471,9 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 	if (SSL_CTX_set_cipher_list(ctx, tlsoptions->ciphers) == 0)
 	{
 		zen_log(ULOG_ERROR, "config", "TLS_INVALID_CIPHERS_LIST", NULL,
-		           "Failed to set TLS cipher list '$tls_ciphers_list'\n$tls_error.all",
-		           log_data_string("tls_ciphers_list", tlsoptions->ciphers),
-		           log_data_tls_error());
+		        "Failed to set TLS cipher list '$tls_ciphers_list'\n$tls_error.all",
+		        log_data_string("tls_ciphers_list", tlsoptions->ciphers),
+		        log_data_tls_error());
 		goto fail;
 	}
 
@@ -481,9 +481,9 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 	if (SSL_CTX_set_ciphersuites(ctx, tlsoptions->ciphersuites) == 0)
 	{
 		zen_log(ULOG_ERROR, "config", "TLS_INVALID_CIPHERSUITES_LIST", NULL,
-		           "Failed to set TLS ciphersuites list '$tls_ciphersuites_list'\n$tls_error.all",
-		           log_data_string("tls_ciphersuites_list", tlsoptions->ciphersuites),
-		           log_data_tls_error());
+		        "Failed to set TLS ciphersuites list '$tls_ciphersuites_list'\n$tls_error.all",
+		        log_data_string("tls_ciphersuites_list", tlsoptions->ciphersuites),
+		        log_data_tls_error());
 		goto fail;
 	}
 #endif
@@ -491,19 +491,19 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 	if (!cipher_check(ctx, &errstr))
 	{
 		zen_log(ULOG_ERROR, "config", "TLS_CIPHER_CHECK_FAILED", NULL,
-		           "There is a problem with your TLS 'ciphers' configuration setting: $quality_check_error\n"
-		           "Remove the ciphers setting from your configuration file to use safer defaults, or change the cipher setting.",
-		           log_data_string("quality_check_error", errstr));
+		        "There is a problem with your TLS 'ciphers' configuration setting: $quality_check_error\n"
+		        "Remove the ciphers setting from your configuration file to use safer defaults, or change the cipher setting.",
+		        log_data_string("quality_check_error", errstr));
 		goto fail;
 	}
 
 	if (!certificate_quality_check(ctx, &errstr))
 	{
 		zen_log(ULOG_ERROR, "config", "TLS_CERTIFICATE_CHECK_FAILED", NULL,
-		           "There is a problem with your TLS certificate: $quality_check_error\n"
-		           "If you use the standard ZenIRCd certificates then you can simply run './zenircd mkcert' "
-		           "to create and install new certificates",
-		           log_data_string("quality_check_error", errstr));
+		        "There is a problem with your TLS certificate: $quality_check_error\n"
+		        "If you use the standard ZenIRCd certificates then you can simply run './zenircd mkcert' "
+		        "to create and install new certificates",
+		        log_data_string("quality_check_error", errstr));
 		goto fail;
 	}
 
@@ -515,9 +515,9 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 		if (!SSL_CTX_load_verify_locations(ctx, tlsoptions->trusted_ca_file, NULL))
 		{
 			zen_log(ULOG_ERROR, "config", "TLS_LOAD_FAILED", NULL,
-			           "Failed to load trusted-ca-file $filename\n$tls_error.all",
-			           log_data_string("filename", tlsoptions->trusted_ca_file),
-			           log_data_tls_error());
+			        "Failed to load trusted-ca-file $filename\n$tls_error.all",
+			        log_data_string("filename", tlsoptions->trusted_ca_file),
+			        log_data_tls_error());
 			goto fail;
 		}
 	}
@@ -558,15 +558,15 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 				if (!zenircd_set_tls_groups(ctx, ZENIRCD_DEFAULT_TLS_GROUPS_TERTIARY))
 				{
 					zen_log(ULOG_ERROR, "config", "TLS_INVALID_TLS_GROUPS_LIST", NULL,
-					           "Failed to set groups / ecdh-curves to either "
-					           "'$tls_groups_primary', '$tls_groups_secondary' or '$tls_groups_tertiary'.\n"
-					           "$tls_error.all\n"
-					           "It's strange that none of the three worked. "
-					           "Please report at https://bugs.unrealircd.org/ !",
-					           log_data_string("tls_groups_primary", ZENIRCD_DEFAULT_TLS_GROUPS_PRIMARY),
-					           log_data_string("tls_groups_secondary", ZENIRCD_DEFAULT_TLS_GROUPS_SECONDARY),
-					           log_data_string("tls_groups_tertiary", ZENIRCD_DEFAULT_TLS_GROUPS_TERTIARY),
-					           log_data_tls_error());
+					        "Failed to set groups / ecdh-curves to either "
+					        "'$tls_groups_primary', '$tls_groups_secondary' or '$tls_groups_tertiary'.\n"
+					        "$tls_error.all\n"
+					        "It's strange that none of the three worked. "
+					        "Please report at https://bugs.unrealircd.org/ !",
+					        log_data_string("tls_groups_primary", ZENIRCD_DEFAULT_TLS_GROUPS_PRIMARY),
+					        log_data_string("tls_groups_secondary", ZENIRCD_DEFAULT_TLS_GROUPS_SECONDARY),
+					        log_data_string("tls_groups_tertiary", ZENIRCD_DEFAULT_TLS_GROUPS_TERTIARY),
+					        log_data_tls_error());
 					goto fail;
 				}
 			}
@@ -577,12 +577,12 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 		if (!zenircd_set_tls_groups(ctx, tlsoptions->groups))
 		{
 			zen_log(ULOG_ERROR, "config", "TLS_INVALID_TLS_GROUPS_LIST", NULL,
-			           "Failed to set groups / ecdh-curves '$tls_groups'\n$tls_error.all\n"
-			           "HINT: To get a list of supported names, run 'openssl ecparam -list_curves' on the server. "
-			           "Separate multiple curves by colon, for example: "
-			           "groups \"secp521r1:secp384r1\".",
-			           log_data_string("tls_groups", tlsoptions->groups),
-			           log_data_tls_error());
+			        "Failed to set groups / ecdh-curves '$tls_groups'\n$tls_error.all\n"
+			        "HINT: To get a list of supported names, run 'openssl ecparam -list_curves' on the server. "
+			        "Separate multiple curves by colon, for example: "
+			        "groups \"secp521r1:secp384r1\".",
+			        log_data_string("tls_groups", tlsoptions->groups),
+			        log_data_tls_error());
 			goto fail;
 		}
 	}
@@ -593,7 +593,7 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 		 * it here too than be sorry if someone screws up:
 		 */
 		zen_log(ULOG_ERROR, "config", "BUG_TLS_GROUPS", NULL,
-		           "tls groups / ecdh-curves specified but not supported by library -- BAD!");
+		        "tls groups / ecdh-curves specified but not supported by library -- BAD!");
 		goto fail;
 	}
 #endif
@@ -604,16 +604,16 @@ SSL_CTX *init_ctx(TLSOptions *tlsoptions, int server)
 		if (!SSL_CTX_set1_sigalgs_list(ctx, tlsoptions->signature_algorithms))
 		{
 			zen_log(ULOG_ERROR, "config", "TLS_INVALID_TLS_SIGNATURE_ALGORITHMS", NULL,
-			           "Failed to set signature-algorithms to '$signature_algorithms'.\n$tls_error.all",
-			           log_data_string("signature_algorithms", tlsoptions->signature_algorithms),
-			           log_data_tls_error());
+			        "Failed to set signature-algorithms to '$signature_algorithms'.\n$tls_error.all",
+			        log_data_string("signature_algorithms", tlsoptions->signature_algorithms),
+			        log_data_tls_error());
 			goto fail;
 		}
 #else
 		/* Would be odd, this is in OpenSSL 1.0.2+ */
 		zen_log(ULOG_ERROR, "config", "TLS_INVALID_TLS_SIGNATURE_ALGORITHMS", NULL,
-		           "You have a signature-algorithms configuration in your config file. "
-		           "However, your OpenSSL version does not provide SSL_CTX_set1_sigalgs_list() !?");
+		        "You have a signature-algorithms configuration in your config file. "
+		        "However, your OpenSSL version does not provide SSL_CTX_set1_sigalgs_list() !?");
 		goto fail;
 #endif
 	}
@@ -855,7 +855,7 @@ int reinit_tls(void)
 	if (!tmp)
 	{
 		zen_log(ULOG_ERROR, "config", "TLS_RELOAD_FAILED", NULL,
-		           "TLS Reload failed. See previous errors.");
+		        "TLS Reload failed. See previous errors.");
 		return 0;
 	}
 	if (ctx_server)
@@ -866,7 +866,7 @@ int reinit_tls(void)
 	if (!tmp)
 	{
 		zen_log(ULOG_ERROR, "config", "TLS_RELOAD_FAILED", NULL,
-		           "TLS Reload failed at client context. See previous errors.");
+		        "TLS Reload failed at client context. See previous errors.");
 		return 0;
 	}
 	if (ctx_client)
@@ -880,7 +880,7 @@ int reinit_tls(void)
 		if (!tmp)
 		{
 			zen_log(ULOG_ERROR, "config", "TLS_RELOAD_FAILED", NULL,
-			           "TLS Reload failed at set::server-linking::tls-options. See previous errors.");
+			        "TLS Reload failed at set::server-linking::tls-options. See previous errors.");
 			return 0;
 		}
 		if (ctx_link_server)
@@ -891,7 +891,7 @@ int reinit_tls(void)
 		if (!tmp)
 		{
 			zen_log(ULOG_ERROR, "config", "TLS_RELOAD_FAILED", NULL,
-			           "TLS Reload failed at set::server-linking::tls-options (client). See previous errors.");
+			        "TLS Reload failed at set::server-linking::tls-options (client). See previous errors.");
 			return 0;
 		}
 		if (ctx_link_client)
@@ -920,7 +920,7 @@ int reinit_tls(void)
 			if (!tmp)
 			{
 				zen_log(ULOG_ERROR, "config", "TLS_RELOAD_FAILED", NULL,
-				           "TLS Reload failed at listen::tls-options. See previous errors.");
+				        "TLS Reload failed at listen::tls-options. See previous errors.");
 				return 0;
 			}
 			if (listen->ssl_ctx)
@@ -938,7 +938,7 @@ int reinit_tls(void)
 			if (!tmp)
 			{
 				zen_log(ULOG_ERROR, "config", "TLS_RELOAD_FAILED", NULL,
-				           "TLS Reload failed at sni::tls-options. See previous errors.");
+				        "TLS Reload failed at sni::tls-options. See previous errors.");
 				return 0;
 			}
 			if (sni->ssl_ctx)
@@ -956,8 +956,8 @@ int reinit_tls(void)
 			if (!tmp)
 			{
 				zen_log(ULOG_ERROR, "config", "TLS_RELOAD_FAILED", NULL,
-				           "TLS Reload failed at link $servername due to outgoing::tls-options. See previous errors.",
-				           log_data_string("servername", link->servername));
+				        "TLS Reload failed at link $servername due to outgoing::tls-options. See previous errors.",
+				        log_data_string("servername", link->servername));
 				return 0;
 			}
 			if (link->ssl_ctx)
@@ -1045,8 +1045,8 @@ void zen_tls_client_handshake(int fd, int revents, void *data)
 	if (!ctx)
 	{
 		zen_log(ULOG_ERROR, "config", "TLS_CREATE_SESSION_FAILED", NULL,
-		           "Could not start TLS client handshake (no ctx?): TLS was possibly not loaded correctly on this server!?\n$tls_error.all",
-		           log_data_tls_error());
+		        "Could not start TLS client handshake (no ctx?): TLS was possibly not loaded correctly on this server!?\n$tls_error.all",
+		        log_data_tls_error());
 		return;
 	}
 
@@ -1054,8 +1054,8 @@ void zen_tls_client_handshake(int fd, int revents, void *data)
 	if (!client->local->ssl)
 	{
 		zen_log(ULOG_ERROR, "config", "TLS_CREATE_SESSION_FAILED", NULL,
-		           "Could not start TLS client handshake: TLS was possibly not loaded correctly on this server!?\n$tls_error.all",
-		           log_data_tls_error());
+		        "Could not start TLS client handshake: TLS was possibly not loaded correctly on this server!?\n$tls_error.all",
+		        log_data_tls_error());
 		return;
 	}
 
@@ -1317,11 +1317,11 @@ static int fatal_tls_error(int ssl_error, int where, int my_errno, Client *clien
 
 	SetDeadSocket(client);
 	zen_log(ULOG_DEBUG, "tls", "DEBUG_TLS_FATAL_ERROR", client,
-	           "Exiting TLS client $client.details [port $port]: $tls_function: $tls_error_string: $tls_additional_info",
-	           log_data_string("tls_function", ssl_func),
-	           log_data_string("tls_error_string", ssl_errstr),
-	           log_data_string("tls_additional_info", additional_info),
-	           log_data_integer("port", client->local->listener ? client->local->listener->port : 0));
+	        "Exiting TLS client $client.details [port $port]: $tls_function: $tls_error_string: $tls_additional_info",
+	        log_data_string("tls_function", ssl_func),
+	        log_data_string("tls_error_string", ssl_errstr),
+	        log_data_string("tls_additional_info", additional_info),
+	        log_data_integer("port", client->local->listener ? client->local->listener->port : 0));
 
 
 	if (where == FUNC_TLS_CONNECT)
@@ -1844,9 +1844,9 @@ void check_certificate_expiry_tlsoptions_and_warn(TLSOptions *tlsoptions)
 	if (check_certificate_expiry_ctx(ctx, &errstr))
 	{
 		zen_log(ULOG_WARNING, "tls", "TLS_CERT_EXPIRING", NULL,
-		           "Warning: TLS certificate '$filename': $error_string",
-		           log_data_string("filename", tlsoptions->certificate_files->name),
-		           log_data_string("error_string", errstr));
+		        "Warning: TLS certificate '$filename': $error_string",
+		        log_data_string("filename", tlsoptions->certificate_files->name),
+		        log_data_string("error_string", errstr));
 	}
 	SSL_CTX_free(ctx);
 }
@@ -1908,19 +1908,19 @@ SSL_CTX *https_new_ctx(void)
 	{
 #ifdef _WIN32
 		zen_log(ULOG_ERROR, "url", "CA_BUNDLE_NOT_FOUND", NULL,
-		           "File $filename1 does not exist.\n"
-		           "Cannot use built-in https client without curl-ca-bundle.crt\n",
-		           log_data_string("filename1", buf1));
+		        "File $filename1 does not exist.\n"
+		        "Cannot use built-in https client without curl-ca-bundle.crt\n",
+		        log_data_string("filename1", buf1));
 		exit(-1);
 #else
 		snprintf(buf2, sizeof(buf2), "%s/doc/conf/tls/curl-ca-bundle.crt", BUILDDIR);
 		if (!file_exists(buf2))
 		{
 			zen_log(ULOG_ERROR, "url", "CA_BUNDLE_NOT_FOUND", NULL,
-			           "Neither $filename1 nor $filename2 exist.\n"
-			           "Cannot use built-in https client without curl-ca-bundle.crt\n",
-			           log_data_string("filename1", buf1),
-			           log_data_string("filename2", buf2));
+			        "Neither $filename1 nor $filename2 exist.\n"
+			        "Cannot use built-in https client without curl-ca-bundle.crt\n",
+			        log_data_string("filename1", buf1),
+			        log_data_string("filename2", buf2));
 			exit(-1);
 		}
 		curl_ca_bundle = buf2;

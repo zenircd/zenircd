@@ -216,8 +216,8 @@ int sendtypetowhat(SendType sendtype)
 		return 2;
 #ifdef DEBUGMODE
 	zen_log(ULOG_ERROR, "flood", "BUG_SENDTYPETOWHAT_UNKNOWN_VALUE", NULL,
-	           "[BUG] sendtypetowhat() called for unknown sendtype $send_type",
-	           log_data_integer("send_type", sendtype));
+	        "[BUG] sendtypetowhat() called for unknown sendtype $send_type",
+	        log_data_integer("send_type", sendtype));
 	abort();
 #endif
 	return 0; /* otherwise, default to privmsg i guess */
@@ -259,10 +259,10 @@ int targetfloodprot_can_send_to_channel(Client *client, Channel *channel, Member
 	{
 		/* Flood detected */
 		zen_log(ULOG_INFO, "flood", "FLOOD_BLOCKED", client,
-		           "Flood blocked ($flood_type) from $client.details [$client.ip] to $channel ($message_type)",
-		           log_data_string("flood_type", "target-flood-channel"),
-		           log_data_channel("channel", channel),
-		           log_data_string("message_type", sendtype_to_cmd(sendtype)));
+		        "Flood blocked ($flood_type) from $client.details [$client.ip] to $channel ($message_type)",
+		        log_data_string("flood_type", "target-flood-channel"),
+		        log_data_channel("channel", channel),
+		        log_data_string("message_type", sendtype_to_cmd(sendtype)));
 		snprintf(errbuf, sizeof(errbuf), "Channel is being flooded. Message not delivered.");
 		*errmsg = errbuf;
 		return HOOK_DENY;
@@ -310,10 +310,10 @@ int targetfloodprot_can_send_to_user(Client *client, Client *target, const char 
 	{
 		/* Flood detected */
 		zen_log(ULOG_INFO, "flood", "FLOOD_BLOCKED", client,
-		           "Flood blocked ($flood_type) from $client.details [$client.ip] to $target ($message_type)",
-		           log_data_string("flood_type", "target-flood-user"),
-		           log_data_client("target", target),
-		           log_data_string("message_type", sendtype_to_cmd(sendtype)));
+		        "Flood blocked ($flood_type) from $client.details [$client.ip] to $target ($message_type)",
+		        log_data_string("flood_type", "target-flood-user"),
+		        log_data_client("target", target),
+		        log_data_string("message_type", sendtype_to_cmd(sendtype)));
 		snprintf(errbuf, sizeof(errbuf), "User is being flooded. Message not delivered.");
 		*errmsg = errbuf;
 		return HOOK_DENY;

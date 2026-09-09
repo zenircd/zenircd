@@ -2,7 +2,7 @@
 // Microsoft Developer Studio generated include file.
 // Used by Win32GUI.rc
 //
-#define VER_ZEN           1
+#define VER_ZEN              1
 #define MANIFEST_RESOURCE_ID 2
 #define ICO_MAIN             129
 #define BMP_LOGO             130

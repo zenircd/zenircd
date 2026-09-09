@@ -125,8 +125,8 @@ CMD_FUNC(cmd_slog)
 	if (!j)
 	{
 		zen_log(ULOG_INFO, "log", "REMOTE_LOG_INVALID", client,
-		           "Received malformed JSON in server-to-server log message (SLOG) from $client",
-		           log_data_string("bad_json_serialized", json_incoming));
+		        "Received malformed JSON in server-to-server log message (SLOG) from $client",
+		        log_data_string("bad_json_serialized", json_incoming));
 		return;
 	}
 
@@ -134,8 +134,8 @@ CMD_FUNC(cmd_slog)
 	if (!jt || !(msg_in_json = json_string_value(jt)))
 	{
 		zen_log(ULOG_INFO, "log", "REMOTE_LOG_INVALID", client,
-		           "Missing 'msg' in JSON in server-to-server log message (SLOG) from $client",
-		           log_data_string("bad_json_serialized", json_incoming));
+		        "Missing 'msg' in JSON in server-to-server log message (SLOG) from $client",
+		        log_data_string("bad_json_serialized", json_incoming));
 		json_decref(j);
 		return;
 	}

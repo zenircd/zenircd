@@ -113,14 +113,14 @@ static int listener_accept_wrapper(ConfigItem_listen *listener)
 			if (listener->file)
 			{
 				zen_log(ULOG_FATAL, "listen", "ACCEPT_ERROR", NULL, "Cannot accept incoming connection on file $file: $socket_error",
-				           log_data_socket_error(listener->fd),
-				           log_data_string("file", listener->file));
+				        log_data_socket_error(listener->fd),
+				        log_data_string("file", listener->file));
 			} else
 			{
 				zen_log(ULOG_FATAL, "listen", "ACCEPT_ERROR", NULL, "Cannot accept incoming connection on IP \"$listen_ip\" port $listen_port: $socket_error",
-				           log_data_socket_error(listener->fd),
-				           log_data_string("listen_ip", listener->ip),
-				           log_data_integer("listen_port", listener->port));
+				        log_data_socket_error(listener->fd),
+				        log_data_string("listen_ip", listener->ip),
+				        log_data_integer("listen_port", listener->port));
 			}
 			close_listener(listener);
 			start_listeners();
@@ -142,7 +142,7 @@ static int listener_accept_wrapper(ConfigItem_listen *listener)
 			if (last_allinuse < TStime() - 15)
 			{
 				zen_log(ULOG_FATAL, "listen", "ACCEPT_ERROR_MAXCLIENTS", NULL, "Cannot accept incoming connection on file $file: All connections in use",
-				           log_data_string("file", listener->file));
+				        log_data_string("file", listener->file));
 				last_allinuse = TStime();
 			}
 			fd_close(cli_fd);
@@ -159,12 +159,12 @@ static int listener_accept_wrapper(ConfigItem_listen *listener)
 				if (listener->file)
 				{
 					zen_log(ULOG_FATAL, "listen", "ACCEPT_ERROR_MAXCLIENTS", NULL, "Cannot accept incoming connection on file $file: All connections in use",
-					           log_data_string("file", listener->file));
+					        log_data_string("file", listener->file));
 				} else
 				{
 					zen_log(ULOG_FATAL, "listen", "ACCEPT_ERROR_MAXCLIENTS", NULL, "Cannot accept incoming connection on IP \"$listen_ip\" port $listen_port: All connections in use",
-					           log_data_string("listen_ip", listener->ip),
-					           log_data_integer("listen_port", listener->port));
+					        log_data_string("listen_ip", listener->ip),
+					        log_data_integer("listen_port", listener->port));
 				}
 				last_allinuse = TStime();
 			}
@@ -227,19 +227,19 @@ int zen_listen_inet(ConfigItem_listen *listener)
 	if (listener->fd < 0)
 	{
 		zen_log(ULOG_FATAL, "listen", "LISTEN_SOCKET_ERROR", NULL,
-		           "Could not listen on IP \"$listen_ip\" on port $listen_port: $socket_error",
-		           log_data_socket_error(-1),
-		           log_data_string("listen_ip", ip),
-		           log_data_integer("listen_port", port));
+		        "Could not listen on IP \"$listen_ip\" on port $listen_port: $socket_error",
+		        log_data_socket_error(-1),
+		        log_data_string("listen_ip", ip),
+		        log_data_integer("listen_port", port));
 		return -1;
 	}
 
 	if (++OpenFiles >= maxclients)
 	{
 		zen_log(ULOG_FATAL, "listen", "LISTEN_ERROR_MAXCLIENTS", NULL,
-		           "Could not listen on IP \"$listen_ip\" on port $listen_port: all connections in use",
-		           log_data_string("listen_ip", ip),
-		           log_data_integer("listen_port", port));
+		        "Could not listen on IP \"$listen_ip\" on port $listen_port: all connections in use",
+		        log_data_string("listen_ip", ip),
+		        log_data_integer("listen_port", port));
 		fd_close(listener->fd);
 		listener->fd = -1;
 		--OpenFiles;
@@ -251,10 +251,10 @@ int zen_listen_inet(ConfigItem_listen *listener)
 	if (!zen_bind(listener->fd, ip, port, listener->socket_type))
 	{
 		zen_log(ULOG_FATAL, "listen", "LISTEN_BIND_ERROR", NULL,
-		           "Could not listen on IP \"$listen_ip\" on port $listen_port: $socket_error",
-		           log_data_socket_error(listener->fd),
-		           log_data_string("listen_ip", ip),
-		           log_data_integer("listen_port", port));
+		        "Could not listen on IP \"$listen_ip\" on port $listen_port: $socket_error",
+		        log_data_socket_error(listener->fd),
+		        log_data_string("listen_ip", ip),
+		        log_data_integer("listen_port", port));
 		fd_close(listener->fd);
 		listener->fd = -1;
 		--OpenFiles;
@@ -264,10 +264,10 @@ int zen_listen_inet(ConfigItem_listen *listener)
 	if (listen(listener->fd, LISTEN_SIZE) < 0)
 	{
 		zen_log(ULOG_FATAL, "listen", "LISTEN_LISTEN_ERROR", NULL,
-		           "Could not listen on IP \"$listen_ip\" on port $listen_port: $socket_error",
-		           log_data_socket_error(listener->fd),
-		           log_data_string("listen_ip", ip),
-		           log_data_integer("listen_port", port));
+		        "Could not listen on IP \"$listen_ip\" on port $listen_port: $socket_error",
+		        log_data_socket_error(listener->fd),
+		        log_data_string("listen_ip", ip),
+		        log_data_integer("listen_port", port));
 		fd_close(listener->fd);
 		listener->fd = -1;
 		--OpenFiles;
@@ -312,17 +312,17 @@ int zen_listen_unix(ConfigItem_listen *listener)
 	if (listener->fd < 0)
 	{
 		zen_log(ULOG_FATAL, "listen", "LISTEN_SOCKET_ERROR", NULL,
-		           "Could not create UNIX domain socket for $file: $socket_error",
-		           log_data_socket_error(-1),
-		           log_data_string("file", listener->file));
+		        "Could not create UNIX domain socket for $file: $socket_error",
+		        log_data_socket_error(-1),
+		        log_data_string("file", listener->file));
 		return -1;
 	}
 
 	if (++OpenFiles >= maxclients)
 	{
 		zen_log(ULOG_FATAL, "listen", "LISTEN_ERROR_MAXCLIENTS", NULL,
-		           "Could not create UNIX domain socket for $file: all connections in use",
-		           log_data_string("file", listener->file));
+		        "Could not create UNIX domain socket for $file: all connections in use",
+		        log_data_string("file", listener->file));
 		fd_close(listener->fd);
 		listener->fd = -1;
 		--OpenFiles;
@@ -334,9 +334,9 @@ int zen_listen_unix(ConfigItem_listen *listener)
 	if (!zen_bind(listener->fd, listener->file, listener->mode, SOCKET_TYPE_UNIX))
 	{
 		zen_log(ULOG_FATAL, "listen", "LISTEN_BIND_ERROR", NULL,
-		           "Could not listen on UNIX domain socket $file: $socket_error",
-		           log_data_socket_error(listener->fd),
-		           log_data_string("file", listener->file));
+		        "Could not listen on UNIX domain socket $file: $socket_error",
+		        log_data_socket_error(listener->fd),
+		        log_data_string("file", listener->file));
 		fd_close(listener->fd);
 		listener->fd = -1;
 		--OpenFiles;
@@ -346,9 +346,9 @@ int zen_listen_unix(ConfigItem_listen *listener)
 	if (listen(listener->fd, LISTEN_SIZE) < 0)
 	{
 		zen_log(ULOG_FATAL, "listen", "LISTEN_LISTEN_ERROR", NULL,
-		           "Could not listen on UNIX domain socket $file: $socket_error",
-		           log_data_socket_error(listener->fd),
-		           log_data_string("file", listener->file));
+		        "Could not listen on UNIX domain socket $file: $socket_error",
+		        log_data_socket_error(listener->fd),
+		        log_data_string("file", listener->file));
 		fd_close(listener->fd);
 		listener->fd = -1;
 		--OpenFiles;
@@ -404,16 +404,16 @@ void close_listener(ConfigItem_listen *listener)
 		if (listener->socket_type == SOCKET_TYPE_UNIX)
 		{
 			zen_log(ULOG_INFO, "listen", "LISTEN_REMOVED", NULL,
-			           "ZenIRCd is now no longer listening on $listen_file [$protocol]",
-			           log_data_string("listen_file", listener->file),
-			           log_data_string("protocol", socket_type_valtostr(listener->socket_type)));
+			        "ZenIRCd is now no longer listening on $listen_file [$protocol]",
+			        log_data_string("listen_file", listener->file),
+			        log_data_string("protocol", socket_type_valtostr(listener->socket_type)));
 		} else
 		{
 			zen_log(ULOG_INFO, "listen", "LISTEN_REMOVED", NULL,
-			           "ZenIRCd is now no longer listening on $listen_ip:$listen_port [$protocol]",
-			           log_data_string("listen_ip", listener->ip),
-			           log_data_integer("listen_port", listener->port),
-			           log_data_string("protocol", socket_type_valtostr(listener->socket_type)));
+			        "ZenIRCd is now no longer listening on $listen_ip:$listen_port [$protocol]",
+			        log_data_string("listen_ip", listener->ip),
+			        log_data_integer("listen_port", listener->port),
+			        log_data_string("protocol", socket_type_valtostr(listener->socket_type)));
 		}
 		fd_close(listener->fd);
 		--OpenFiles;
@@ -620,7 +620,7 @@ void completed_connection(int fd, int revents, void *data)
 	if (!aconf)
 	{
 		zen_log(ULOG_ERROR, "link", "BUG_LOST_CONFIGURATION_ON_CONNECT", client,
-		           "Lost configuration while connecting to $client.details");
+		        "Lost configuration while connecting to $client.details");
 		return;
 	}
 
@@ -729,8 +729,8 @@ void set_sock_opts(int fd, Client *client, SocketType socket_type)
 		if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void *)&opt, sizeof(opt)) < 0)
 		{
 			zen_log(ULOG_WARNING, "socket", "SOCKET_ERROR_SETSOCKOPTS", client,
-			           "Could not setsockopt(SO_REUSEADDR): $socket_error",
-			           log_data_socket_error(-1));
+			        "Could not setsockopt(SO_REUSEADDR): $socket_error",
+			        log_data_socket_error(-1));
 		}
 #endif
 
@@ -739,8 +739,8 @@ void set_sock_opts(int fd, Client *client, SocketType socket_type)
 		if (setsockopt(fd, SOL_SOCKET, SO_USELOOPBACK, (void *)&opt, sizeof(opt)) < 0)
 		{
 			zen_log(ULOG_WARNING, "socket", "SOCKET_ERROR_SETSOCKOPTS", client,
-			           "Could not setsockopt(SO_USELOOPBACK): $socket_error",
-			           log_data_socket_error(-1));
+			        "Could not setsockopt(SO_USELOOPBACK): $socket_error",
+			        log_data_socket_error(-1));
 		}
 #endif
 	}
@@ -754,16 +754,16 @@ void set_sock_opts(int fd, Client *client, SocketType socket_type)
 		if (client)
 		{
 			zen_log(ULOG_WARNING, "socket", "SOCKET_ERROR_SETSOCKOPTS", client,
-			           "Could not get socket options (F_GETFL): $socket_error",
-			           log_data_socket_error(-1));
+			        "Could not get socket options (F_GETFL): $socket_error",
+			        log_data_socket_error(-1));
 		}
 	} else if (fcntl(fd, F_SETFL, opt | O_NONBLOCK) == -1)
 	{
 		if (client)
 		{
 			zen_log(ULOG_WARNING, "socket", "SOCKET_ERROR_SETSOCKOPTS", client,
-			           "Could not get socket options (F_SETFL): $socket_error",
-			           log_data_socket_error(-1));
+			        "Could not get socket options (F_SETFL): $socket_error",
+			        log_data_socket_error(-1));
 		}
 	}
 #else
@@ -773,8 +773,8 @@ void set_sock_opts(int fd, Client *client, SocketType socket_type)
 		if (client)
 		{
 			zen_log(ULOG_WARNING, "socket", "SOCKET_ERROR_SETSOCKOPTS", client,
-			           "Could not ioctlsocket FIONBIO: $socket_error",
-			           log_data_socket_error(-1));
+			        "Could not ioctlsocket FIONBIO: $socket_error",
+			        log_data_socket_error(-1));
 		}
 	}
 #endif
@@ -868,10 +868,10 @@ Client *add_connection(ConfigItem_listen *listener, int fd)
 		if (ERRNO != P_ENOTCONN)
 		{
 			zen_log(ULOG_ERROR, "listen", "ACCEPT_ERROR", NULL,
-			           "Failed to accept new client: unable to get IP address: $socket_error",
-			           log_data_socket_error(fd),
-			           log_data_string("listen_ip", listener->ip),
-			           log_data_integer("listen_port", listener->port));
+			        "Failed to accept new client: unable to get IP address: $socket_error",
+			        log_data_socket_error(fd),
+			        log_data_string("listen_ip", listener->ip),
+			        log_data_integer("listen_port", listener->port));
 		}
 	refuse_client:
 		ircstats.is_ref++;
@@ -1006,8 +1006,8 @@ int dead_socket(Client *to, const char *notice)
 		 * If so, remove it here.
 		 */
 		zen_log(ULOG_ERROR, "link", "LINK_CLOSING", to,
-		           "Link to server $client.details closed: $reason",
-		           log_data_string("reason", notice));
+		        "Link to server $client.details closed: $reason",
+		        log_data_string("reason", notice));
 	}
 	safe_strdup(to->local->error_str, notice);
 
@@ -1688,8 +1688,8 @@ int set_client_ip(Client *client, const char *ip)
 				if (!IsDeadSocket(client) || IsDead(client))
 				{
 					zen_log(ULOG_WARNING, "user", "BUG_HOOKTYPE_IP_CHANGE", client,
-					           "Module $module returned HOOK_DENY but did not use dead_socket(). Dangerous!",
-					           log_data_string("module", h->owner->header->name));
+					        "Module $module returned HOOK_DENY but did not use dead_socket(). Dangerous!",
+					        log_data_string("module", h->owner->header->name));
 				}
 #ifdef DEBUGMODE
 				if (IsDead(client))

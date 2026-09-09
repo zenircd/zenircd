@@ -1699,9 +1699,9 @@ void floodprottimer_add(Channel *channel, ChannelFloodProtection *fld, char mfla
 		if (strlen(fld->timers_running) + 1 >= sizeof(fld->timers_running))
 		{
 			zen_log(ULOG_WARNING, "flood", "BUG_FLOODPROTTIMER_ADD", NULL,
-			           "[BUG] floodprottimer_add: too many timers running for $channel ($timers_running)",
-			           log_data_channel("channel", channel),
-			           log_data_string("timers_running", fld->timers_running));
+			        "[BUG] floodprottimer_add: too many timers running for $channel ($timers_running)",
+			        log_data_channel("channel", channel),
+			        log_data_string("timers_running", fld->timers_running));
 			return;
 		}
 		strccat(fld->timers_running, mflag); /* bounds already checked ^^ */

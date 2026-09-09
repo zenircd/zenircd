@@ -221,9 +221,9 @@ CMD_FUNC(cmd_sjoin)
 	if (IsInvalidChannelTS(ts))
 	{
 		zen_log(ULOG_WARNING, "sjoin", "SJOIN_INVALID_TIMESTAMP", client,
-		           "SJOIN for channel $channel has invalid timestamp $send_timestamp (from $client)",
-		           log_data_channel("channel", channel),
-		           log_data_integer("send_timestamp", ts));
+		        "SJOIN for channel $channel has invalid timestamp $send_timestamp (from $client)",
+		        log_data_channel("channel", channel),
+		        log_data_integer("send_timestamp", ts));
 		/* Pretend they match our creation time (matches U6 behavior in m_mode.c) */
 		ts = channel->creationtime;
 	}
@@ -366,9 +366,9 @@ CMD_FUNC(cmd_sjoin)
 			{
 				/* this obviously should never happen */
 				zen_log(ULOG_WARNING, "sjoin", "SJOIN_INVALID_SJSBY", client,
-				           "SJOIN for channel $channel has invalid SJSBY in item '$item' (from $client)",
-				           log_data_channel("channel", channel),
-				           log_data_string("item", s));
+				        "SJOIN for channel $channel has invalid SJSBY in item '$item' (from $client)",
+				        log_data_channel("channel", channel),
+				        log_data_string("item", s));
 				continue;
 			}
 			*end++ = '\0';
@@ -378,9 +378,9 @@ CMD_FUNC(cmd_sjoin)
 			{
 				/* missing setby parameter */
 				zen_log(ULOG_WARNING, "sjoin", "SJOIN_INVALID_SJSBY", client,
-				           "SJOIN for channel $channel has invalid SJSBY in item '$item' (from $client)",
-				           log_data_channel("channel", channel),
-				           log_data_string("item", s));
+				        "SJOIN for channel $channel has invalid SJSBY in item '$item' (from $client)",
+				        log_data_channel("channel", channel),
+				        log_data_string("item", s));
 				continue;
 			}
 			*p++ = '\0';
@@ -449,11 +449,11 @@ CMD_FUNC(cmd_sjoin)
 				           ":%s KICK %s %s :Fake direction",
 				           me.id, channel->name, acptr->name);
 				zen_log(ULOG_WARNING, "sjoin", "SJOIN_FAKE_DIRECTION", client,
-				           "Fake direction from server $client in SJOIN "
-				           "for user $existing_client on $existing_client.user.servername "
-				           "(item: $buf)",
-				           log_data_client("existing_client", acptr),
-				           log_data_string("buf", item));
+				        "Fake direction from server $client in SJOIN "
+				        "for user $existing_client on $existing_client.user.servername "
+				        "(item: $buf)",
+				        log_data_client("existing_client", acptr),
+				        log_data_string("buf", item));
 				continue;
 			}
 
@@ -470,9 +470,9 @@ CMD_FUNC(cmd_sjoin)
 				if (IsSynched(acptr->uplink))
 				{
 					zen_log(ULOG_INFO, "join", "REMOTE_CLIENT_JOIN", acptr,
-					           "User $client joined $channel",
-					           log_data_channel("channel", channel),
-					           log_data_string("modes", item_modes));
+					        "User $client joined $channel",
+					        log_data_channel("channel", channel),
+					        log_data_string("modes", item_modes));
 				}
 				RunHook(HOOKTYPE_REMOTE_JOIN, acptr, channel, recv_mtags);
 				new_message_special(acptr, recv_mtags, &mtags, ":%s JOIN %s", acptr->name, channel->name);
@@ -493,12 +493,12 @@ CMD_FUNC(cmd_sjoin)
 				if (strlen(uid_buf) + strlen(prefix) + strlen(acptr->id) > BUFSIZE - 5)
 				{
 					zen_log(ULOG_ERROR, "sjoin", "BUG_OVERSIZED_SJOIN", client,
-					           "Oversized SJOIN [$sjoin_place] in channel $channel when adding '$str$str2' to '$buf'",
-					           log_data_channel("channel", channel),
-					           log_data_string("sjoin_place", "UID-MEMBER"),
-					           log_data_string("str", prefix),
-					           log_data_string("str2", acptr->id),
-					           log_data_string("buf", uid_buf));
+					        "Oversized SJOIN [$sjoin_place] in channel $channel when adding '$str$str2' to '$buf'",
+					        log_data_channel("channel", channel),
+					        log_data_string("sjoin_place", "UID-MEMBER"),
+					        log_data_string("str", prefix),
+					        log_data_string("str2", acptr->id),
+					        log_data_string("buf", uid_buf));
 					continue;
 				}
 			}
@@ -513,12 +513,12 @@ CMD_FUNC(cmd_sjoin)
 				if (strlen(uid_sjsby_buf) + strlen(prefix) + strlen(acptr->id) > BUFSIZE - 5)
 				{
 					zen_log(ULOG_ERROR, "sjoin", "BUG_OVERSIZED_SJOIN", client,
-					           "Oversized SJOIN [$sjoin_place] in channel $channel when adding '$str$str2' to '$buf'",
-					           log_data_channel("channel", channel),
-					           log_data_string("sjoin_place", "SJS-MEMBER"),
-					           log_data_string("str", prefix),
-					           log_data_string("str2", acptr->id),
-					           log_data_string("buf", uid_sjsby_buf));
+					        "Oversized SJOIN [$sjoin_place] in channel $channel when adding '$str$str2' to '$buf'",
+					        log_data_channel("channel", channel),
+					        log_data_string("sjoin_place", "SJS-MEMBER"),
+					        log_data_string("str", prefix),
+					        log_data_string("str2", acptr->id),
+					        log_data_string("buf", uid_sjsby_buf));
 					continue;
 				}
 			}
@@ -576,12 +576,12 @@ CMD_FUNC(cmd_sjoin)
 				if (strlen(uid_buf) + strlen(prefix) + strlen(item) > BUFSIZE - 5)
 				{
 					zen_log(ULOG_ERROR, "sjoin", "BUG_OVERSIZED_SJOIN", client,
-					           "Oversized SJOIN [$sjoin_place] in channel $channel when adding '$str$str2' to '$buf'",
-					           log_data_channel("channel", channel),
-					           log_data_string("sjoin_place", "UID-LMODE"),
-					           log_data_string("str", prefix),
-					           log_data_string("str2", item),
-					           log_data_string("buf", uid_buf));
+					        "Oversized SJOIN [$sjoin_place] in channel $channel when adding '$str$str2' to '$buf'",
+					        log_data_channel("channel", channel),
+					        log_data_string("sjoin_place", "UID-LMODE"),
+					        log_data_string("str", prefix),
+					        log_data_string("str2", item),
+					        log_data_string("buf", uid_buf));
 					continue;
 				}
 			}
@@ -602,11 +602,11 @@ CMD_FUNC(cmd_sjoin)
 				if (strlen(uid_sjsby_buf) + strlen(scratch_buf) > BUFSIZE - 5)
 				{
 					zen_log(ULOG_ERROR, "sjoin", "BUG_OVERSIZED_SJOIN", client,
-					           "Oversized SJOIN [$sjoin_place] in channel $channel when adding '$str' to '$buf'",
-					           log_data_channel("channel", channel),
-					           log_data_string("sjoin_place", "SJS-LMODE"),
-					           log_data_string("str", scratch_buf),
-					           log_data_string("buf", uid_sjsby_buf));
+					        "Oversized SJOIN [$sjoin_place] in channel $channel when adding '$str' to '$buf'",
+					        log_data_channel("channel", channel),
+					        log_data_string("sjoin_place", "SJS-LMODE"),
+					        log_data_string("str", scratch_buf),
+					        log_data_string("buf", uid_sjsby_buf));
 					continue;
 				}
 			}
@@ -795,8 +795,8 @@ CMD_FUNC(cmd_sjoin)
 
 					default:
 						zen_log(ULOG_ERROR, "sjoin", "BUG_SJOIN_CHECK", client,
-						           "[BUG] channel.c:m_sjoin:param diff checker: unknown return value $return_value",
-						           log_data_integer("return_value", r));
+						        "[BUG] channel.c:m_sjoin:param diff checker: unknown return value $return_value",
+						        log_data_integer("return_value", r));
 						break;
 				}
 			}
@@ -822,11 +822,11 @@ CMD_FUNC(cmd_sjoin)
 	if ((oldts != -1) && (oldts != channel->creationtime))
 	{
 		zen_log(ULOG_INFO, "channel", "CHANNEL_SYNC_TS_CHANGE", client,
-		           "Channel $channel: timestamp changed from $old_ts -> $new_ts "
-		           "after syncing with server $client.",
-		           log_data_channel("channel", channel),
-		           log_data_integer("old_ts", oldts),
-		           log_data_integer("new_ts", channel->creationtime));
+		        "Channel $channel: timestamp changed from $old_ts -> $new_ts "
+		        "after syncing with server $client.",
+		        log_data_channel("channel", channel),
+		        log_data_integer("old_ts", oldts),
+		        log_data_integer("new_ts", channel->creationtime));
 	}
 
 	/* If something went wrong with processing of the SJOIN above and

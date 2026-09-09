@@ -317,8 +317,8 @@ OperPermission ValidatePermissionsForPath(const char *path, Client *client, Clie
 		if (looping++ > 10)
 		{
 			zen_log(ULOG_ERROR, "operclass", "OPERCLASS_LOOPING", client,
-			           "The operclass lookup for $client.details is looping. "
-			           "Please check operclass::parent of every operclass.");
+			        "The operclass lookup for $client.details is looping. "
+			        "Please check operclass::parent of every operclass.");
 			return OPER_DENY;
 		}
 		if (acl)

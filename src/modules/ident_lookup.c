@@ -107,7 +107,7 @@ static int ident_lookup_connect(Client *client)
 	if (++OpenFiles >= maxclients + 1)
 	{
 		zen_log(ULOG_FATAL, "io", "IDENT_ERROR_MAXCLIENTS", client,
-		           "Cannot do ident connection for $client.details: All connections in use");
+		        "Cannot do ident connection for $client.details: All connections in use");
 		fd_close(client->local->authfd);
 		--OpenFiles;
 		client->local->authfd = -1;

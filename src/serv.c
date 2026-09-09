@@ -84,9 +84,9 @@ int hunt_server(Client *client, MessageTag *mtags, const char *command, int serv
 	if (strchr(command, '%') || strchr(command, ' '))
 	{
 		zen_log(ULOG_ERROR, "main", "BUG_HUNT_SERVER", client,
-		           "[BUG] hunt_server called with command '$command' but it may not contain "
-		           "spaces or percentage signs nowadays, it must be ONLY the command.",
-		           log_data_string("command", command));
+		        "[BUG] hunt_server called with command '$command' but it may not contain "
+		        "spaces or percentage signs nowadays, it must be ONLY the command.",
+		        log_data_string("command", command));
 		abort();
 	}
 
@@ -438,9 +438,9 @@ CMD_FUNC(cmd_error)
 		return;
 
 	zen_log(ULOG_ERROR, "link", "LINK_ERROR_MESSAGE", client,
-	           "Error from $client: $error_message",
-	           log_data_string("error_message", para),
-	           client->server->conf ? log_data_link_block(client->server->conf) : NULL);
+	        "Error from $client: $error_message",
+	        log_data_string("error_message", para),
+	        client->server->conf ? log_data_link_block(client->server->conf) : NULL);
 }
 
 /** Save the tunefile (such as: highest seen connection count) */
@@ -453,9 +453,9 @@ EVENT(save_tunefile)
 	{
 		char *errstr = strerror(errno);
 		zen_log(ULOG_WARNING, "config", "WRITE_TUNE_FILE_FAILED", NULL,
-		           "Unable to write tunefile '$filename': $system_error",
-		           log_data_string("filename", conf_files->tune_file),
-		           log_data_string("system_error", errstr));
+		        "Unable to write tunefile '$filename': $system_error",
+		        log_data_string("filename", conf_files->tune_file),
+		        log_data_string("system_error", errstr));
 		return;
 	}
 	fprintf(tunefile, "0\n");
@@ -477,9 +477,9 @@ void load_tunefile(void)
 	{
 		char *errstr = strerror(errno);
 		zen_log(ULOG_WARNING, "config", "READ_TUNE_FILE_FAILED", NULL,
-		           "Unable to read tunefile '$filename': $system_error",
-		           log_data_string("filename", conf_files->tune_file),
-		           log_data_string("system_error", errstr));
+		        "Unable to read tunefile '$filename': $system_error",
+		        log_data_string("filename", conf_files->tune_file),
+		        log_data_string("system_error", errstr));
 	}
 	irccounts.me_max = atol(buf);
 	fclose(tunefile);
@@ -672,7 +672,7 @@ CMD_FUNC(cmd_rehash)
 				} else
 				{
 					zen_log(ULOG_INFO, "central-spamfilter", "CENTRAL_SPAMFILTER_RELOAD", client,
-					           "Reloading Central Spamfilter rules. [by: $client.details]");
+					        "Reloading Central Spamfilter rules. [by: $client.details]");
 					central_spamfilter_last_download = 0;
 				}
 				return;
@@ -937,7 +937,7 @@ CMD_FUNC(cmd_die)
 
 	/* Let the +s know what is going on */
 	zen_log(ULOG_INFO, "main", "ZENIRCD_STOP", client,
-	           "Terminating server by request of $client.details");
+	        "Terminating server by request of $client.details");
 
 	list_for_each_entry(acptr, &lclient_list, lclient_node)
 	{
@@ -1139,9 +1139,9 @@ void charsys_check_for_changes(void)
 	if (strcmp(langsinuse, previous_langsinuse))
 	{
 		zen_log(ULOG_INFO, "charsys", "NICKCHARS_CHANGED", NULL,
-		           "Permitted nick characters changed at runtime: $old_nickchars -> $new_nickchars",
-		           log_data_string("old_nickchars", previous_langsinuse),
-		           log_data_string("new_nickchars", langsinuse));
+		        "Permitted nick characters changed at runtime: $old_nickchars -> $new_nickchars",
+		        log_data_string("old_nickchars", previous_langsinuse),
+		        log_data_string("new_nickchars", langsinuse));
 		/* Broadcast change to all (locally connected) servers */
 		sendto_server(NULL, 0, 0, NULL, "PROTOCTL NICKCHARS=%s", langsinuse);
 	}
@@ -1222,16 +1222,16 @@ void lost_server_link(Client *client, const char *tls_error_string)
 		{
 			/* TLS */
 			zen_log(ULOG_ERROR, "link", "LINK_DISCONNECTED", client,
-			           "Lost server link to $client [$client.ip]: $tls_error_string",
-			           log_data_string("tls_error_string", tls_error_string),
-			           client->server->conf ? log_data_link_block(client->server->conf) : NULL);
+			        "Lost server link to $client [$client.ip]: $tls_error_string",
+			        log_data_string("tls_error_string", tls_error_string),
+			        client->server->conf ? log_data_link_block(client->server->conf) : NULL);
 		} else
 		{
 			/* NON-TLS */
 			zen_log(ULOG_ERROR, "link", "LINK_DISCONNECTED", client,
-			           "Lost server link to $client [$client.ip]: $socket_error",
-			           log_data_socket_error(client->local->fd),
-			           client->server->conf ? log_data_link_block(client->server->conf) : NULL);
+			        "Lost server link to $client [$client.ip]: $socket_error",
+			        log_data_socket_error(client->local->fd),
+			        client->server->conf ? log_data_link_block(client->server->conf) : NULL);
 		}
 	} else
 	{
@@ -1243,16 +1243,16 @@ void lost_server_link(Client *client, const char *tls_error_string)
 			if (client->server->conf)
 			{
 				zen_log(ULOG_ERROR, "link", "LINK_ERROR_CONNECT", client,
-				           client->server->conf->outgoing.file
-				               ? "Unable to link with server $client [$link_block.file]: $tls_error_string"
-				               : "Unable to link with server $client [$link_block.ip:$link_block.port]: $tls_error_string",
-				           log_data_string("tls_error_string", tls_error_string),
-				           log_data_link_block(client->server->conf));
+				        client->server->conf->outgoing.file
+				            ? "Unable to link with server $client [$link_block.file]: $tls_error_string"
+				            : "Unable to link with server $client [$link_block.ip:$link_block.port]: $tls_error_string",
+				        log_data_string("tls_error_string", tls_error_string),
+				        log_data_link_block(client->server->conf));
 			} else
 			{
 				zen_log(ULOG_ERROR, "link", "LINK_ERROR_CONNECT", client,
-				           "Unable to link with server $client: $tls_error_string",
-				           log_data_string("tls_error_string", tls_error_string));
+				        "Unable to link with server $client: $tls_error_string",
+				        log_data_string("tls_error_string", tls_error_string));
 			}
 		} else
 		{
@@ -1260,16 +1260,16 @@ void lost_server_link(Client *client, const char *tls_error_string)
 			if (client->server->conf)
 			{
 				zen_log(ULOG_ERROR, "link", "LINK_ERROR_CONNECT", client,
-				           client->server->conf->outgoing.file
-				               ? "Unable to link with server $client [$link_block.file]: $socket_error"
-				               : "Unable to link with server $client [$link_block.ip:$link_block.port]: $socket_error",
-				           log_data_socket_error(client->local->fd),
-				           log_data_link_block(client->server->conf));
+				        client->server->conf->outgoing.file
+				            ? "Unable to link with server $client [$link_block.file]: $socket_error"
+				            : "Unable to link with server $client [$link_block.ip:$link_block.port]: $socket_error",
+				        log_data_socket_error(client->local->fd),
+				        log_data_link_block(client->server->conf));
 			} else
 			{
 				zen_log(ULOG_ERROR, "link", "LINK_ERROR_CONNECT", client,
-				           "Unable to link with server $client: $socket_error",
-				           log_data_socket_error(client->local->fd));
+				        "Unable to link with server $client: $socket_error",
+				        log_data_socket_error(client->local->fd));
 			}
 		}
 	}
@@ -1282,10 +1282,10 @@ void lost_server_link(Client *client, const char *tls_error_string)
 void reject_insecure_server(Client *client)
 {
 	zen_log(ULOG_ERROR, "link", "SERVER_STARTTLS_FAILED", client,
-	           "Could not link with server $client with TLS enabled. "
-	           "Please check logs on the other side of the link. "
-	           "If you insist with insecure linking then you can set link::options::outgoing::insecure "
-	           "(NOT recommended!).");
+	        "Could not link with server $client with TLS enabled. "
+	        "Please check logs on the other side of the link. "
+	        "If you insist with insecure linking then you can set link::options::outgoing::insecure "
+	        "(NOT recommended!).");
 	dead_socket(client, "Rejected server link without TLS");
 }
 
@@ -1300,7 +1300,7 @@ void start_server_handshake(Client *client)
 	{
 		/* Should be impossible. */
 		zen_log(ULOG_ERROR, "link", "BUG_LOST_CONFIGURATION_ON_HANDSHAKE", client,
-		           "Lost configuration while connecting to $client.details");
+		        "Lost configuration while connecting to $client.details");
 		return;
 	}
 

@@ -156,9 +156,9 @@ CMD_FUNC(cmd_join)
 	if (bouncedtimes)
 	{
 		zen_log(ULOG_ERROR, "join", "BUG_JOIN_BOUNCEDTIMES", NULL,
-		           "[BUG] join: bouncedtimes is not initialized to zero ($bounced_times)!! "
-		           "Please report at https://bugs.unrealircd.org/",
-		           log_data_integer("bounced_times", bouncedtimes));
+		        "[BUG] join: bouncedtimes is not initialized to zero ($bounced_times)!! "
+		        "Please report at https://bugs.unrealircd.org/",
+		        log_data_integer("bounced_times", bouncedtimes));
 	}
 
 	bouncedtimes = 0;
@@ -274,9 +274,9 @@ void _join_channel(Channel *channel, Client *client, MessageTag *recv_mtags, con
 		;
 
 		zen_log(ULOG_INFO, "join", "LOCAL_CLIENT_JOIN", client,
-		           "User $client joined $channel",
-		           log_data_channel("channel", channel),
-		           log_data_string("modes", member_modes));
+		        "User $client joined $channel",
+		        log_data_channel("channel", channel),
+		        log_data_string("modes", member_modes));
 
 		RunHook(HOOKTYPE_LOCAL_JOIN, client, channel, mtags);
 	} else
@@ -284,9 +284,9 @@ void _join_channel(Channel *channel, Client *client, MessageTag *recv_mtags, con
 		if (IsSynched(client->uplink))
 		{
 			zen_log(ULOG_INFO, "join", "REMOTE_CLIENT_JOIN", client,
-			           "User $client joined $channel",
-			           log_data_channel("channel", channel),
-			           log_data_string("modes", member_modes));
+			        "User $client joined $channel",
+			        log_data_channel("channel", channel),
+			        log_data_string("modes", member_modes));
 		}
 		RunHook(HOOKTYPE_REMOTE_JOIN, client, channel, mtags);
 	}
@@ -471,8 +471,8 @@ void _do_join(Client *client, int parc, const char *parv[])
 						if (d->warn)
 						{
 							zen_log(ULOG_INFO, "join", "JOIN_DENIED_FORBIDDEN_CHANNEL", client,
-							           "Client $client.details tried to join forbidden channel $channel",
-							           log_data_string("channel", name));
+							        "Client $client.details tried to join forbidden channel $channel",
+							        log_data_string("channel", name));
 						}
 						if (d->reason)
 							sendnumeric(client, ERR_FORBIDDENCHANNEL, name, d->reason);

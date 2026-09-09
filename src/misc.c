@@ -444,12 +444,12 @@ void verify_opercount(Client *orig, const char *tag)
 	if (counted == irccounts.operators)
 		return;
 	zen_log(ULOG_WARNING, "main", "BUG_LUSERS_OPERS", orig,
-	           "[BUG] Operator count bug at $where! Value in /LUSERS is $opers, "
-	           "we counted $counted_opers, "
-	           "triggered by $client.details on $client.user.servername",
-	           log_data_integer("opers", irccounts.operators),
-	           log_data_integer("counted_opers", counted),
-	           log_data_string("where", tag));
+	        "[BUG] Operator count bug at $where! Value in /LUSERS is $opers, "
+	        "we counted $counted_opers, "
+	        "triggered by $client.details on $client.user.servername",
+	        log_data_integer("opers", irccounts.operators),
+	        log_data_integer("counted_opers", counted),
+	        log_data_string("where", tag));
 	irccounts.operators = counted;
 }
 
@@ -1985,8 +1985,8 @@ void DoMD5(char *mdout, const char *src, unsigned long n)
 	if (!md5_function)
 	{
 		zen_log(ULOG_FATAL, "tls", "MD5_UNAVAILABLE_FATAL", NULL,
-		           "DoMD5() was called but the MD5 algorithm is not available "
-		           "in your OpenSSL/LibreSSL version. -- ABORTING");
+		        "DoMD5() was called but the MD5 algorithm is not available "
+		        "in your OpenSSL/LibreSSL version. -- ABORTING");
 		abort();
 	}
 
@@ -2446,9 +2446,9 @@ void write_pidfile_failed(void)
 {
 	char *errstr = strerror(errno);
 	zen_log(ULOG_WARNING, "config", "WRITE_PID_FILE_FAILED", NULL,
-	           "Unable to write to pid file '$filename': $system_error",
-	           log_data_string("filename", conf_files->pid_file),
-	           log_data_string("system_error", errstr));
+	        "Unable to write to pid file '$filename': $system_error",
+	        log_data_string("filename", conf_files->pid_file),
+	        log_data_string("system_error", errstr));
 }
 
 /** Write PID file */
@@ -2730,8 +2730,8 @@ void server_reboot(const char *mesg)
 	int i;
 	Client *client;
 	zen_log(ULOG_INFO, "main", "ZENIRCD_RESTARTING", NULL,
-	           "Restarting server: $reason",
-	           log_data_string("reason", mesg));
+	        "Restarting server: $reason",
+	        log_data_string("reason", mesg));
 
 	list_for_each_entry(client, &lclient_list, lclient_node)
 		(void)send_queued(client);
@@ -3019,9 +3019,9 @@ void download_complete_dontcare(OutgoingWebRequest *request, OutgoingWebResponse
 	if (response->memory)
 	{
 		zen_log(ULOG_DEBUG, "url", "DEBUG_URL_RESPONSE", NULL,
-		           "Response for '$url': $response",
-		           log_data_string("url", request->url),
-		           log_data_string("response", response->memory));
+		        "Response for '$url': $response",
+		        log_data_string("url", request->url),
+		        log_data_string("response", response->memory));
 	}
 #endif
 }

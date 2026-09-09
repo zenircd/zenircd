@@ -367,9 +367,9 @@ CMD_FUNC(cmd_dccdeny)
 	if (!find_deny_dcc(parv[1]))
 	{
 		zen_log(ULOG_INFO, "dccdeny", "DCCDENY_ADD", client,
-		           "[dccdeny] $client added a temporary DCCDENY for $file ($reason)",
-		           log_data_string("file", parv[1]),
-		           log_data_string("reason", parv[2]));
+		        "[dccdeny] $client added a temporary DCCDENY for $file ($reason)",
+		        log_data_string("file", parv[1]),
+		        log_data_string("reason", parv[2]));
 		DCCdeny_add(parv[1], parv[2], DCCDENY_HARD, CONF_BAN_TYPE_TEMPORARY);
 		return;
 	} else
@@ -403,9 +403,9 @@ CMD_FUNC(cmd_undccdeny)
 	if ((d = find_deny_dcc(parv[1])) && d->flag.type2 == CONF_BAN_TYPE_TEMPORARY)
 	{
 		zen_log(ULOG_INFO, "dccdeny", "DCCDENY_DEL", client,
-		           "[dccdeny] $client removed a temporary DCCDENY for $file ($reason)",
-		           log_data_string("file", d->filename),
-		           log_data_string("reason", d->reason));
+		        "[dccdeny] $client removed a temporary DCCDENY for $file ($reason)",
+		        log_data_string("file", d->filename),
+		        log_data_string("reason", d->reason));
 		DCCdeny_del(d);
 		return;
 	} else
@@ -867,9 +867,9 @@ int dccdeny_stats(Client *client, const char *para)
 int dccdeny_dcc_denied(Client *client, const char *target, const char *realfile, const char *displayfile, ConfigItem_deny_dcc *dccdeny)
 {
 	zen_log(ULOG_INFO, "dcc", "DCC_REJECTED", client,
-	           "$client.details tried to send forbidden file $filename ($ban_reason) to $target (is blocked now)",
-	           log_data_string("filename", displayfile),
-	           log_data_string("ban_reason", dccdeny->reason),
-	           log_data_string("target", target));
+	        "$client.details tried to send forbidden file $filename ($ban_reason) to $target (is blocked now)",
+	        log_data_string("filename", displayfile),
+	        log_data_string("ban_reason", dccdeny->reason),
+	        log_data_string("target", target));
 	return 0;
 }

@@ -72,10 +72,10 @@ void set_oper_host(Client *client, const char *host)
 	{
 		sendnotice(client, "*** Unable to set vhost");
 		zen_log(ULOG_WARNING, "oper", "OPER_VHOST_FAILED", client,
-		           "Unable to set vhost on oper $client.details. "
-		           "Vhost '$vhost_format' expanded to '$newhost' but is invalid.",
-		           log_data_string("vhost_format", host),
-		           log_data_string("newhost", newhost));
+		        "Unable to set vhost on oper $client.details. "
+		        "Vhost '$vhost_format' expanded to '$newhost' but is invalid.",
+		        log_data_string("vhost_format", host),
+		        log_data_string("newhost", newhost));
 		return;
 	}
 	host = newhost; /* Shadow... */
@@ -137,9 +137,9 @@ int _make_oper(Client *client, const char *operblock_name, const char *operclass
 	userhost_changed(client);
 
 	zen_log(ULOG_INFO, "oper", "OPER_SUCCESS", client,
-	           "$client.details is now an IRC Operator [oper-block: $oper_block] [operclass: $operclass]",
-	           log_data_string("oper_block", operblock_name),
-	           log_data_string("operclass", operclass));
+	        "$client.details is now an IRC Operator [oper-block: $oper_block] [operclass: $operclass]",
+	        log_data_string("oper_block", operblock_name),
+	        log_data_string("operclass", operclass));
 
 	/* set oper snomasks */
 	if (snomask)
@@ -227,10 +227,10 @@ CMD_FUNC(cmd_oper)
 	{
 		sendnotice_multiline(client, iConf.plaintext_policy_oper_message);
 		zen_log(ULOG_WARNING, "oper", "OPER_FAILED", client,
-		           "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
-		           log_data_string("reason", "Not using TLS"),
-		           log_data_string("fail_type", "NO_TLS"),
-		           log_data_string("oper_block", parv[1]));
+		        "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
+		        log_data_string("reason", "Not using TLS"),
+		        log_data_string("fail_type", "NO_TLS"),
+		        log_data_string("oper_block", parv[1]));
 		add_fake_lag(client, 7000);
 		return;
 	}
@@ -240,10 +240,10 @@ CMD_FUNC(cmd_oper)
 	{
 		sendnotice(client, "%s", outdated_tls_client_build_string(iConf.outdated_tls_policy_oper_message, client));
 		zen_log(ULOG_WARNING, "oper", "OPER_FAILED", client,
-		           "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
-		           log_data_string("reason", "Outdated TLS protocol or cipher"),
-		           log_data_string("fail_type", "OUTDATED_TLS_PROTOCOL_OR_CIPHER"),
-		           log_data_string("oper_block", parv[1]));
+		        "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
+		        log_data_string("reason", "Outdated TLS protocol or cipher"),
+		        log_data_string("fail_type", "OUTDATED_TLS_PROTOCOL_OR_CIPHER"),
+		        log_data_string("oper_block", parv[1]));
 		add_fake_lag(client, 7000);
 		return;
 	}
@@ -252,10 +252,10 @@ CMD_FUNC(cmd_oper)
 	{
 		sendnumeric(client, ERR_NOOPERHOST);
 		zen_log(ULOG_WARNING, "oper", "OPER_FAILED", client,
-		           "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
-		           log_data_string("reason", "Unknown oper name"),
-		           log_data_string("fail_type", "UNKNOWN_OPER_NAME"),
-		           log_data_string("oper_block", parv[1]));
+		        "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
+		        log_data_string("reason", "Unknown oper name"),
+		        log_data_string("fail_type", "UNKNOWN_OPER_NAME"),
+		        log_data_string("oper_block", parv[1]));
 		add_fake_lag(client, 7000);
 		return;
 	}
@@ -268,10 +268,10 @@ CMD_FUNC(cmd_oper)
 	{
 		sendnumeric(client, ERR_NOOPERHOST);
 		zen_log(ULOG_ERROR, "oper", "OPER_FAILED", client,
-		           "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
-		           log_data_string("reason", "Host does not match"),
-		           log_data_string("fail_type", "NO_HOST_MATCH"),
-		           log_data_string("oper_block", parv[1]));
+		        "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
+		        log_data_string("reason", "Host does not match"),
+		        log_data_string("fail_type", "NO_HOST_MATCH"),
+		        log_data_string("oper_block", parv[1]));
 		add_fake_lag(client, 7000);
 		return;
 	}
@@ -283,10 +283,10 @@ CMD_FUNC(cmd_oper)
 			sendnotice(client,
 			           "*** Your attempt has been logged.");
 		zen_log(ULOG_ERROR, "oper", "OPER_FAILED", client,
-		           "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
-		           log_data_string("reason", "Authentication failed"),
-		           log_data_string("fail_type", "AUTHENTICATION_FAILED"),
-		           log_data_string("oper_block", parv[1]));
+		        "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
+		        log_data_string("reason", "Authentication failed"),
+		        log_data_string("fail_type", "AUTHENTICATION_FAILED"),
+		        log_data_string("oper_block", parv[1]));
 		add_fake_lag(client, 7000);
 		return;
 	}
@@ -301,10 +301,10 @@ CMD_FUNC(cmd_oper)
 	{
 		sendnumericfmt(client, ERR_NOOPERHOST, ":You are missing user modes required to OPER");
 		zen_log(ULOG_WARNING, "oper", "OPER_FAILED", client,
-		           "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
-		           log_data_string("reason", "Not matching oper::require-modes"),
-		           log_data_string("fail_type", "REQUIRE_MODES_NOT_SATISFIED"),
-		           log_data_string("oper_block", parv[1]));
+		        "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
+		        log_data_string("reason", "Not matching oper::require-modes"),
+		        log_data_string("fail_type", "REQUIRE_MODES_NOT_SATISFIED"),
+		        log_data_string("oper_block", parv[1]));
 		add_fake_lag(client, 7000);
 		return;
 	}
@@ -313,10 +313,10 @@ CMD_FUNC(cmd_oper)
 	{
 		sendnotice(client, "ERROR: There is a non-existant oper::operclass specified for your oper block");
 		zen_log(ULOG_WARNING, "oper", "OPER_FAILED", client,
-		           "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
-		           log_data_string("reason", "Config error: invalid oper::operclass"),
-		           log_data_string("fail_type", "OPER_OPERCLASS_INVALID"),
-		           log_data_string("oper_block", parv[1]));
+		        "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
+		        log_data_string("reason", "Config error: invalid oper::operclass"),
+		        log_data_string("fail_type", "OPER_OPERCLASS_INVALID"),
+		        log_data_string("oper_block", parv[1]));
 		return;
 	}
 
@@ -326,10 +326,10 @@ CMD_FUNC(cmd_oper)
 		sendnotice(client, "Your maximum number of concurrent oper logins has been reached (%d)",
 		           operblock->maxlogins);
 		zen_log(ULOG_WARNING, "oper", "OPER_FAILED", client,
-		           "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
-		           log_data_string("reason", "oper::maxlogins limit reached"),
-		           log_data_string("fail_type", "OPER_MAXLOGINS_LIMIT"),
-		           log_data_string("oper_block", parv[1]));
+		        "Failed OPER attempt by $client.details [reason: $reason] [oper-block: $oper_block]",
+		        log_data_string("reason", "oper::maxlogins limit reached"),
+		        log_data_string("fail_type", "OPER_MAXLOGINS_LIMIT"),
+		        log_data_string("oper_block", parv[1]));
 		add_fake_lag(client, 4000);
 		return;
 	}
@@ -354,9 +354,9 @@ CMD_FUNC(cmd_oper)
 	{
 		sendnotice_multiline(client, iConf.plaintext_policy_oper_message);
 		zen_log(ULOG_WARNING, "oper", "OPER_UNSAFE", client,
-		           "Insecure (non-TLS) connection used to OPER up by $client.details [oper-block: $oper_block]",
-		           log_data_string("oper_block", parv[1]),
-		           log_data_string("warn_type", "NO_TLS"));
+		        "Insecure (non-TLS) connection used to OPER up by $client.details [oper-block: $oper_block]",
+		        log_data_string("oper_block", parv[1]),
+		        log_data_string("warn_type", "NO_TLS"));
 	}
 
 	/* set::outdated-tls-policy::oper 'warn' */
@@ -364,9 +364,9 @@ CMD_FUNC(cmd_oper)
 	{
 		sendnotice(client, "%s", outdated_tls_client_build_string(iConf.outdated_tls_policy_oper_message, client));
 		zen_log(ULOG_WARNING, "oper", "OPER_UNSAFE", client,
-		           "Outdated TLS protocol/cipher used to OPER up by $client.details [oper-block: $oper_block]",
-		           log_data_string("oper_block", parv[1]),
-		           log_data_string("warn_type", "OUTDATED_TLS_PROTOCOL_OR_CIPHER"));
+		        "Outdated TLS protocol/cipher used to OPER up by $client.details [oper-block: $oper_block]",
+		        log_data_string("oper_block", parv[1]),
+		        log_data_string("warn_type", "OUTDATED_TLS_PROTOCOL_OR_CIPHER"));
 	}
 }
 

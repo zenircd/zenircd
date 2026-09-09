@@ -57,14 +57,14 @@ static void log_sajoin(Client *client, MessageTag *mtags, Client *target, const 
 	if (issuer)
 	{
 		zen_log(ULOG_INFO, "sacmds", "SAJOIN_COMMAND", client, "SAJOIN: $issuer used SAJOIN to make $target join $channels",
-		           log_data_string("issuer", issuer),
-		           log_data_client("target", target),
-		           log_data_string("channels", channels));
+		        log_data_string("issuer", issuer),
+		        log_data_client("target", target),
+		        log_data_string("channels", channels));
 	} else
 	{
 		zen_log(ULOG_INFO, "sacmds", "SAJOIN_COMMAND", client, "SAJOIN: $client used SAJOIN to make $target join $channels",
-		           log_data_client("target", target),
-		           log_data_string("channels", channels));
+		        log_data_client("target", target),
+		        log_data_string("channels", channels));
 	}
 }
 

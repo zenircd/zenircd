@@ -38,8 +38,8 @@ MOD_TEST()
 	if (!CallbackAddString(modinfo->handle, CALLBACKTYPE_CLOAK_KEY_CHECKSUM, cloakcsum))
 	{
 		zen_log(ULOG_ERROR, "config", "CLOAK_MODULE_DUPLICATE", NULL,
-		           "cloak_none: Error while trying to install callback.\n"
-		           "Maybe you have multiple cloaking modules loaded? You can only load one!");
+		        "cloak_none: Error while trying to install callback.\n"
+		        "Maybe you have multiple cloaking modules loaded? You can only load one!");
 		return MOD_FAILED;
 	}
 	HookAdd(modinfo->handle, HOOKTYPE_CONFIGTEST, 0, cloak_config_test);

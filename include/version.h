@@ -58,15 +58,15 @@
 
 #define ZEN_VERSION ((ZEN_VERSION_GENERATION << 24) + (ZEN_VERSION_MAJOR << 16) + (ZEN_VERSION_MINOR << 8))
 #define ZenProtocol 6100
-#define PATCH1         macro_to_str(ZEN_VERSION_GENERATION)
-#define PATCH2         "." macro_to_str(ZEN_VERSION_MAJOR)
-#define PATCH3         "." macro_to_str(ZEN_VERSION_MINOR)
-#define PATCH4         ZEN_VERSION_SUFFIX
-#define PATCH5         ""
-#define PATCH6         ""
-#define PATCH7         ""
-#define PATCH8         COMPILEINFO
-#define PATCH9         ""
+#define PATCH1      macro_to_str(ZEN_VERSION_GENERATION)
+#define PATCH2      "." macro_to_str(ZEN_VERSION_MAJOR)
+#define PATCH3      "." macro_to_str(ZEN_VERSION_MINOR)
+#define PATCH4      ZEN_VERSION_SUFFIX
+#define PATCH5      ""
+#define PATCH6      ""
+#define PATCH7      ""
+#define PATCH8      COMPILEINFO
+#define PATCH9      ""
 /* release header */
 #define Rh          BASE_VERSION
 #define VERSIONONLY PATCH1 PATCH2 PATCH3 PATCH4 PATCH5 PATCH6 PATCH7

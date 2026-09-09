@@ -135,7 +135,7 @@ void watch_free(ModData *md)
 	if (md)
 	{
 		zen_log(ULOG_ERROR, "watch-backend", "BUG_WATCH_FREE_MEMORY_LEAK", NULL,
-		           "[BUG] watchList moddata was not freed -- memory leak!");
+		        "[BUG] watchList moddata was not freed -- memory leak!");
 	}
 }
 
@@ -287,9 +287,9 @@ int _watch_del(const char *nick, Client *client, int flags)
 	if (!*lp)
 	{
 		zen_log(ULOG_WARNING, "watch", "BUG_WATCH_DEL", client,
-		           "[BUG] watch_del found a watch entry with no client counterpoint, "
-		           "while processing nick $nick on client $client.details",
-		           log_data_string("nick", nick));
+		        "[BUG] watch_del found a watch entry with no client counterpoint, "
+		        "while processing nick $nick on client $client.details",
+		        log_data_string("nick", nick));
 	} else
 	{
 		prev = *lp;
@@ -343,8 +343,8 @@ int _watch_del_list(Client *client, int flags)
 		if (!*lp)
 		{
 			zen_log(ULOG_WARNING, "watch", "BUG_WATCH_DEL_LIST", client,
-			           "[BUG] watch_del_list found a watch entry with no table counterpoint, "
-			           "while processing client $client.details");
+			        "[BUG] watch_del_list found a watch entry with no table counterpoint, "
+			        "while processing client $client.details");
 		} else
 		{
 			/* Fix the watch-list and remove entry */

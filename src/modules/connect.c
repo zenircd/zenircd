@@ -117,8 +117,8 @@ CMD_FUNC(cmd_connect)
 	}
 
 	zen_log(ULOG_INFO, "link", "LINK_REQUEST", client,
-	           "CONNECT: Link to $link_block requested by $client",
-	           log_data_link_block(aconf));
+	        "CONNECT: Link to $link_block requested by $client",
+	        log_data_link_block(aconf));
 
 	connect_server(aconf, client, NULL);
 }

@@ -87,8 +87,8 @@ CMD_FUNC(cmd_svsmotd)
 	{
 		case '#':
 			zen_log(ULOG_INFO, "svsmotd", "SVSMOTD_ADDED", client,
-			           "Services added '$line' to services motd",
-			           log_data_string("line", parv[2]));
+			        "Services added '$line' to services motd",
+			        log_data_string("line", parv[2]));
 			conf = fopen(conf_files->svsmotd_file, "a");
 			if (conf)
 			{
@@ -98,7 +98,7 @@ CMD_FUNC(cmd_svsmotd)
 			break;
 		case '!':
 			zen_log(ULOG_INFO, "svsmotd", "SVSMOTD_REMOVED", client,
-			           "Services deleted the services motd");
+			        "Services deleted the services motd");
 			remove(conf_files->svsmotd_file);
 			free_motd(&svsmotd);
 			break;

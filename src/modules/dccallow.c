@@ -94,9 +94,9 @@ void remove_dcc_references(Client *client)
 		if (!found)
 		{
 			zen_log(ULOG_WARNING, "main", "BUG_REMOVE_DCC_REFERENCES", acptr,
-			           "[BUG] remove_dcc_references: $client was in dccallowme "
-			           "list of $existing_client but not in dccallowrem list!",
-			           log_data_client("existing_client", client));
+			        "[BUG] remove_dcc_references: $client was in dccallowme "
+			        "list of $existing_client but not in dccallowrem list!",
+			        log_data_client("existing_client", client));
 		}
 
 		free_link(lp);
@@ -303,8 +303,8 @@ int del_dccallow(Client *client, Client *optr)
 	if (!found)
 	{
 		zen_log(ULOG_WARNING, "dccallow", "BUG_DCCALLOW", client,
-		           "[BUG] DCCALLOW list for $client did not contain $target",
-		           log_data_client("target", optr));
+		        "[BUG] DCCALLOW list for $client did not contain $target",
+		        log_data_client("target", optr));
 	}
 
 	sendnumeric(client, RPL_DCCSTATUS, optr->name, "removed from");

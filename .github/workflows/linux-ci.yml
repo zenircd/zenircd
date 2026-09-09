@@ -53,10 +53,11 @@ jobs:
           python -m pip install --break-system-packages pyasyncore pyasynchat
 
       - name: Build
-        run: extras/build-tests/nix/build
+        # Invoke via bash so missing +x cannot yield exit 126 on runners.
+        run: bash extras/build-tests/nix/build
 
       - name: Run tests
-        run: extras/build-tests/nix/run-tests
+        run: bash extras/build-tests/nix/run-tests
 
   format-check:
     runs-on: ubuntu-latest

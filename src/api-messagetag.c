@@ -53,20 +53,20 @@ MessageTagHandler *MessageTagHandlerAdd(Module *module, MessageTagHandlerInfo *m
 	if ((mreq->flags & MTAG_HANDLER_FLAGS_NO_CAP_NEEDED) && mreq->clicap_handler)
 	{
 		zen_log(ULOG_ERROR, "module", "MESSAGETAGHANDLERADD_API_ERROR", NULL,
-		           "MessageTagHandlerAdd() from module $module_name: "
-		           ".flags is set to MTAG_HANDLER_FLAGS_NO_CAP_NEEDED "
-		           "but a .clicap_handler is passed as well. These options are mutually "
-		           "exclusive, choose one or the other.",
-		           log_data_string("module_name", module->header->name));
+		        "MessageTagHandlerAdd() from module $module_name: "
+		        ".flags is set to MTAG_HANDLER_FLAGS_NO_CAP_NEEDED "
+		        "but a .clicap_handler is passed as well. These options are mutually "
+		        "exclusive, choose one or the other.",
+		        log_data_string("module_name", module->header->name));
 		abort();
 	} else if (!(mreq->flags & MTAG_HANDLER_FLAGS_NO_CAP_NEEDED) && !mreq->clicap_handler)
 	{
 		zen_log(ULOG_ERROR, "module", "MESSAGETAGHANDLERADD_API_ERROR", NULL,
-		           "MessageTagHandlerAdd() from module $module_name: "
-		           "no .clicap_handler is passed. If the "
-		           "message tag really does not require a cap then you must "
-		           "set .flags to MTAG_HANDLER_FLAGS_NO_CAP_NEEDED",
-		           log_data_string("module_name", module->header->name));
+		        "MessageTagHandlerAdd() from module $module_name: "
+		        "no .clicap_handler is passed. If the "
+		        "message tag really does not require a cap then you must "
+		        "set .flags to MTAG_HANDLER_FLAGS_NO_CAP_NEEDED",
+		        log_data_string("module_name", module->header->name));
 		abort();
 	}
 
@@ -163,8 +163,8 @@ static void unload_mtag_handler_commit(MessageTagHandler *m)
 {
 	/* This is an unusual operation, I think we should log it. */
 	zen_log(ULOG_INFO, "module", "UNLOAD_MESSAGE_TAG", NULL,
-	           "Unloading message-tag handler for '$token'",
-	           log_data_string("token", m->name));
+	        "Unloading message-tag handler for '$token'",
+	        log_data_string("token", m->name));
 
 	/* Remove reverse dependency, if any */
 	if (m->clicap_handler)

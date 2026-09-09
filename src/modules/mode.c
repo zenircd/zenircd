@@ -179,10 +179,10 @@ CMD_FUNC(cmd_mode)
 	    !IsULine(client) && (sendts > channel->creationtime))
 	{
 		zen_log(ULOG_INFO, "mode", "MODE_TS_IGNORED", client,
-		           "MODE change ignored for $channel from $client: "
-		           "timestamp mismatch, ours=$channel.creationtime, theirs=$their_ts",
-		           log_data_channel("channel", channel),
-		           log_data_integer("their_ts", sendts));
+		        "MODE change ignored for $channel from $client: "
+		        "timestamp mismatch, ours=$channel.creationtime, theirs=$their_ts",
+		        log_data_channel("channel", channel),
+		        log_data_integer("their_ts", sendts));
 		return;
 	}
 	if (IsServer(client) && !sendts && *parv[parc - 1] != '0')
@@ -251,12 +251,12 @@ void _do_mode(Channel *channel, Client *client, MessageTag *recv_mtags, int parc
 			if (IsInvalidChannelTS(sendts))
 			{
 				zen_log(ULOG_WARNING, "mode", "MODE_INVALID_TIMESTAMP", client,
-				           "MODE for channel $channel has invalid timestamp $send_timestamp (from $client.name)\n"
-				           "Buffer: $modebuf $parabuf",
-				           log_data_channel("channel", channel),
-				           log_data_integer("send_timestamp", sendts),
-				           log_data_string("modebuf", m ? m->modeline[0] : ""),
-				           log_data_string("parabuf", m ? m->modeline[0] : ""));
+				        "MODE for channel $channel has invalid timestamp $send_timestamp (from $client.name)\n"
+				        "Buffer: $modebuf $parabuf",
+				        log_data_channel("channel", channel),
+				        log_data_integer("send_timestamp", sendts),
+				        log_data_string("modebuf", m ? m->modeline[0] : ""),
+				        log_data_string("parabuf", m ? m->modeline[0] : ""));
 				/* Yeah, so what to do in this case?
 				 * Don't set channel->creationtime
 				 * and assume merging.
@@ -316,9 +316,9 @@ void _do_mode(Channel *channel, Client *client, MessageTag *recv_mtags, int parc
 				char buf[512];
 				snprintf(buf, sizeof(buf), "%s%s%s", modebuf, *parabuf ? " " : "", parabuf);
 				zen_log(ULOG_INFO, "samode", "SAMODE_COMMAND", orig_client,
-				           "Client $client used SAMODE $channel ($mode)",
-				           log_data_channel("channel", channel),
-				           log_data_string("mode", buf));
+				        "Client $client used SAMODE $channel ($mode)",
+				        log_data_channel("channel", channel),
+				        log_data_string("mode", buf));
 			}
 
 			client = &me;
@@ -471,10 +471,10 @@ MultiLineMode *make_mode_str(Client *client, Channel *channel, Cmode_t oldem, in
 			{
 				/* Should be impossible.. */
 				zen_log(ULOG_ERROR, "mode", "MODE_MULTILINE_EXCEEDED", client,
-				           "A mode string caused an avalanche effect of more than $max_multiline_modes modes "
-				           "in channel $channel. Caused by client $client. Expect a desync.",
-				           log_data_integer("max_multiline_modes", MAXMULTILINEMODES),
-				           log_data_channel("channel", channel));
+				        "A mode string caused an avalanche effect of more than $max_multiline_modes modes "
+				        "in channel $channel. Caused by client $client. Expect a desync.",
+				        log_data_integer("max_multiline_modes", MAXMULTILINEMODES),
+				        log_data_channel("channel", channel));
 				break;
 			}
 			curr++;
@@ -924,9 +924,9 @@ int paracount_for_chanmode_from_server(Client *client, u_int what, char mode)
 	 * is sent since 2003 and the (often also required) EAUTH PROTOCTL is in there since 2010.
 	 */
 	zen_log(ULOG_WARNING, "mode", "REMOTE_UNKNOWN_CHANNEL_MODE", client,
-	           "Server $client sent us an unknown channel mode $what$mode_character!",
-	           log_data_string("what", ((what == MODE_ADD) ? "+" : "-")),
-	           log_data_char("mode_character", mode));
+	        "Server $client sent us an unknown channel mode $what$mode_character!",
+	        log_data_string("what", ((what == MODE_ADD) ? "+" : "-")),
+	        log_data_char("mode_character", mode));
 
 	return 0;
 }
@@ -1194,7 +1194,7 @@ CMD_FUNC(_cmd_umode)
 				if (IsQuarantined(client->direction))
 				{
 					zen_log(ULOG_INFO, "mode", "OPER_KILLED_QUARANTINE", client,
-					           "QUARANTINE: Oper $client.details on server $client.user.servername killed, due to quarantine");
+					        "QUARANTINE: Oper $client.details on server $client.user.servername killed, due to quarantine");
 					sendto_server(NULL, 0, 0, NULL, ":%s KILL %s :Quarantined: no oper privileges allowed", me.id, client->name);
 					exit_client(client, NULL, "Quarantined: no oper privileges allowed");
 					return;
@@ -1475,10 +1475,10 @@ void mode_operoverride_msg(Client *client, Channel *channel, char *modebuf, char
 	snprintf(buf, sizeof(buf), "%s %s", modebuf, parabuf);
 
 	zen_log(ULOG_INFO, "operoverride", "OPEROVERRIDE_MODE", client,
-	           "OperOverride: $client.details changed channel mode of $channel to: $channel_mode",
-	           log_data_string("override_type", "mode"),
-	           log_data_string("channel_mode", buf),
-	           log_data_channel("channel", channel));
+	        "OperOverride: $client.details changed channel mode of $channel to: $channel_mode",
+	        log_data_string("override_type", "mode"),
+	        log_data_string("channel_mode", buf),
+	        log_data_channel("channel", channel));
 }
 
 /* Deal with information requests from local users, such as:

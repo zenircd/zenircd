@@ -115,15 +115,15 @@ static void EventDelReal(Event *e)
 	if (!e->deleted)
 	{
 		zen_log(ULOG_FATAL, "module", "BUG_EVENTDELREAL_ZERO", NULL,
-		           "[BUG] EventDelReal called while e->deleted is 0. This cannot happen. Event name: $event_name",
-		           log_data_string("event_name", e->name));
+		        "[BUG] EventDelReal called while e->deleted is 0. This cannot happen. Event name: $event_name",
+		        log_data_string("event_name", e->name));
 		abort();
 	}
 	if (e->owner)
 	{
 		zen_log(ULOG_FATAL, "module", "BUG_EVENTDELREAL_NULL", NULL,
-		           "[BUG] EventDelReal called while e->owner is NULL. This cannot happen. Event name: $event_name",
-		           log_data_string("event_name", e->name));
+		        "[BUG] EventDelReal called while e->owner is NULL. This cannot happen. Event name: $event_name",
+		        log_data_string("event_name", e->name));
 		abort();
 	}
 	safe_free(e->name);

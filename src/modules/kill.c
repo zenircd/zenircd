@@ -137,9 +137,9 @@ CMD_FUNC(cmd_kill)
 		/* From here on, the kill is probably going to be successful. */
 
 		zen_log(ULOG_INFO, "kill", "KILL_COMMAND", client,
-		           "Client killed: $target.details [by: $client] ($reason)",
-		           log_data_client("target", target),
-		           log_data_string("reason", reason));
+		        "Client killed: $target.details [by: $client] ($reason)",
+		        log_data_client("target", target),
+		        log_data_string("reason", reason));
 
 		new_message(client, recv_mtags, &mtags);
 

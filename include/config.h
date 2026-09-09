@@ -101,15 +101,15 @@
 /*
  * Full pathnames and defaults of irc system's support files.
  */
-#define CPATH    CONFDIR "/zenircd.conf" /* server configuration file */
-#define MPATH    CONFDIR "/ircd.motd"       /* server MOTD file */
-#define SMPATH   CONFDIR "/ircd.smotd"      /* short MOTD file */
-#define RPATH    CONFDIR "/ircd.rules"      /* server rules file */
-#define OPATH    CONFDIR "/oper.motd"       /* Operators MOTD file */
-#define LPATH    LOGDIR "/debug.log"        /* Where the debug file lives, if DEBUGMODE */
-#define VPATH    CONFDIR "/ircd.svsmotd"    /* Services MOTD append. */
-#define BPATH    CONFDIR "/bot.motd"        /* Bot MOTD */
-#define IRCDTUNE PERMDATADIR "/ircd.tune"   /* tuning .. */
+#define CPATH    CONFDIR "/zenircd.conf"  /* server configuration file */
+#define MPATH    CONFDIR "/ircd.motd"     /* server MOTD file */
+#define SMPATH   CONFDIR "/ircd.smotd"    /* short MOTD file */
+#define RPATH    CONFDIR "/ircd.rules"    /* server rules file */
+#define OPATH    CONFDIR "/oper.motd"     /* Operators MOTD file */
+#define LPATH    LOGDIR "/debug.log"      /* Where the debug file lives, if DEBUGMODE */
+#define VPATH    CONFDIR "/ircd.svsmotd"  /* Services MOTD append. */
+#define BPATH    CONFDIR "/bot.motd"      /* Bot MOTD */
+#define IRCDTUNE PERMDATADIR "/ircd.tune" /* tuning .. */
 
 /** FAKELAG_CONFIGURABLE makes it possible to make certain classes exempted
  * from 'fake lag' (that is, the artificial delay that is added by the ircd

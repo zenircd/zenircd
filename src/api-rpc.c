@@ -38,9 +38,9 @@ RPCHandler *RPCHandlerAdd(Module *module, RPCHandlerInfo *mreq)
 	if (!mreq->method || !mreq->call)
 	{
 		zen_log(ULOG_ERROR, "module", "RPCHANDLERADD_API_ERROR", NULL,
-		           "RPCHandlerAdd() from module $module_name: "
-		           "Missing required fields.",
-		           log_data_string("module_name", module->header->name));
+		        "RPCHandlerAdd() from module $module_name: "
+		        "Missing required fields.",
+		        log_data_string("module_name", module->header->name));
 		abort();
 	}
 
@@ -132,8 +132,8 @@ static void unload_rpc_handler_commit(RPCHandler *m)
 {
 	/* This is an unusual operation, I think we should log it. */
 	zen_log(ULOG_INFO, "module", "UNLOAD_RPC_HANDLER", NULL,
-	           "Unloading RPC handler for '$method'",
-	           log_data_string("method", m->method));
+	        "Unloading RPC handler for '$method'",
+	        log_data_string("method", m->method));
 
 	/* Destroy the object */
 	DelListItem(m, rpchandlers);

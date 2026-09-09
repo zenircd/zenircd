@@ -86,6 +86,6 @@ CMD_FUNC(cmd_sdesc)
 	sendto_server(client, 0, 0, NULL, ":%s SDESC :%s", client->name, parv[1]);
 
 	zen_log(ULOG_INFO, "sdesc", "SDESC_COMMAND", client,
-	           "Server description for $server is now '$server.server.info' (changed by $client)",
-	           log_data_client("server", client->uplink));
+	        "Server description for $server is now '$server.server.info' (changed by $client)",
+	        log_data_client("server", client->uplink));
 }

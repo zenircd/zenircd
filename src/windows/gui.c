@@ -164,7 +164,7 @@ LRESULT RESubClassFunc(HWND hWnd, UINT Message, WPARAM wParam, LPARAM lParam)
 int DoCloseZen(HWND hWnd)
 {
 	zen_log(ULOG_INFO, "main", "ZENIRCD_STOP", NULL,
-	           "Terminating server (process termination requested or GUI window closed)");
+	        "Terminating server (process termination requested or GUI window closed)");
 	loop.terminating = 1;
 	unload_all_modules();
 	DestroyWindow(hWnd);

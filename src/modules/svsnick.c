@@ -111,8 +111,8 @@ CMD_FUNC(cmd_svsnick)
 	del_from_client_hash_table(acptr->name, acptr);
 
 	zen_log(ULOG_INFO, "nick", "FORCED_NICK_CHANGE", acptr,
-	           "$client.details has been forced to change their nickname to $new_nick_name",
-	           log_data_string("new_nick_name", nickname));
+	        "$client.details has been forced to change their nickname to $new_nick_name",
+	        log_data_string("new_nick_name", nickname));
 
 	strlcpy(acptr->name, nickname, sizeof acptr->name);
 	add_to_client_hash_table(nickname, acptr);

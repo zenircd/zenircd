@@ -214,7 +214,11 @@ CMD_FUNC(cmd_version)
 		            ZenProtocol);
 		if (ValidatePermissionsForPath("server:info", client, NULL, NULL, NULL))
 		{
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			sendnotice(client, "%s", OpenSSL_version(OPENSSL_VERSION));
+#else
 			sendnotice(client, "%s", SSLeay_version(SSLEAY_VERSION));
+#endif
 			sendnotice(client, "libsodium %s", sodium_version_string());
 #ifdef USE_LIBCURL
 			sendnotice(client, "%s", curl_version());

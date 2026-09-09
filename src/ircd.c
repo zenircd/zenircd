@@ -796,7 +796,11 @@ int InitZenIRCd(int argc, char *argv[])
 	                "to support us.\n\n");
 
 	fprintf(stderr, "ZenIRCd is using the following libraries:\n");
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	fprintf(stderr, "* %s\n", OpenSSL_version(OPENSSL_VERSION));
+#else
 	fprintf(stderr, "* %s\n", SSLeay_version(SSLEAY_VERSION));
+#endif
 	fprintf(stderr, "* libsodium %s\n", sodium_version_string());
  #ifdef USE_LIBCURL
 	fprintf(stderr, "* %s\n", curl_version());

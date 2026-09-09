@@ -87,7 +87,11 @@ CMD_FUNC(procio_status)
 {
 	sendto_one(client, NULL, "REPLY servername %s", me.name);
 	sendto_one(client, NULL, "REPLY zenircd_version %s", version);
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	sendto_one(client, NULL, "REPLY libssl_version %s", OpenSSL_version(OPENSSL_VERSION));
+#else
 	sendto_one(client, NULL, "REPLY libssl_version %s", SSLeay_version(SSLEAY_VERSION));
+#endif
 	sendto_one(client, NULL, "REPLY libsodium_version %s", sodium_version_string());
 #ifdef USE_LIBCURL
 	sendto_one(client, NULL, "REPLY libcurl_version %s", curl_version());

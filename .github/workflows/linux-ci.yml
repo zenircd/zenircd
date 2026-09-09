@@ -54,7 +54,10 @@ jobs:
 
       - name: Build
         # Invoke via bash so missing +x cannot yield exit 126 on runners.
-        run: bash extras/build-tests/nix/build
+        # Also ensure configure is executable (git filemode can be lost on Windows checkouts).
+        run: |
+          chmod +x Config configure extras/build-tests/nix/build extras/build-tests/nix/run-tests || true
+          bash extras/build-tests/nix/build
 
       - name: Run tests
         run: bash extras/build-tests/nix/run-tests

@@ -30,10 +30,17 @@ if [ -d "$HOME/zenircd" ]; then
 	fi
 fi
 
-# Upstream UnrealIRCd tests (no Zen-specific fork yet)
+# Upstream UnrealIRCd tests (no Zen-specific fork yet).
+# Paths still use ~/unrealircd via the symlinks above; only rebrand user-facing text.
 rm -rf unrealircd-tests/
 git clone -q --branch unreal60 https://github.com/unrealircd/unrealircd-tests.git unrealircd-tests
 cd unrealircd-tests
+# The harness hardcodes "UnrealIRCd" in fail/help strings (e.g. start errors).
+find . -type f \( -name 'run' -o -name '*.py' -o -name '*.md' -o -name 'wrapper' \) \
+	-exec sed -i \
+		-e 's/UnrealIRCd/ZenIRCd/g' \
+		-e 's/unrealircd-tests/zenircd-tests/g' \
+		{} +
 
 # FreeBSD has various issues with the tests from us and others,
 # better set a flag to keep it simple:

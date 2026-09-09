@@ -8,7 +8,7 @@
 
 ModuleHeader MOD_HEADER = {
     "rpc/rpc",
-    "1.0.5",
+    "1.0.6",
     "RPC module for remote management",
     "ZenIRCd Team",
     "zenircd-6",
@@ -119,6 +119,10 @@ void rrpc_md_free(ModData *m);
 int rpc_config_listener(ConfigItem_listen *listener);
 
 /* Macros */
+/** Bitflags for ConfigItem_listen->rpc_options */
+#define RPC_OPT_ENABLED      0x1 /**< listen::options::rpc */
+#define RPC_OPT_TRUST_LOCAL  0x2 /**< listen::options::rpc-trust-local (UNIX raw JSON, no auth) */
+
 #define RPC_PORT(client) ((client->local && client->local->listener) ? client->local->listener->rpc_options : 0)
 #define WSU(client)      ((WebSocketUser *)moddata_client(client, websocket_md).ptr)
 
@@ -300,30 +304,49 @@ MOD_UNLOAD()
 int rpc_config_test_listen(ConfigFile *cf, ConfigEntry *ce, int type, int *errs)
 {
 	int errors = 0;
-	int ext = 0;
-	ConfigEntry *cep;
 
 	if (type != CONFIG_LISTEN_OPTIONS)
 		return 0;
 
-	/* We are only interested in listen::options::rpc.. */
-	if (!ce || !ce->name || strcmp(ce->name, "rpc"))
+	/* We are only interested in listen::options::rpc / rpc-trust-local */
+	if (!ce || !ce->name)
 		return 0;
 
-	/* No options atm */
+	if (!strcmp(ce->name, "rpc"))
+	{
+		/* No nested options atm */
+		*errs = errors;
+		return errors ? -1 : 1;
+	}
 
-	*errs = errors;
-	return errors ? -1 : 1;
+	if (!strcmp(ce->name, "rpc-trust-local"))
+	{
+		if (ce->items || ce->value)
+		{
+			config_error("%s:%d: listen::options::rpc-trust-local takes no parameters",
+			             ce->file->filename, ce->line_number);
+			errors++;
+		}
+		*errs = errors;
+		return errors ? -1 : 1;
+	}
+
+	return 0;
 }
 
 void rpc_listener_set_handler(ConfigItem_listen *l)
 {
-	if (l->socket_type == SOCKET_TYPE_UNIX)
+	/* UNIX + rpc-trust-local: legacy raw JSON with unrestricted local access.
+	 * Otherwise require HTTP(S) authentication (Authorization header), including
+	 * on UNIX sockets when trust-local is not set.
+	 */
+	if ((l->socket_type == SOCKET_TYPE_UNIX) && (l->rpc_options & RPC_OPT_TRUST_LOCAL))
 	{
 		l->start_handshake = rpc_client_handshake_unix_socket;
 	} else
 	{
-		l->options |= LISTENER_TLS;
+		if (l->socket_type != SOCKET_TYPE_UNIX)
+			l->options |= LISTENER_TLS;
 		l->start_handshake = rpc_client_handshake_web;
 		l->webserver = safe_alloc(sizeof(WebServer));
 		l->webserver->handle_request = rpc_handle_webrequest;
@@ -332,26 +355,35 @@ void rpc_listener_set_handler(ConfigItem_listen *l)
 }
 int rpc_config_run_ex_listen(ConfigFile *cf, ConfigEntry *ce, int type, void *ptr)
 {
-	ConfigEntry *cep, *cepp;
 	ConfigItem_listen *l;
 
 	if (type != CONFIG_LISTEN_OPTIONS)
 		return 0;
 
-	/* We are only interrested in listen::options::rpc.. */
-	if (!ce || !ce->name || strcmp(ce->name, "rpc"))
+	if (!ce || !ce->name)
 		return 0;
 
 	l = (ConfigItem_listen *)ptr;
-	l->options |= LISTENER_NO_CHECK_CONNECT_FLOOD;
-	l->rpc_options = 1;
 
-	return 1;
+	if (!strcmp(ce->name, "rpc"))
+	{
+		l->options |= LISTENER_NO_CHECK_CONNECT_FLOOD;
+		l->rpc_options |= RPC_OPT_ENABLED;
+		return 1;
+	}
+
+	if (!strcmp(ce->name, "rpc-trust-local"))
+	{
+		l->rpc_options |= RPC_OPT_TRUST_LOCAL;
+		return 1;
+	}
+
+	return 0;
 }
 
 int rpc_config_listener(ConfigItem_listen *listener)
 {
-	if (listener->rpc_options)
+	if (listener->rpc_options & RPC_OPT_ENABLED)
 		rpc_listener_set_handler(listener);
 	return 0;
 }
@@ -441,12 +473,13 @@ int rpc_config_test_rpc_user(ConfigFile *cf, ConfigEntry *ce, int type, int *err
 
 	if (!has_rpc_class)
 	{
-		config_warn("%s:%d: rpc-user block should have a ::rpc-class item to indicate "
-		            "the permissions, like: rpc-user %s { rpc-class full; ....etc.... }",
-		            ce->file->filename, ce->line_number, ce->value);
-		config_warn("See https://www.unrealircd.org/docs/Rpc-user_block. For now, this "
-		            "is a warning and we assume you want rpc-class 'full', but in later "
-		            "versions this will become an error.");
+		config_error("%s:%d: rpc-user block must have a ::rpc-class item to indicate "
+		             "the permissions, like: rpc-user %s { rpc-class full; ....etc.... }",
+		             ce->file->filename, ce->line_number, ce->value);
+		config_error("See https://www.unrealircd.org/docs/Rpc-user_block and "
+		             "https://www.unrealircd.org/docs/Rpc-class_block. Built-in classes "
+		             "are 'full' and 'read-only' (from rpc-class.default.conf).");
+		errors++;
 	}
 
 	*errs = errors;
@@ -610,9 +643,10 @@ OperPermission ValidatePermissionsForJSONRPC(const char *path, Client *client)
 	if (!MyConnect(client) || IsServer(client))
 		return OPER_ALLOW;
 
-	/* Special: local UNIX socket without authentication/restrictions */
+	/* Special: trusted local UNIX socket (listen::options::rpc-trust-local) */
 	if (!strcmp(client->rpc->rpc_user, "<local>") &&
-	    (client->local->listener->socket_type == SOCKET_TYPE_UNIX))
+	    (client->local->listener->socket_type == SOCKET_TYPE_UNIX) &&
+	    (client->local->listener->rpc_options & RPC_OPT_TRUST_LOCAL))
 	{
 		return OPER_ALLOW;
 	}
@@ -621,11 +655,9 @@ OperPermission ValidatePermissionsForJSONRPC(const char *path, Client *client)
 	if (!r)
 		return OPER_DENY;
 
-	/* rpc-user { } block without rpc-user::rpc-class
-	 * means unrestricted at the moment.
-	 */
+	/* rpc-user without rpc-class is a config error; deny at runtime too */
 	if (r->rpc_class == NULL)
-		return OPER_ALLOW;
+		return OPER_DENY;
 
 	/* The 'full' is a virtual rpc-class, actually. So we can do a shortcut.
 	 * We have a clear (triple) warning about this in operclass.default.conf
@@ -811,6 +843,10 @@ int rpc_packet_in_unix_socket(Client *client, const char *readbuf, int *length)
 
 	if (!RPC_PORT(client) || !(client->local->listener->socket_type == SOCKET_TYPE_UNIX) || (*length <= 0))
 		return 1; /* Not for us */
+
+	/* Only for trusted-local raw JSON mode; HTTP-auth UNIX uses the webserver */
+	if (!(client->local->listener->rpc_options & RPC_OPT_TRUST_LOCAL))
+		return 1;
 
 	dbuf_put(&client->local->recvQ, readbuf, *length);
 
@@ -1245,15 +1281,20 @@ int rpc_client_accept(Client *client)
 	return 0;
 }
 
-/** Called upon handshake of unix socket (direct JSON usage, no auth) */
+/** Called upon handshake of trusted-local UNIX socket (direct JSON, no auth).
+ * Only used when listen::options::rpc-trust-local is set.
+ */
 void rpc_client_handshake_unix_socket(Client *client)
 {
 	if (client->local->listener->socket_type != SOCKET_TYPE_UNIX)
 		abort(); /* impossible */
+	if (!(client->local->listener->rpc_options & RPC_OPT_TRUST_LOCAL))
+		abort(); /* handler should not be installed without trust-local */
 
 	strlcpy(client->name, "RPC:local", sizeof(client->name));
 	SetRPC(client);
-	client->rpc = safe_alloc(sizeof(RPCClient));
+	if (!client->rpc)
+		client->rpc = safe_alloc(sizeof(RPCClient));
 	safe_strdup(client->rpc->rpc_user, "<local>");
 
 	/* Allow incoming data to be read from now on.. */
@@ -1350,9 +1391,19 @@ int rpc_handle_auth(Client *client, WebRequest *web)
 	char *username = NULL, *password = NULL;
 	RPCUser *r;
 
-	if (!rpc_parse_auth_basic_auth(client, web, &username, &password) &&
-	    !rpc_parse_auth_uri(client, web, &username, &password))
+	/* Prefer Authorization: Basic ... only.
+	 * URI query-string credentials (?username=&password=) are rejected:
+	 * they end up in logs, proxies, and browser history.
+	 * TODO: remove rpc_parse_auth_uri() entirely once callers are gone.
+	 */
+	if (!rpc_parse_auth_basic_auth(client, web, &username, &password))
 	{
+		if (rpc_parse_auth_uri(client, web, &username, &password))
+		{
+			zen_log(ULOG_INFO, "rpc", "RPC_URI_AUTH_REJECTED", client,
+			           "RPC authentication via URI query string is disabled; use the Authorization header",
+			           log_data_string("uri", web->uri ? web->uri : ""));
+		}
 		webserver_send_response(client, 401, "Authentication required");
 		return 0;
 	}
@@ -1405,7 +1456,10 @@ int rpc_parse_auth_basic_auth(Client *client, WebRequest *web, char **username, 
 	return 1;
 }
 
-// TODO: the ?a=b&c=d stuff should be urldecoded by 'webserver'
+/* TODO: remove this function once URI auth is fully retired.
+ * Still used only to detect (and reject) URI credentials in rpc_handle_auth().
+ * The ?a=b&c=d stuff should be urldecoded by 'webserver' if ever re-enabled.
+ */
 int rpc_parse_auth_uri(Client *client, WebRequest *web, char **username, char **password)
 {
 	static char buf[2048];

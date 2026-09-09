@@ -2140,7 +2140,7 @@ struct ConfigItem_listen {
 	void (*start_handshake)(Client *client); /**< Function to call on accept() */
 	int websocket_options;                   /**< Websocket options (for the websocket module) */
 	NameList *websocket_origin;              /**< List of permitted Origin */
-	int rpc_options;                         /**< For the RPC module */
+	int rpc_options;                         /**< RPC listen flags: RPC_OPT_ENABLED, RPC_OPT_TRUST_LOCAL (see rpc module) */
 };
 
 struct ConfigItem_sni {

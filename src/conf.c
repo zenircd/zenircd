@@ -5805,6 +5805,7 @@ void conf_listen_configure(const char *ip, int port, SocketType socket_type, int
 	safe_free_webserver(listen->webserver);
 	free_entire_name_list(listen->websocket_origin);
 	listen->websocket_options = 0;
+	listen->rpc_options = 0;
 	// NOTE: duplicate code overlap with listen_cleanup()
 
 	/* Now set the new settings: */
@@ -5962,6 +5963,8 @@ int _test_listen(ConfigFile *conf, ConfigEntry *ce)
 	int errors = 0;
 	char has_file = 0, has_ip = 0, has_port = 0, has_options = 0, port_6667 = 0, has_spoof_ip = 0;
 	char clientport = 1;
+	char has_rpc = 0, has_rpc_trust_local = 0;
+	int listen_mode = -1; /* -1 = not set; otherwise octal mode */
 	char *file = NULL;
 	char *ip = NULL;
 	int port_start = 0, port_end = 0, tls_port = 0;
@@ -6020,6 +6023,10 @@ int _test_listen(ConfigFile *conf, ConfigEntry *ce)
 				if (!strcmp(cepp->name, "serversonly") ||
 				    !strcmp(cepp->name, "rpc"))
 					clientport = 0;
+				if (!strcmp(cepp->name, "rpc"))
+					has_rpc = 1;
+				else if (!strcmp(cepp->name, "rpc-trust-local"))
+					has_rpc_trust_local = 1;
 				if (!nv_find_by_name(_ListenerFlags, cepp->name))
 				{
 					/* Check if a module knows about this listen::options::something */
@@ -6096,6 +6103,7 @@ int _test_listen(ConfigFile *conf, ConfigEntry *ce)
 		} else if (!strcmp(cep->name, "mode"))
 		{
 			int mode = strtol(cep->value, NULL, 8);
+			listen_mode = mode;
 			if ((mode != 0700) && (mode != 0770) && (mode != 0777))
 			{
 				config_error("%s:%i: listen::mode must be one of: 0700 (user only, the default), "
@@ -6217,6 +6225,30 @@ int _test_listen(ConfigFile *conf, ConfigEntry *ce)
 	{
 		config_error("%s:%d: listen::spoof-ip is only valid when listen::file is used (UNIX domain sockets)",
 		             ce->file->filename, ce->line_number);
+		errors++;
+	}
+
+	if (has_rpc_trust_local && !has_rpc)
+	{
+		config_error("%s:%d: listen::options::rpc-trust-local requires options::rpc",
+		             ce->file->filename, ce->line_number);
+		errors++;
+	}
+
+	if (has_rpc_trust_local && !has_file)
+	{
+		config_error("%s:%d: listen::options::rpc-trust-local is only valid for "
+		             "UNIX domain sockets (listen::file)",
+		             ce->file->filename, ce->line_number);
+		errors++;
+	}
+
+	/* World-writable sockets (other-write) are unsafe for unrestricted RPC access */
+	if (has_rpc && (listen_mode >= 0) && (listen_mode & 0002))
+	{
+		config_error("%s:%d: listen::mode 0%o is world-writable which is not allowed "
+		             "for JSON-RPC sockets (options::rpc). Use 0700 or 0770 instead.",
+		             ce->file->filename, ce->line_number, listen_mode);
 		errors++;
 	}
 

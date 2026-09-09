@@ -327,8 +327,8 @@ void cmd_info_send(Client *client)
 	sendnumericfmt(client, RPL_INFO, ":|");
 	sendnumericfmt(client, RPL_INFO, ":| This is an ZenIRCd-style server");
 	sendnumericfmt(client, RPL_INFO, ":| If you find any bugs, please report them at:");
-	sendnumericfmt(client, RPL_INFO, ":|  https://bugs.unrealircd.org/");
-	sendnumericfmt(client, RPL_INFO, ":| ZenIRCd Homepage: https://www.unrealircd.org");
+	sendnumericfmt(client, RPL_INFO, ":|  https://github.com/zenircd/zenircd/issues");
+	sendnumericfmt(client, RPL_INFO, ":| ZenIRCd Homepage: https://github.com/zenircd/zenircd");
 	sendnumericfmt(client, RPL_INFO, ":============================================");
 	sendnumericfmt(client, RPL_INFO, ":Birth Date: %s, compile # %s", creation, generation);
 	sendnumericfmt(client, RPL_INFO, ":On-line since %s", myctime(me.local->creationtime));

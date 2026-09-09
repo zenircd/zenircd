@@ -298,7 +298,11 @@
 #define ZENIRCD_DEFAULT_TLS_GROUPS_SECONDARY "X25519:secp521r1:secp384r1:prime256v1"
 #define ZENIRCD_DEFAULT_TLS_GROUPS_TERTIARY  "secp521r1:secp384r1:prime256v1"
 
-/* These can be changed via set::central-spamfilter::url and ::feed */
+/* Optional central spamfilter feed URLs (upstream UnrealIRCd services).
+ * ZenIRCd has no equivalent infrastructure. Defaults keep
+ * central_spamfilter_enabled=0 in conf.c; URLs are only used if an admin
+ * explicitly enables set::central-spamfilter. Override via ::url / ::feed.
+ */
 #define DEFAULT_CENTRAL_SPAMFILTER_URL_OPEN_ACCESS       "https://spamfilter.unrealircd.org/spamfilter/v6/$feed/central_spamfilter.conf"
 #define DEFAULT_CENTRAL_SPAMFILTER_URL_RESTRICTED_ACCESS "https://spamfilter.unrealircd-api.org/spamfilter/v6/$feed/central_spamfilter.conf"
 #define DEFAULT_CENTRAL_SPAMFILTER_FEED                  "standard"

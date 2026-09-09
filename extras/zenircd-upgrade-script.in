@@ -78,46 +78,13 @@ cd .. || fail "Could not cd back"
 # Set and export all variables with settings
 export ZENVER BUILDDIR SCRIPTDIR DOCDIR TMPDIR FETCHER
 
-# Download the install script
-if [ "$FETCHER" = "wget" ]; then
-	wget -O zenircd-upgrade-script.stage2 "https://www.unrealircd.org/downloads/zenircd-upgrade-script.stage2?from=$ZENVER" || fail "Could not download online installer"
-	wget -O zenircd-upgrade-script.stage2.asc "https://www.unrealircd.org/downloads/zenircd-upgrade-script.stage2.asc" || fail "Could not download online installer signature"
-else
-	fetch -o zenircd-upgrade-script.stage2 "https://www.unrealircd.org/downloads/zenircd-upgrade-script.stage2?from=$ZENVER" || fail "Could not download online installer"
-	fetch -o zenircd-upgrade-script.stage2.asc "https://www.unrealircd.org/downloads/zenircd-upgrade-script.stage2.asc" || fail "Could not download online installer signature"
-fi
-
-# GPG verification - if available
-if gpg --version 1>/dev/null 2>&1; then
-	if [ -f "$DOCDIR/KEYS" ]; then
-		gpg --import "$DOCDIR/KEYS"
-		echo
-		if gpg --batch --exit-on-status-write-error --verify zenircd-upgrade-script.stage2.asc zenircd-upgrade-script.stage2; then
-			echo "GPG: Verification succeeded. Download is genuine."
-			export NOGPG=0
-		else
-			bigwarn "GPG/PGP verification failed. This could be a security issue."
-			export NOGPG=1
-		fi
-	else
-		warn "Unable to check download integrity with GPG/PGP. Missing $DOCDIR/KEYS file."
-		export NOGPG=1
-	fi
-else
-	echo "WARNING: The GnuPG (GPG/PGP) verification tool 'gpg' is not installed."
-	if [[ "$OSTYPE" == "freebsd"* ]] ; then
-		echo "Consider running 'sudo pkg install gnupg'"
-	else
-		echo "Consider running 'sudo apt install gpg' or 'yum install gnupg2'"
-	fi
-	echo "When 'gpg' is installed then the ZenIRCd upgrade script can"
-	echo "verify the digital signature of the download file."
-	warn "Unable to check download integrity"
-	export NOGPG=1
-fi
-
-chmod +x zenircd-upgrade-script.stage2
-./zenircd-upgrade-script.stage2 $*
-SAVERET="$?"
-rm -f zenircd-upgrade-script.stage2 zenircd-upgrade-script.stage2.asc
-exit $SAVERET
+# ZenIRCd does not use UnrealIRCd's online upgrade CDN.
+# Auto-download of stage2 from unrealircd.org is disabled: Zen has no
+# equivalent infrastructure, and fetching Unreal's script (even renamed)
+# would be incorrect and unsafe for this fork.
+echo
+echo "ERROR: ZenIRCd upgrade-from-Unreal-CDN is not supported."
+echo "This stage1 script no longer downloads stage2 from unrealircd.org."
+echo "Upgrade from source instead; see:"
+echo "  https://github.com/zenircd/zenircd"
+exit 1

@@ -791,9 +791,8 @@ int InitZenIRCd(int argc, char *argv[])
 	                "Krzysztof Beresztant (k4be), Gottem and i\n\n");
 
 	fprintf(stderr, "ZenIRCd is free and Open Source software. "
-	                "If you can, consider making a donation at "
-	                "https://www.unrealircd.org/index/donations "
-	                "to support us.\n\n");
+	                "Source and issue tracker: "
+	                "https://github.com/zenircd/zenircd\n\n");
 
 	fprintf(stderr, "ZenIRCd is using the following libraries:\n");
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L

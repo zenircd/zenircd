@@ -1,4 +1,7 @@
-/* Central API - API access to unrealircd.org
+/* Central API - optional API key for upstream UnrealIRCd.org services.
+ * ZenIRCd does not ship these services and does not load this module by
+ * default. Network calls only happen when an admin loads the module and
+ * configures set::central-api (request-key or api-key).
  * (C) Copyright 2023 Bram Matthys and The ZenIRCd Team
  * License: GPLv2
  */
@@ -8,7 +11,7 @@
 ModuleHeader MOD_HEADER = {
     "central-api",
     "1.0.2",
-    "Acquire and set API key for unrealircd.org services",
+    "Acquire and set API key for optional upstream UnrealIRCd.org services",
     "ZenIRCd Team",
     "zenircd-6",
 };

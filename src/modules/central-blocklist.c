@@ -1,4 +1,7 @@
-/* Central blocklist
+/* Central blocklist - optional checks against upstream UnrealIRCd APIs.
+ * ZenIRCd does not ship these services and does not load this module by
+ * default. Even when loaded, blocklist lookups stay off until an admin
+ * sets set::central-blocklist::blocklist-enabled yes (and a central-api key).
  * (C) Copyright 2023 Bram Matthys and The ZenIRCd Team
  * License: GPLv2
  */
@@ -8,7 +11,7 @@
 ModuleHeader MOD_HEADER = {
     "central-blocklist",
     "1.0.8",
-    "Check users at central blocklist",
+    "Check users at optional upstream UnrealIRCd central blocklist",
     "ZenIRCd Team",
     "zenircd-6",
 };
@@ -16,6 +19,7 @@ ModuleHeader MOD_HEADER = {
 ModDataInfo *centralblocklist_md = NULL;
 Module *cbl_module = NULL;
 
+/* Upstream UnrealIRCd service endpoints (optional; not Zen-owned). */
 #define CBL_URL                        "https://centralblocklist.unrealircd-api.org/api/v1"
 #define SPAMREPORT_URL                 "https://spamreport.unrealircd-api.org/api/spamreport-v1"
 #define CBL_TRANSFER_TIMEOUT           10
@@ -131,7 +135,8 @@ static void init_config(void)
 	safe_strdup(cfg.url, CBL_URL);
 	safe_strdup(cfg.spamreport_url, SPAMREPORT_URL);
 	cfg.max_downloads = 100;
-	cfg.blocklist_enabled = 1;
+	/* Off by default (like central_spamfilter_enabled): require explicit enable. */
+	cfg.blocklist_enabled = 0;
 	// default action
 	if (!req.custom_score_blocks)
 	{
@@ -438,7 +443,7 @@ int cbl_config_run(ConfigFile *cf, ConfigEntry *ce, int type)
 		} else if (!strcmp(cep->name, "url"))
 		{
 			safe_strdup(cfg.url, cep->value);
-		} else if (!strcmp(cep->name, "blocklist-enabled"))
+		} else if (!strcmp(cep->name, "blocklist") || !strcmp(cep->name, "blocklist-enabled"))
 		{
 			cfg.blocklist_enabled = config_checkval(cep->value, CFG_YESNO);
 		} else if (!strcmp(cep->name, "spamreport-url"))

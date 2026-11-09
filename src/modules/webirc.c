@@ -47,6 +47,7 @@ ModDataInfo *webirc_md = NULL;
 
 /* Forward declarations */
 CMD_FUNC(cmd_webirc);
+CMD_FUNC(cmd_chgip);
 int webirc_local_pass(Client *client, const char *password);
 const char *webirc_md_serialize(ModData *m);
 void webirc_md_unserialize(const char *str, ModData *m);
@@ -59,6 +60,7 @@ int webirc_whois(Client *client, Client *target, NameValuePrioList **list);
 #define IsWEBIRCSecure(x) (WEBIRC(x) && (WEBIRC(x)->type == WEBIRC_TYPE_WEBIRC_SECURE))
 
 #define MSG_WEBIRC "WEBIRC"
+#define MSG_CHGIP  "CHGIP"
 
 /** Called upon module init */
 MOD_INIT()
@@ -86,7 +88,8 @@ MOD_INIT()
 	HookAdd(modinfo->handle, HOOKTYPE_SECURE_CONNECT, 0, webirc_secure_connect);
 	HookAdd(modinfo->handle, HOOKTYPE_WHOIS, 0, webirc_whois);
 
-	CommandAdd(modinfo->handle, MSG_WEBIRC, cmd_webirc, MAXPARA, CMD_UNREGISTERED);
+	CommandAdd(modinfo->handle, MSG_WEBIRC, cmd_webirc, MAXPARA, CMD_UNREGISTERED|CMD_USER);
+	CommandAdd(modinfo->handle, MSG_CHGIP, cmd_chgip, MAXPARA, CMD_SERVER);
 
 	return MOD_SUCCESS;
 }
@@ -262,7 +265,220 @@ void dowebirc(Client *client, ConfigItem_proxy *proxy, const char *ip, const cha
 	}
 }
 
-/* WEBIRC <pass> "cgiirc" <hostname> <ip> [:option1 [option2...]]*/
+/** Normalize an IP address string (eg "::FFFF:1.2.3.4" vs "::ffff:1.2.3.4").
+ * @returns 1 on success (normalized IP in buf), 0 if not a valid IP.
+ */
+static int webirc_normalize_ip(const char *ip, char *buf, size_t buflen)
+{
+	char raw[16];
+	int af = strchr(ip, ':') ? AF_INET6 : AF_INET;
+
+	if (inet_pton(af, ip, raw) != 1)
+		return 0;
+	return inetntop(af, raw, buf, buflen) ? 1 : 0;
+}
+
+/** Find the named proxy { } block of type webirc */
+static ConfigItem_proxy *find_webirc_by_name(const char *name)
+{
+	ConfigItem_proxy *e;
+
+	for (e = conf_proxy; e; e = e->next)
+		if ((e->type == PROXY_WEBIRC) && e->name && !strcmp(e->name, name))
+			return e;
+	return NULL;
+}
+
+/** Update the realhost, cloaked host and (if not +t) the vhost
+ * of a user after an IP change. Used for both local and remote users.
+ * Caller must have called userhost_save_current() before, and must
+ * call userhost_changed() afterwards.
+ */
+static void webirc_update_hosts(Client *client, const char *realhost)
+{
+	strlcpy(client->user->realhost, realhost, sizeof(client->user->realhost));
+	make_cloakedhost(client, client->user->realhost, client->user->cloakedhost, sizeof(client->user->cloakedhost));
+	/* A vhost set by SETHOST/CHGHOST/vhost block (+t) stays.
+	 * Otherwise the vhost is the cloaked host, which has now changed.
+	 */
+	if (!IsSetHost(client) || !client->user->virthost)
+		safe_strdup(client->user->virthost, client->user->cloakedhost);
+}
+
+/** Send updated synced moddata that depends on the IP (currently: geoip) */
+static void webirc_broadcast_ip_moddata(Client *client)
+{
+	ModDataInfo *mdi = findmoddata_byname("geoip", MODDATATYPE_CLIENT);
+
+	if (mdi && mdi->sync)
+		broadcast_md_client(mdi, client, &moddata_client(client, mdi));
+}
+
+/** Post-registration WEBIRC: the gateway tells us the IP of the
+ * user behind it has changed (eg. a web user who came back from
+ * a different network to a still-connected session).
+ * Only allowed if the proxy { } block has allow-ip-update yes;
+ * This is a ZenIRCd extension.
+ */
+static void webirc_ip_update(Client *client, const char *password, const char *ip, const char *host)
+{
+	WEBIRCUser *w = WEBIRC(client);
+	ConfigItem_proxy *e;
+	char newip[IPLEN + 1];
+	char oldip[IPLEN + 1];
+	char oldhost[HOSTLEN + 1];
+
+	if (!w || !w->name)
+	{
+		sendto_one(client, NULL, ":%s FAIL WEBIRC NOT_WEBIRC :This connection was not made through a named WebIRC gateway", me.name);
+		return;
+	}
+
+	e = find_webirc_by_name(w->name);
+	if (!e || !e->allow_ip_update)
+	{
+		sendto_one(client, NULL, ":%s FAIL WEBIRC IP_UPDATE_DISABLED :IP updates are not enabled for this WebIRC gateway", me.name);
+		return;
+	}
+
+	if (!Auth_Check(client, e->auth, password))
+	{
+		unreal_log(ULOG_WARNING, "webirc", "WEBIRC_IP_UPDATE_BAD_PASSWORD", client,
+		           "WebIRC gateway $webirc_gateway sent an IP update for $client.details with an invalid password",
+		           log_data_string("webirc_gateway", w->name));
+		sendto_one(client, NULL, ":%s FAIL WEBIRC INVALID_PASSWORD :Invalid WebIRC password", me.name);
+		return;
+	}
+
+	if (!webirc_normalize_ip(ip, newip, sizeof(newip)))
+	{
+		sendto_one(client, NULL, ":%s FAIL WEBIRC INVALID_IP %s :Invalid IP address", me.name, ip);
+		return;
+	}
+
+	if (host && (!strcmp(host, ip) || !valid_host(host, 1)))
+		host = NULL; /* did not resolve, or bogus: use the IP */
+
+	if (!strcmp(newip, client->ip) && !strcmp(host ? host : client->ip, client->user->realhost))
+	{
+		sendto_one(client, NULL, ":%s NOTE WEBIRC IP_UNCHANGED %s :IP address is unchanged", me.name, client->ip);
+		return;
+	}
+
+	strlcpy(oldip, client->ip, sizeof(oldip));
+	strlcpy(oldhost, client->user->realhost, sizeof(oldhost));
+
+	userhost_save_current(client);
+
+	/* This runs HOOKTYPE_IP_CHANGE: Z-lines, blacklist (DNSBL),
+	 * connect-flood, geoip, reputation, known-users...
+	 */
+	if (!set_client_ip(client, newip) || IsDeadSocket(client))
+		return; /* Client is being killed */
+
+	/* Update client->local->hostp */
+	if (client->local->hostp)
+	{
+		unreal_free_hostent(client->local->hostp);
+		client->local->hostp = NULL;
+	}
+	if (host)
+	{
+		client->local->hostp = unreal_create_hostent(host, client->ip);
+		set_sockhost(client, host);
+	}
+	/* (else: set_client_ip() already set sockhost to the IP) */
+
+	webirc_update_hosts(client, client->local->sockhost);
+
+	unreal_log(ULOG_INFO, "webirc", "WEBIRC_IP_UPDATE", client,
+	           "WebIRC gateway $webirc_gateway updated the IP of $client.details from $old_ip ($old_host) to $client.ip ($client.user.realhost)",
+	           log_data_string("webirc_gateway", w->name),
+	           log_data_string("old_ip", oldip),
+	           log_data_string("old_host", oldhost));
+
+	/* Re-check K-Lines/G-Lines and shuns against the new IP/host.
+	 * (Z-Lines were already checked from the HOOKTYPE_IP_CHANGE hook)
+	 */
+	if (find_tkline_match(client, 0))
+		return; /* Client killed */
+	find_shun(client);
+
+	/* Tell local users in common channels (CHGHOST or rejoin) */
+	userhost_changed(client);
+
+	/* Tell other servers. Servers that don't know CHGIP ignore it
+	 * (stock UnrealIRCd), they keep showing the old IP/host.
+	 */
+	sendto_server(client, 0, 0, NULL, ":%s CHGIP %s %s %s",
+	              me.id, client->id, encode_ip(client->ip), client->user->realhost);
+	webirc_broadcast_ip_moddata(client);
+
+	sendto_one(client, NULL, ":%s NOTE WEBIRC IP_UPDATED %s %s :IP address updated",
+	           me.name, client->ip, client->user->realhost);
+}
+
+/** Server-to-server: IP (and realhost) of a user changed.
+ * :<sid> CHGIP <uid> <base64 ip> <realhost>
+ * This is a ZenIRCd extension. The cloaked host is recalculated locally,
+ * just like with UID. It is server-sourced because the command parser
+ * looks up commands by the type of the source (a user source would
+ * only find CMD_USER commands).
+ */
+CMD_FUNC(cmd_chgip)
+{
+	Client *target;
+	const char *ip;
+	char raw[16];
+	char newip[IPLEN + 1];
+	int af;
+
+	if ((parc < 4) || BadPtr(parv[3]))
+		return;
+
+	target = find_user(parv[1], NULL);
+	if (!target || MyConnect(target) || (target->direction != client->direction))
+		return; /* Unknown, our own, or from the wrong direction: ignore */
+
+	if (!(ip = decode_ip(parv[2])) || !valid_host(parv[3], 0))
+	{
+		unreal_log(ULOG_ERROR, "link", "BAD_CHGIP", client,
+		           "Server link $server sent a CHGIP for $target with a bad IP or hostname: $bad_ip $bad_host",
+		           log_data_client("server", client->direction),
+		           log_data_client("target", target),
+		           log_data_string("bad_ip", parv[2]),
+		           log_data_string("bad_host", parv[3]));
+		return;
+	}
+
+	/* Don't use set_client_ip() here: that runs HOOKTYPE_IP_CHANGE,
+	 * which is meant for local clients (bans, DNSBL, connect-flood..).
+	 */
+	af = strchr(ip, ':') ? AF_INET6 : AF_INET;
+	if ((inet_pton(af, ip, raw) != 1) || !inetntop(af, raw, newip, sizeof(newip)))
+		return; /* cannot happen, decode_ip() validated it */
+
+	userhost_save_current(target);
+
+	memcpy(target->rawip, raw, sizeof(target->rawip));
+	if (af == AF_INET6)
+		SetIPV6(target);
+	else
+		ClearIPV6(target);
+	safe_strdup(target->ip, newip);
+
+	webirc_update_hosts(target, parv[3]);
+
+	userhost_changed(target);
+
+	sendto_server(client, 0, 0, NULL, ":%s CHGIP %s %s %s",
+	              client->id, target->id, parv[2], target->user->realhost);
+}
+
+/* WEBIRC <pass> "cgiirc" <hostname> <ip> [:option1 [option2...]]
+ * After registration (ZenIRCd extension, needs proxy::allow-ip-update):
+ * the same syntax updates the IP of the user. Options are ignored then.
+ */
 CMD_FUNC(cmd_webirc)
 {
 	const char *ip, *host, *password, *options;
@@ -279,6 +495,12 @@ CMD_FUNC(cmd_webirc)
 	host = !DONT_RESOLVE ? parv[3] : parv[4];
 	ip = parv[4];
 	options = parv[5]; /* can be NULL */
+
+	if (IsUser(client))
+	{
+		webirc_ip_update(client, password, ip, host);
+		return;
+	}
 
 	/* Check if allowed host */
 	e = find_webirc(client, password, PROXY_WEBIRC, &error);

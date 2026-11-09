@@ -2329,6 +2329,7 @@ struct ConfigItem_proxy {
 	SecurityGroup *mask;
 	ProxyType type;
 	AuthConfig *auth;
+	int allow_ip_update; /**< proxy::allow-ip-update: gateway may re-send WEBIRC after registration (ZenIRCd) */
 };
 
 typedef union DynamicSetOption {

@@ -4783,6 +4783,7 @@ int _test_proxy(ConfigFile *conf, ConfigEntry *ce)
 	int has_mask = 0; /* mandatory */
 	int has_password = 0; /* mandatory */
 	int has_type = 0;
+	int has_allow_ip_update = 0;
 	ProxyType proxy_type = 0;
 
 	if (!strcmp(ce->name, "webirc"))
@@ -4852,6 +4853,9 @@ int _test_proxy(ConfigFile *conf, ConfigEntry *ce)
 				             cep->file->filename, cep->line_number, cep->value);
 				errors++;
 			}
+		} else if (!strcmp(cep->name, "allow-ip-update"))
+		{
+			has_allow_ip_update = config_checkval(cep->value, CFG_YESNO);
 		} else
 		{
 			config_error_unknown(cep->file->filename, cep->line_number,
@@ -4888,6 +4892,18 @@ int _test_proxy(ConfigFile *conf, ConfigEntry *ce)
 		errors++;
 	}
 
+	if (has_allow_ip_update && (proxy_type != PROXY_WEBIRC))
+	{
+		config_error("%s:%i: %s::allow-ip-update is only supported for type 'webirc'.",
+		             ce->file->filename, ce->line_number, ce->name);
+		errors++;
+	} else if (has_allow_ip_update && !ce->value)
+	{
+		config_error("%s:%i: %s::allow-ip-update requires a named block, like proxy mygateway { }.",
+		             ce->file->filename, ce->line_number, ce->name);
+		errors++;
+	}
+
 	return errors;
 }
 
@@ -4909,6 +4925,8 @@ int _conf_proxy(ConfigFile *conf, ConfigEntry *ce)
 			AuthBlockToAuthConfig(cep, &proxy->auth);
 		else if (!strcmp(cep->name, "type"))
 			proxy->type = proxy_type_string_to_value(cep->value);
+		else if (!strcmp(cep->name, "allow-ip-update"))
+			proxy->allow_ip_update = config_checkval(cep->value, CFG_YESNO);
 	}
 
 	AddListItem(proxy, conf_proxy);

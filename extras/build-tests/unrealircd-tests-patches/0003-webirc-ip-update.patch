@@ -1,0 +1,109 @@
+ZenIRCd: add test tests/extensions/webirc_ip_update.
+
+Applies to unrealircd-tests commit 8043c407497b3ea465cef9ed2e759f14d5079ad6
+(branch unreal60), after 0001 and 0002.
+
+Enables proxy::allow-ip-update in the test config's "webirc" proxy block and
+tests WEBIRC sent after registration: the IP and host are updated, remote
+servers learn about it (CHGIP), CAP chghost users get a CHGHOST, bad
+passwords, bad IPs and non-WEBIRC users are refused, and an update to a
+G-Lined IP disconnects the user.
+
+diff --git a/serverconfig/unrealircd/common.conf b/serverconfig/unrealircd/common.conf
+index c992904..ebd27dc 100644
+--- a/serverconfig/unrealircd/common.conf
++++ b/serverconfig/unrealircd/common.conf
+@@ -286,6 +286,7 @@ proxy webirc {
+ 	type webirc;
+ 	match { ip 127.0.0.1; }
+ 	password "webirc";
++	allow-ip-update yes; /* ZenIRCd: WEBIRC after registration updates the IP */
+ }
+ 
+ loadmodule "extjwt";
+diff --git a/tests/extensions/webirc_ip_update b/tests/extensions/webirc_ip_update
+new file mode 100755
+index 0000000..6d2f3b4
+--- /dev/null
++++ b/tests/extensions/webirc_ip_update
+@@ -0,0 +1,80 @@
++#!/usr/bin/python3
++#
++# ZenIRCd: WEBIRC sent again after registration updates the user's IP
++# (proxy::allow-ip-update). The test config's "webirc" proxy block has it on.
++#
++# Checks:
++# - the gateway gets NOTE WEBIRC IP_UPDATED / IP_UNCHANGED
++# - CAP chghost users on a remote server get a CHGHOST with the new host,
++#   so the CHGIP server-to-server message travelled irc1 -> irc2 -> irc3
++# - WHOIS on the farthest server shows the new host and IP
++# - bad password and non-WEBIRC users are refused with FAIL
++# - bans are rechecked: updating to a G-Lined IP disconnects the user
++
++import irctestframework.irctest
++
++m = irctestframework.irctest.IrcTest()
++c1a = m.new('c1a')                 # irc1, behind the WebIRC gateway
++c1a.fake_ip = '192.0.2.10'
++c1a.fake_hostname = 'old.example'
++c1b = m.new('c1b')                 # irc1, normal connection
++c3a = m.new('c3a')                 # irc3, oper
++c3b = m.new('c3b')                 # irc3, CAP chghost
++m.connect()
++
++m.send(c3a, "OPER netadmin test")
++m.expect(c3a, "c3a got opered up", ":.* 381 ", timeout = 10)
++m.send(c3b, "CAP REQ chghost")
++m.expect(c3b, "chghost cap acknowledged", "CAP .* ACK :?chghost")
++m.send(c1a, "MODE $c1a -x")
++m.clearlog()
++print
++
++chan = m.randchan()
++m.join_all(chan, creator = c1b)
++m.clearlog()
++print
++
++### Successful IP update
++m.send(c1a, "WEBIRC webirc * new.example 198.51.100.20")
++m.expect(c1a, "Gateway is told the IP was updated",
++         "NOTE WEBIRC IP_UPDATED 198\.51\.100\.20 new\.example")
++m.expect(c3b, "Remote CAP chghost user sees the new host",
++         ":$c1a!\S+@old\.example CHGHOST \S+ new\.example", timeout = 5)
++m.clearlog()
++print
++
++m.send(c3a, "WHOIS $c1a")
++m.expect(c3a, "WHOIS on the farthest server shows the new host and IP",
++         " 378 \S+ $c1a :is connecting from \S+@new\.example 198\.51\.100\.20", timeout = 5)
++m.clearlog()
++print
++
++### Same IP and host again: nothing to do
++m.send(c1a, "WEBIRC webirc * new.example 198.51.100.20")
++m.expect(c1a, "Unchanged IP is reported as such", "NOTE WEBIRC IP_UNCHANGED 198\.51\.100\.20")
++m.not_expect(c3b, "No CHGHOST for an unchanged IP", "CHGHOST")
++m.clearlog()
++print
++
++### Refusals
++m.send(c1a, "WEBIRC wrongpassword * other.example 198.51.100.30")
++m.expect(c1a, "Wrong password is refused", "FAIL WEBIRC INVALID_PASSWORD")
++m.send(c1a, "WEBIRC webirc * other.example not-an-ip")
++m.expect(c1a, "Invalid IP is refused", "FAIL WEBIRC INVALID_IP")
++m.send(c1b, "WEBIRC webirc * other.example 198.51.100.30")
++m.expect(c1b, "Users not connected via WEBIRC are refused", "FAIL WEBIRC NOT_WEBIRC")
++m.not_expect(c3b, "No CHGHOST after refused updates", "CHGHOST")
++m.clearlog()
++print
++
++### Bans are rechecked against the new IP. Kept last: the client gets
++### disconnected, so multi-server sync is turned off (framework convention).
++m.send(c3a, "GLINE *@203.0.113.77 60 webirc ip update ban test")
++m.expect(c3a, "G-Line added", "G-Line added: '\*@203\.0\.113\.77'")
++m.clearlog()
++m.sync = 0
++m.send(c1a, "WEBIRC webirc * 203.0.113.77 203.0.113.77")
++m.expect(c1a, "User updated to a G-Lined IP is disconnected", "ERROR :Closing Link.*G-Line", timeout = 5)
++m.send(c3a, "GLINE -*@203.0.113.77")
++print

@@ -17,7 +17,7 @@
 
 [Unit]
 Description=ZenIRCd IRC Server (user service)
-Documentation=https://github.com/oldmagic/zenircd https://www.unrealircd.org/docs/
+Documentation=https://github.com/zenircd/zenircd https://www.unrealircd.org/docs/
 After=network-online.target
 Wants=network-online.target
 

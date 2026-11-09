@@ -255,7 +255,7 @@ __EOF__
 	echo "===================  STOP HERE ======================"
 	echo ""
 	echo "Copy the parts between the START HERE and STOP HERE marker"
-	echo "and report it on https://github.com/oldmagic/zenircd/issues"
+	echo "and report it on https://github.com/zenircd/zenircd/issues"
 	echo ""
 	echo 'But before you do, note the following:'
 	echo '1. If you modified the ZenIRCd source code, say so in the report.'
@@ -355,7 +355,7 @@ elif [ "$1" = "hot-patch" -o "$1" = "cold-patch" -o "$1" = "upgrade" ] ; then
 	echo "ERROR: '$1' is not available in ZenIRCd."
 	echo "It would download UnrealIRCd code from unrealircd.org, which does not"
 	echo "apply to ZenIRCd. To update ZenIRCd, fetch the latest release from"
-	echo "https://github.com/oldmagic/zenircd, then run ./Config and make install."
+	echo "https://github.com/zenircd/zenircd, then run ./Config and make install."
 	exit 1
 elif [ "$1" = "genlinkblock" ] ; then
 	$IRCD -L

@@ -869,7 +869,7 @@ void welcome_user(Client *client, TKL *viruschan_tkl)
 #ifdef EXPERIMENTAL
 	sendnotice(client,
 	           "*** \2NOTE:\2 This server is running experimental IRC server software (ZenIRCd %s). "
-	           "If you find any bugs or problems, please report them at https://github.com/oldmagic/zenircd/issues",
+	           "If you find any bugs or problems, please report them at https://github.com/zenircd/zenircd/issues",
 	           ZENIRCD_VERSION);
 #endif
 

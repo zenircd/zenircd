@@ -320,8 +320,8 @@ void cmd_info_send(Client *client)
 	sendnumericfmt(client, RPL_INFO, ":|");
 	sendnumericfmt(client, RPL_INFO, ":| This is an UnrealIRCd-style server");
 	sendnumericfmt(client, RPL_INFO, ":| If you find any bugs, please report them at:");
-	sendnumericfmt(client, RPL_INFO, ":|  https://github.com/oldmagic/zenircd/issues");
-	sendnumericfmt(client, RPL_INFO, ":| ZenIRCd Homepage: https://github.com/oldmagic/zenircd");
+	sendnumericfmt(client, RPL_INFO, ":|  https://github.com/zenircd/zenircd/issues");
+	sendnumericfmt(client, RPL_INFO, ":| ZenIRCd Homepage: https://github.com/zenircd/zenircd");
 	sendnumericfmt(client, RPL_INFO, ":| ZenIRCd is based on UnrealIRCd: https://www.unrealircd.org");
 	sendnumericfmt(client, RPL_INFO, ":============================================");
 	sendnumericfmt(client, RPL_INFO, ":Birth Date: %s, compile # %s", creation, generation);

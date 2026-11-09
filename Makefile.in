@@ -269,7 +269,7 @@ install: all
 	@echo '  * Modules: @MODULESDIR@'
 	@echo '* To start/stop ZenIRCd run: @SCRIPTDIR@/zenircd'
 	@echo ''
-	@echo '* ZenIRCd: https://github.com/oldmagic/zenircd'
+	@echo '* ZenIRCd: https://github.com/zenircd/zenircd'
 	@echo '* ZenIRCd is based on UnrealIRCd, so its documentation applies:'
 	@echo '  * https://www.unrealircd.org/docs/'
 	@echo '  * https://www.unrealircd.org/docs/FAQ'

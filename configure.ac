@@ -7,7 +7,7 @@ dnl src/windows/unrealinst.iss
 dnl doc/Config.header
 dnl src/version.c.SH
 
-AC_INIT([zenircd], [0.1.0], [https://github.com/oldmagic/zenircd/issues], [], [https://github.com/oldmagic/zenircd])
+AC_INIT([zenircd], [0.1.0], [https://github.com/zenircd/zenircd/issues], [], [https://github.com/zenircd/zenircd])
 AC_CONFIG_SRCDIR([src/ircd.c])
 AC_CONFIG_HEADER([include/setup.h])
 AC_CONFIG_AUX_DIR([autoconf])

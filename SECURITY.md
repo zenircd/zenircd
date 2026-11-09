@@ -11,7 +11,7 @@ reviewed and applied to ZenIRCd as quickly as possible.
 **Do not report security issues in public issues, pull requests or IRC channels.**
 
 Use GitHub's private vulnerability reporting for this repository:
-<https://github.com/oldmagic/zenircd/security/advisories/new>
+<https://github.com/zenircd/zenircd/security/advisories/new>
 (on the repository page: *Security* → *Report a vulnerability*).
 
 Please include:

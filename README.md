@@ -46,7 +46,7 @@ units that refer to the PID file name or the old install path. Example units are
 ZenIRCd must not be built or run as root.
 
 ```sh
-git clone https://github.com/oldmagic/zenircd.git
+git clone https://github.com/zenircd/zenircd.git
 cd zenircd
 ./Config          # answer the questions (default install dir: ~/zenircd-server)
 make
@@ -89,7 +89,7 @@ git-tracked files in the working tree, including uncommitted changes.
 
 ## Reporting bugs and security issues
 
-- Bugs: https://github.com/oldmagic/zenircd/issues
+- Bugs: https://github.com/zenircd/zenircd/issues
 - Security issues: **do not** open a public issue. See [SECURITY.md](SECURITY.md).
 
 If you can reproduce a problem on stock UnrealIRCd too, please also report it

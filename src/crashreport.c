@@ -704,7 +704,7 @@ void report_crash_not_sent(char *fname)
 	       "\n"
 	       "Please review the report at %s (it may contain nicknames, IP addresses\n"
 	       "or configuration details; remove anything private) and report the crash at:\n"
-	       "  https://github.com/oldmagic/zenircd/issues\n"
+	       "  https://github.com/zenircd/zenircd/issues\n"
 	       "If the crash could be a security issue (for example, triggerable by a normal user),\n"
 	       "do NOT open a public issue. Report it privately, see SECURITY.md.\n",
 	       fname);
@@ -782,7 +782,7 @@ void report_crash(void)
 	/* Windows (untested in ZenIRCd): never upload, just inform. */
 	MessageBox(NULL, "ZenIRCd crashed. A crash report was written to the ZenIRCd tmp directory. "
 	                 "It has NOT been sent anywhere. Please review it and report the crash at "
-	                 "https://github.com/oldmagic/zenircd/issues",
+	                 "https://github.com/zenircd/zenircd/issues",
 	           "ZenIRCd crash", MB_ICONINFORMATION | MB_OK);
 #endif
 	mark_coredump_as_read(coredump);

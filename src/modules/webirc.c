@@ -88,7 +88,7 @@ MOD_INIT()
 	HookAdd(modinfo->handle, HOOKTYPE_SECURE_CONNECT, 0, webirc_secure_connect);
 	HookAdd(modinfo->handle, HOOKTYPE_WHOIS, 0, webirc_whois);
 
-	CommandAdd(modinfo->handle, MSG_WEBIRC, cmd_webirc, MAXPARA, CMD_UNREGISTERED|CMD_USER);
+	CommandAdd(modinfo->handle, MSG_WEBIRC, cmd_webirc, MAXPARA, CMD_UNREGISTERED | CMD_USER);
 	CommandAdd(modinfo->handle, MSG_CHGIP, cmd_chgip, MAXPARA, CMD_SERVER);
 
 	return MOD_SUCCESS;
